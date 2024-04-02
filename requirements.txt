@@ -1,0 +1,17 @@
+argparse
+black
+configparser~=5.0.0
+contextvars
+dash
+Django~=3.1.5
+pandas
+pdfminer
+pip
+plotly
+PyPDF2
+python-dateutil~=2.8.1
+pytz
+requests~=2.25.1
+rope
+setuptools
+urllib3

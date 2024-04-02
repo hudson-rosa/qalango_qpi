@@ -1,0 +1,22 @@
+body {
+    background-color: #1a1c24;
+    font-family: "Proxima Nova";
+}
+
+.content-frame {
+    color: #119dff;
+    margin: 15px;
+}
+
+.header-card, .chart-card {
+    padding: 15px !important;
+    background-color: #20222c;
+    border-top: 1px solid #252733;
+    border-left: 1px solid #252733;
+    border-right: 1px solid #1a1c24;
+    border-bottom: 1px solid #1a1c24;
+}
+
+.chart-card {
+    margin-top: 10px;
+}
