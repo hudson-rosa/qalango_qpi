@@ -73,6 +73,8 @@ app.layout = html.Div(
     ]
 )
 
+"""
+    Access the dashboard via http://127.0.0.1:8050/
+"""
 if __name__ == "__main__":
-    # Access the dashboard via http://127.0.0.1:8050/
     app.run(debug=True)
