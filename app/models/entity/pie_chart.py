@@ -1,6 +1,6 @@
 import plotly.express as px
 
-from entity.chart import Chart
+from app.models.entity.chart import Chart
 
 
 class PieChart(Chart):
