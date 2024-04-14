@@ -4,7 +4,7 @@ import pandas as pd
 import random
 
 
-class DataHandler:
+class JsonDataHandler:
     def __init__(self, filename="data/storage/test_data.json"):
         self.filename = filename
 
@@ -56,5 +56,5 @@ class DataHandler:
     Run this file to generate testing data
 """
 if __name__ == "__main__":
-    data_handler = DataHandler()
+    data_handler = JsonDataHandler()
     data_handler.add_test_info()
