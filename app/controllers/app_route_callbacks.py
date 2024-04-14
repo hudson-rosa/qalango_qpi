@@ -1,7 +1,7 @@
 import dash
 from dash import html
-import qpi_dashboard as dashboard
-import qpi_register_testing_efforts as register
+import app.views.qpi_dashboard as dashboard
+import app.views.qpi_register_testing_efforts as register
 
 
 def display_page_callback(pathname):

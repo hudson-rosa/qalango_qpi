@@ -2,13 +2,22 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
-from app.models.data_handler import DataHandler
+import os, sys
+
+# Get the path to the directory containing the 'app' package
+current_dir = os.path.dirname(os.path.abspath(__file__))
+app_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
+
+# Add the directory containing the 'app' package to the Python path
+sys.path.append(app_dir)
+
+from app.utils.data_handler import DataHandler
 from app.models.entity.pie_chart import PieChart
 from app.models.entity.bar_chart import BarChart
 from app.models.entity.line_chart import LineChart
 
 
-external_stylesheets = ["./static/dashboard_stylesheet.css"]
+external_stylesheets = ["./assets/static/dashboard_stylesheet.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 chart_args_entries = [
