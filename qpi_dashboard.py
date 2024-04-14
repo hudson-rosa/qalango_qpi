@@ -1,15 +1,12 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc, html
 
 from app.models.data_handler import DataHandler
 from app.models.entity.pie_chart import PieChart
 from app.models.entity.bar_chart import BarChart
 from app.models.entity.line_chart import LineChart
 
-
-external_stylesheets = ["./static/dashboard_stylesheet.css"]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 
 chart_args_entries = [
     ("data_frame", DataHandler().compose_data_frame()),
@@ -44,8 +41,10 @@ plot_line_chart = dcc.Graph(
     ),
 )
 
-app.layout = html.Div(
+dashboard_layout = html.Div(
     [
+        html.H1("Dashboard Page"),
+        dcc.Link("Go to Testing Efforts Registration", href="/register_tests"),
         html.Div(
             className="content-frame",
             children=[
@@ -74,8 +73,4 @@ app.layout = html.Div(
     ]
 )
 
-"""
-    Access the dashboard via http://127.0.0.1:8050/
-"""
-if __name__ == "__main__":
-    app.run(debug=True)
+app.layout = dashboard_layout
