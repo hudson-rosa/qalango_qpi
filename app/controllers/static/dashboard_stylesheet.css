@@ -1,14 +1,39 @@
 body {
     background-color: #1a1c24;
     font-family: "Proxima Nova";
+    box-sizing: border-box;
+    outline: none;
+}
+
+h1,
+h2,
+.header-card {
+    color: #337db1;
+}
+
+h1, a {
+    padding: 15px
+}
+
+a {
+    color: #612ae3;
 }
 
 .content-frame {
-    color: #119dff;
     margin: 15px;
 }
 
-.header-card, .chart-card {
+.form-content {
+    color: #fff;
+    padding: 45px;
+}
+
+.form-content label {
+    padding: 15px;
+}
+
+.header-card,
+.chart-card {
     padding: 15px !important;
     background-color: #20222c;
     border-top: 1px solid #252733;

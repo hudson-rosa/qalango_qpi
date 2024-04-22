@@ -48,7 +48,7 @@ dashboard_layout = html.Div(
         html.Div(
             className="content-frame",
             children=[
-                html.H1(
+                html.H2(
                     children="Test Scores Dashboard",
                     className="header-card",
                 ),

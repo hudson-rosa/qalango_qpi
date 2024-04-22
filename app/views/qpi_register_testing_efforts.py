@@ -11,39 +11,64 @@ register_testing_efforts_layout = html.Div(
         html.H1("Registering Testing Efforts Page"),
         dcc.Link("Go to Dashboard", href="/dashboard"),
         html.Div(
-            [
-                html.Label("Test Name"),
-                dcc.Input(id="test-name", type="text", placeholder="Enter test name"),
-                html.Label("Test Suite"),
-                dcc.Input(id="test-suite", type="text", placeholder="Enter test suite"),
-                html.Label("Test Category"),
-                dcc.Input(
-                    id="test-category", type="text", placeholder="Enter test category"
+            className="form-content",
+            children=[
+                html.Ul(
+                    html.Li(
+                        html.Div(
+                            className="grid grid-2",
+                            children=[
+                                dcc.Input(
+                                    id="test-name",
+                                    type="text",
+                                    placeholder="Enter test name",
+                                    required=True,
+                                ),
+                                dcc.Input(
+                                    id="test-suite",
+                                    type="text",
+                                    placeholder="Enter test suite",
+                                    required=True,
+                                ),
+                                dcc.Input(
+                                    id="test-category",
+                                    type="text",
+                                    placeholder="Enter test category",
+                                    required=True,
+                                ),
+                                dcc.Input(
+                                    id="total-time",
+                                    type="number",
+                                    placeholder="Enter total execution time (in minutes)",
+                                ),
+                            ],
+                        )
+                    )
                 ),
-                html.Label("Total Time (in minutes)"),
-                dcc.Input(
-                    id="total-time", type="number", placeholder="Enter total time"
-                ),
+                html.Label("Required fields", className="required-msg"),
+                html.Div(id="output-message", className="output-msg"),
                 html.Div(
-                    [
+                    className="grid grid-2",
+                    children=[
                         html.Button("Save", id="save-button", n_clicks=0),
                         html.Button("Update", id="update-button", n_clicks=0),
-                        html.Button("Delete", id="delete-button", n_clicks=0),
-                    ]
+                        html.Div(
+                            className="section-group",
+                            children=[
+                                html.Div(
+                                    id="delete-output-message", className="output-msg"
+                                ),
+                                dcc.Input(
+                                    id="delete-test-name",
+                                    type="text",
+                                    placeholder="Enter test name to delete",
+                                ),
+                                html.Button("Delete", id="delete-button", n_clicks=0),
+                            ],
+                        ),
+                    ],
                 ),
-                html.Div(id="output-message"),
-            ]
-        ),
-        html.Div(
-            [
-                html.Label("Test Name to delete"),
-                dcc.Input(
-                    id="delete-test-name",
-                    type="text",
-                    placeholder="Enter test name to delete",
-                ),
-                html.Div(id="delete-output-message"),
-            ]
+            ],
         ),
     ]
 )
@@ -144,7 +169,7 @@ def save_update_delete_data(
             return None, "No data found. Nothing to delete."
 
     else:
-        return "Please select an action from the dropdown", None
+        return "Please choose an action", None
 
 
 app.layout = register_testing_efforts_layout
