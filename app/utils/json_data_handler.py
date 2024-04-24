@@ -29,6 +29,9 @@ class JsonDataHandler:
     def compose_data_frame(self):
         dataset = self.load_data()
         return pd.DataFrame(dataset)
+    
+    def get_dataframe(self, datalist):
+        return pd.DataFrame(datalist)
 
     def add_into_storage(self, entry_data):
         dataset = self.load_data()

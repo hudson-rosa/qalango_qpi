@@ -1,16 +1,15 @@
 import dash
 from dash import html, callback
 from dash.dependencies import Input, Output
-import os, sys
+import app_path_config
 
-# Get the path to the directory containing the 'app' package
-current_dir = os.path.dirname(os.path.abspath(__file__))
-app_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
-sys.path.append(app_dir)
-
+app_path_config.set_current_dir(__file__)
 from app_route_callbacks import display_page_callback
 
-external_stylesheets = ["./static/dashboard_stylesheet.css", "./static/forms_stylesheet.css"]
+external_stylesheets = [
+    app_path_config.get_dashboard_stylesheet_css_path(),
+    app_path_config.get_forms_stylesheet_css_path(),
+]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
@@ -22,7 +21,6 @@ app.layout = html.Div(
 @callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
     return display_page_callback(pathname)
-
 
 
 if __name__ == "__main__":

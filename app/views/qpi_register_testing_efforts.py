@@ -1,10 +1,11 @@
 import dash
 import json
+import app.controllers.app_path_config as app_path_config
 from dash import dcc, callback, html, Input, Output, State
 
 app = dash.Dash(__name__)
 
-manual_test_data_json = "data/storage/manual_test_data.json"
+json_storage = app_path_config.get_data_storage_path()
 
 register_testing_efforts_layout = html.Div(
     [
@@ -108,7 +109,7 @@ def save_update_delete_data(
 
     if button_id == "save-button":
         try:
-            with open(manual_test_data_json, "r") as f:
+            with open(json_storage, "r") as f:
                 data = json.load(f)
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             data = {}
@@ -121,14 +122,14 @@ def save_update_delete_data(
         }
         data[test_name] = new_data
 
-        with open(manual_test_data_json, "w") as f:
+        with open(json_storage, "w") as f:
             json.dump(data, f)
 
         return "Data saved successfully", None
 
     elif button_id == "update-button":
         try:
-            with open(manual_test_data_json, "r") as f:
+            with open(json_storage, "r") as f:
                 data = json.load(f)
         except FileNotFoundError:
             return None, "No data found. Nothing to update."
@@ -138,7 +139,7 @@ def save_update_delete_data(
             data[test_name]["test_category"] = test_category
             data[test_name]["total_time"] = total_time
 
-            with open(manual_test_data_json, "w") as f:
+            with open(json_storage, "w") as f:
                 json.dump(data, f)
 
             return "Data updated successfully", None
@@ -150,11 +151,11 @@ def save_update_delete_data(
 
     elif button_id == "delete-button":
         try:
-            with open(manual_test_data_json, "r") as f:
+            with open(json_storage, "r") as f:
                 data = json.load(f)
             if delete_test_name in data:
                 del data[delete_test_name]
-                with open(manual_test_data_json, "w") as f:
+                with open(json_storage, "w") as f:
                     json.dump(data, f)
                 return (
                     None,
