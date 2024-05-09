@@ -1,9 +1,9 @@
 import plotly.express as px
-
-from app.models.entity.chart import Chart
+from src.models.entity.chart import Chart
 
 
 class BarChart(Chart):
+
     def __init__(self, data_frame, template="plotly_dark"):
         super().__init__(data_frame, template)
 

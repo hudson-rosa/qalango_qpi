@@ -1,7 +1,7 @@
 import json
 import pandas as pd
-import app.controllers.app_path_config as app_path_config
-from app.utils.json_data_handler import JsonDataHandler
+import src.controllers.app_path_config as app_path_config
+from src.utils.json_data_handler import JsonDataHandler
 
 data_path = app_path_config.get_data_storage_path()
 

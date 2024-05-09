@@ -2,13 +2,13 @@ import dash
 from dash import dcc, callback, html
 from dash.dependencies import Input, Output
 
-from app.utils.json_data_handler import JsonDataHandler
-from app.models.entity.pie_chart import PieChart
-from app.models.entity.bar_chart import BarChart
-from app.models.entity.line_chart import LineChart
+from src.utils.json_data_handler import JsonDataHandler
+from src.models.entity.pie_chart import PieChart
+from src.models.entity.bar_chart import BarChart
+from src.models.entity.line_chart import LineChart
 
-from app.models.data_processing import DataProcessing
-import app.controllers.app_path_config as app_path_config
+from src.models.data_processing import DataProcessing
+import src.controllers.app_path_config as app_path_config
 
 data_path = app_path_config.get_data_storage_path()
 app = dash.Dash(__name__)
@@ -62,6 +62,12 @@ dashboard_layout = html.Div(
         html.Div(
             className="content-frame",
             children=[
+                # html.Button(
+                #     "Refresh Data",
+                #     id="refresh-button",
+                #     className="btn-grid",
+                #     n_clicks=0,
+                # ),
                 html.H2(
                     children="Test Scores Dashboard",
                     className="header-card",
@@ -91,3 +97,25 @@ dashboard_layout = html.Div(
 )
 
 app.layout = dashboard_layout
+    
+# @callback(
+#     [
+#         Output("pie-chart-container", "children"),
+#         Output("bar-chart-container", "children"),
+#         Output("line-chart-container", "children"),
+#     ],
+#     [Input("refresh-button", "n_clicks")],
+# )
+# def refresh_data(n_clicks):
+#     if n_clicks:
+#         pie_fig, bar_fig, line_fig = update_figures()
+#         return (
+#             dcc.Graph(id="pie-chart", figure=pie_fig),
+#             dcc.Graph(id="bar-chart", figure=bar_fig),
+#             dcc.Graph(id="line-chart", figure=line_fig),
+#         )
+#     else:
+#         return dash.no_update, dash.no_update, dash.no_update
+
+
+    

@@ -1,6 +1,6 @@
 import dash
 import json
-import app.controllers.app_path_config as app_path_config
+import src.controllers.app_path_config as app_path_config
 from dash import dcc, callback, html, Input, Output, State
 
 app = dash.Dash(__name__)

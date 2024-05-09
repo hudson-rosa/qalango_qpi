@@ -1,7 +1,7 @@
 Run the QPI App via command line:
 
 ```bash
-python3 app/controllers/app_run.py
+python3 app/src/controllers/app_run.py
 ```
 
 In a browser, open the QPI Dashboard from the URL:

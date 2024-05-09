@@ -3,13 +3,12 @@ import dash_core_components as dcc
 import dash_html_components as html
 import app_path_config
 
+from src.utils.json_data_handler import JsonDataHandler
+from src.models.entity.pie_chart import PieChart
+from src.models.entity.bar_chart import BarChart
+from src.models.entity.line_chart import LineChart
+
 app_path_config.set_current_dir(__file__)
-
-from app.utils.json_data_handler import JsonDataHandler
-from app.models.entity.pie_chart import PieChart
-from app.models.entity.bar_chart import BarChart
-from app.models.entity.line_chart import LineChart
-
 
 external_stylesheets = [app_path_config.get_dashboard_stylesheet_css_path()]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)

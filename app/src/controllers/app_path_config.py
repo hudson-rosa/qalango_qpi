@@ -8,7 +8,7 @@ def set_current_dir(__file__):
 
 @staticmethod
 def get_data_storage_path():
-    return "data/storage/manual_test_data.json"
+    return "app/data/storage/manual_test_data.json"
 
 @staticmethod
 def get_dashboard_stylesheet_css_path():

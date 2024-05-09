@@ -1,7 +1,7 @@
 import dash
+import app_path_config
 from dash import html, callback
 from dash.dependencies import Input, Output
-import app_path_config
 
 app_path_config.set_current_dir(__file__)
 from app_route_callbacks import display_page_callback
@@ -16,7 +16,6 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div(
     [dash.dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
 )
-
 
 @callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
