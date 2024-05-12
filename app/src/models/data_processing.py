@@ -3,13 +3,13 @@ import pandas as pd
 import src.controllers.app_path_config as app_path_config
 from src.utils.json_data_handler import JsonDataHandler
 
-data_path = app_path_config.get_data_storage_path()
-
 
 class DataProcessing(JsonDataHandler):
 
     @staticmethod
-    def get_test_names_and_times_dictionary():
+    def get_test_names_and_times_dictionary(
+        data_path=app_path_config.get_data_storage_path(),
+    ):
         test_names = []
         total_times = []
         data_handler = JsonDataHandler(data_path).compose_data_frame()
@@ -18,9 +18,8 @@ class DataProcessing(JsonDataHandler):
             test_name = value.get("test_name")
             total_time = value.get("total_time")
 
-            if test_name is not None:
+            if test_name is not None and total_time is not None:
                 test_names.append(test_name)
-            if total_time is not None:
                 total_times.append(total_time)
 
         print("Test Names:", test_names)

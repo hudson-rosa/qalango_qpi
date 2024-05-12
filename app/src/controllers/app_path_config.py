@@ -1,6 +1,5 @@
 import os, sys
 
-
 @staticmethod
 def set_current_dir(__file__):
     current_dir = os.path.dirname(os.path.abspath(__file__))

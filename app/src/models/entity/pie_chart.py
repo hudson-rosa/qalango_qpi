@@ -1,5 +1,5 @@
 import plotly.express as px
-from src.models.entity.chart import Chart
+from .chart import Chart
 
 
 class PieChart(Chart):

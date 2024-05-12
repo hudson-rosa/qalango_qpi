@@ -2,12 +2,12 @@ import dash
 from dash import dcc, callback, html
 from dash.dependencies import Input, Output
 
-from src.utils.json_data_handler import JsonDataHandler
-from src.models.entity.pie_chart import PieChart
-from src.models.entity.bar_chart import BarChart
-from src.models.entity.line_chart import LineChart
+from ..utils.json_data_handler import JsonDataHandler
+from ..models.entity.pie_chart import PieChart
+from ..models.entity.bar_chart import BarChart
+from ..models.entity.line_chart import LineChart
 
-from src.models.data_processing import DataProcessing
+from ..models.data_processing import DataProcessing
 import src.controllers.app_path_config as app_path_config
 
 data_path = app_path_config.get_data_storage_path()

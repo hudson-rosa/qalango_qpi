@@ -3,10 +3,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 import app_path_config
 
-from src.utils.json_data_handler import JsonDataHandler
-from src.models.entity.pie_chart import PieChart
-from src.models.entity.bar_chart import BarChart
-from src.models.entity.line_chart import LineChart
+from ..utils.json_data_handler import JsonDataHandler
+from ..models.entity.pie_chart import PieChart
+from ..models.entity.bar_chart import BarChart
+from ..models.entity.line_chart import LineChart
 
 app_path_config.set_current_dir(__file__)
 
