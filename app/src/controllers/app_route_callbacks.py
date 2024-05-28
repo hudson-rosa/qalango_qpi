@@ -8,6 +8,6 @@ def display_page_callback(pathname):
         case "/register_tests":
             return register.register_testing_efforts_layout
         case "/dashboard":
-            return dashboard.dashboard_layout
+            return dashboard.serve_layout()
         case default:
             return html.Div("404 - Page not found")

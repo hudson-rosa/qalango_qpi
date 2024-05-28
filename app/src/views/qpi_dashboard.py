@@ -28,94 +28,104 @@ def update_figures():
     print("\n------->>> PROCESSED DATA: \n", chart_args_entries)
     return pie_fig, bar_fig, line_fig
 
-pie_fig, bar_fig, line_fig = update_figures()
 
-plot_pie_chart = dcc.Graph(
-    id="pie-chart",
-    figure=pie_fig.create(
-        slice_values="total_time", names="test_name", title="Test Effort Distribution"
-    ),
-)
-
-plot_bar_chart = dcc.Graph(
-    id="bar-chart",
-    figure=bar_fig.create(
-        x_axis="test_name",
-        y_axis="total_time",
-        title="Tests Distribution",
-    ),
-)
-
-plot_line_chart = dcc.Graph(
-    id="line-chart",
-    figure=line_fig.create(
-        x_axis="test_name",
-        y_axis="total_time",
-        title="Total Time of Manual testing",
-    ),
-)
-
-dashboard_layout = html.Div(
+@app.callback(
     [
-        html.H1("Dashboard Page"),
-        dcc.Link("Go to Testing Efforts Registration", href="/register_tests"),
-        html.Div(
-            className="content-frame",
-            children=[
-                # html.Button(
-                #     "Refresh Data",
-                #     id="refresh-button",
-                #     className="btn-grid",
-                #     n_clicks=0,
-                # ),
-                html.H2(
-                    children="Test Scores Dashboard",
-                    className="header-card",
-                ),
-                html.Div(
-                    children="A modern and interactive dashboard for test scores visualization.",
-                    className="header-card",
-                ),
-                html.Div(
-                    children=plot_pie_chart,
-                    id="pie-chart-container",
-                    className="chart-card",
-                ),
-                html.Div(
-                    children=plot_bar_chart,
-                    id="bar-chart-container",
-                    className="chart-card",
-                ),
-                html.Div(
-                    children=plot_line_chart,
-                    id="line-chart-container",
-                    className="chart-card",
-                ),
-            ],
-        ),
+        Output("pie-chart", "figure"),
+        Output("bar-chart", "figure"),
+        Output("line-chart", "figure"),
     ]
 )
+def refresh_charts():
 
-app.layout = dashboard_layout
-    
-# @callback(
-#     [
-#         Output("pie-chart-container", "children"),
-#         Output("bar-chart-container", "children"),
-#         Output("line-chart-container", "children"),
-#     ],
-#     [Input("refresh-button", "n_clicks")],
-# )
-# def refresh_data(n_clicks):
-#     if n_clicks:
-#         pie_fig, bar_fig, line_fig = update_figures()
-#         return (
-#             dcc.Graph(id="pie-chart", figure=pie_fig),
-#             dcc.Graph(id="bar-chart", figure=bar_fig),
-#             dcc.Graph(id="line-chart", figure=line_fig),
-#         )
-#     else:
-#         return dash.no_update, dash.no_update, dash.no_update
+    pie_fig, bar_fig, line_fig = update_figures()
+
+    print("Figures updated")
+    return (
+        pie_fig.create(
+            slice_values="total_time",
+            names="test_name",
+            title="Test Effort Distribution",
+        ),
+        bar_fig.create(
+            x_axis="test_name",
+            y_axis="total_time",
+            title="Tests Distribution",
+        ),
+        line_fig.create(
+            x_axis="test_name",
+            y_axis="total_time",
+            title="Total Time of Manual testing",
+        ),
+    )
 
 
-    
+def serve_layout():
+    pie_fig, bar_fig, line_fig = update_figures()
+
+    plot_pie_chart = dcc.Graph(
+        id="pie-chart",
+        figure=pie_fig.create(
+            slice_values="total_time",
+            names="test_name",
+            title="Test Effort Distribution",
+        ),
+    )
+
+    plot_bar_chart = dcc.Graph(
+        id="bar-chart",
+        figure=bar_fig.create(
+            x_axis="test_name",
+            y_axis="total_time",
+            title="Tests Distribution",
+        ),
+    )
+
+    plot_line_chart = dcc.Graph(
+        id="line-chart",
+        figure=line_fig.create(
+            x_axis="test_name",
+            y_axis="total_time",
+            title="Total Time of Manual testing",
+        ),
+    )
+
+    dashboard_layout = html.Div(
+        [
+            html.H1("Dashboard Page"),
+            dcc.Link("Go to Testing Efforts Registration", href="/register_tests"),
+            html.Div(
+                className="content-frame",
+                children=[
+                    html.H2(
+                        children="Test Efforts Dashboard",
+                        className="header-card",
+                    ),
+                    html.Div(
+                        children="Check here all the details regarding the manual testing efforts",
+                        className="header-card",
+                    ),
+                    html.Div(
+                        children=plot_pie_chart,
+                        id="pie-chart-container",
+                        className="chart-card",
+                    ),
+                    html.Div(
+                        children=plot_bar_chart,
+                        id="bar-chart-container",
+                        className="chart-card",
+                    ),
+                    html.Div(
+                        children=plot_line_chart,
+                        id="line-chart-container",
+                        className="chart-card",
+                    ),
+                ],
+            ),
+        ]
+    )
+
+    return dashboard_layout
+
+
+app.layout = serve_layout
