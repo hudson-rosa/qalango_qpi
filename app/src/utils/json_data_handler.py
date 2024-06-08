@@ -39,7 +39,7 @@ class JsonDataHandler:
         dataset.append(entry_data)
         self.save_data(dataset)
 
-    def add_test_info(self):
+    def add_test_demo_info(self):
         max_random_data = 20
         for i in range(max_random_data):
             data_handler.add_into_storage(
@@ -61,4 +61,4 @@ class JsonDataHandler:
 """
 if __name__ == "__main__":
     data_handler = JsonDataHandler()
-    data_handler.add_test_info()
+    data_handler.add_test_demo_info()

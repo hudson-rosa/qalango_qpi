@@ -1,300 +1,525 @@
 :root {
-  --white: #afafaf;
-  --red: #e31b23;
-  --bodyColor: #1a1c24;
-  --borderFormEls: hsl(0, 0%, 10%);  
+  --black: #1a1c24;
+  --blue: #337db1;
+  --grey: #6a91ad;
+  --lightBlue: #82c0ec;
+  --red: #d9353a;
+  --white: #d4edff;
+  --borderFormEls: hsl(0, 0%, 10%);
   --bgFormEls: hsl(228deg 18.55% 16.04%);
   --bgFormElsFocus: hsl(220, 20%, 9%);
+  --spinnerButtonColor: var(--lightBlue);
+  --spinnerButtonBg: var(--bgFormEls);
+  --spinnerButtonHoverBg: var(--bgFormElsFocus);
 }
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    outline: none;
-  }
-  
-  a {
-    color: inherit;
-  }
-  
-  input,
-  select,
-  textarea,
-  button {
-    font-family: inherit;
-    font-size: 100%;
-  }
-  
-  button,
-  label {
-    cursor: pointer;
-  }
-  
-  select {
-    appearance: none;
-  }
-  
-  /* Remove native arrow on IE */
-  select::-ms-expand {
-    display: none;
-  }
-  
-  /*Remove dotted outline from selected option on Firefox*/
-  /*https://stackoverflow.com/questions/3773430/remove-outline-from-select-box-in-ff/18853002#18853002*/
-  /*We use !important to override the color set for the select on line 99*/
-  select:-moz-focusring {
-    color: transparent !important;
-    text-shadow: 0 0 0 var(--white);
-  }
-  
-  textarea {
-    resize: none;
-  }
-  
-  ul {
-    list-style: none;
-  }
-  
-  body {
-    font: 18px/1.5 "Open Sans", sans-serif;
-    background: var(--bodyColor);
-    color: var(--white);
-    margin: 1.5rem 0;
-  }
-  
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-  
-  
-  /* FORM ELEMENTS
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+a {
+  color: inherit;
+}
+
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+  font-size: 100%;
+}
+
+button,
+label {
+  cursor: pointer;
+}
+
+select {
+  appearance: none;
+}
+
+/* Remove native arrow on IE */
+select::-ms-expand {
+  display: none;
+}
+
+/*Remove dotted outline from selected option on Firefox*/
+/*https://stackoverflow.com/questions/3773430/remove-outline-from-select-box-in-ff/18853002#18853002*/
+/*We use !important to override the color set for the select on line 99*/
+select:-moz-focusring {
+  color: transparent !important;
+  text-shadow: 0 0 0 var(--lightBlue);
+}
+
+textarea {
+  resize: none;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  font: 18px/1.5 "Open Sans", sans-serif;
+  background: var(--black);
+  color: var(--lightBlue);
+  margin: 1.5rem 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+
+/* FORM ELEMENTS
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  .form-content h1 {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-content li,
-  .form-content .grid > *:not(:last-child) {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-content select,
-  .form-content input,
-  .form-content textarea,
-  .form-content button {
+.form-content h1 {
+  margin-bottom: 1.5rem;
+}
+
+.form-content h2 {
+  margin-bottom: 1.5rem;
+}
+
+.form-content h3 {
+  margin-bottom: 1rem;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+.form-content h4 {
+  margin-bottom: 1rem;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+.form-content h5 {
+  margin-bottom: 1rem;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+.form-content li,
+.form-content .grid>*:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
+.form-content select,
+.form-content input,
+.form-content textarea,
+.form-content button {
+  width: 100%;
+  line-height: 1.5;
+  padding: 15px 30px;
+  border: 1px solid var(--borderFormEls);
+  color: var(--lightBlue);
+  background: var(--bgFormEls);
+  transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+    transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.form-content textarea {
+  height: 170px;
+}
+
+.form-content ::placeholder {
+  color: inherit;
+  /*Fix opacity issue on Firefox*/
+  opacity: 1;
+}
+
+.form-content select:focus,
+.form-content input:focus,
+.form-content textarea:focus,
+.form-content button:enabled:hover,
+.form-content button:focus,
+.form-content input[type="checkbox"]:focus+label {
+  background: var(--bgFormElsFocus);
+}
+
+.form-content select:focus,
+.form-content input:focus,
+.form-content textarea:focus {
+  transform: scale(1.02);
+}
+
+.form-content *:required,
+.form-content select {
+  background-repeat: no-repeat;
+  background-position: center right 12px;
+  background-size: 15px 15px;
+}
+
+.form-content *:required {
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg);
+}
+
+.form-content select {
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
+}
+
+.form-content *:disabled {
+  cursor: default;
+  filter: blur(2px);
+}
+
+/* INPUT NUMBER
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+  .c_number_spinner {
     width: 100%;
     line-height: 1.5;
     padding: 15px 30px;
     border: 1px solid var(--borderFormEls);
-    color: var(--white);
+    color: var(--lightBlue);
     background: var(--bgFormEls);
     transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
-      transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+                transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    border-radius: 5px;
   }
   
-  .form-content textarea {
-    height: 170px;
-  }
-  
-  .form-content ::placeholder {
-    color: inherit;
-    /*Fix opacity issue on Firefox*/
-    opacity: 1;
-  }
-  
-  .form-content select:focus,
-  .form-content input:focus,
-  .form-content textarea:focus,
-  .form-content button:enabled:hover,
-  .form-content button:focus,
-  .form-content input[type="checkbox"]:focus + label {
+  .c_number_spinner:focus {
     background: var(--bgFormElsFocus);
-  }
-  
-  .form-content select:focus,
-  .form-content input:focus,
-  .form-content textarea:focus {
     transform: scale(1.02);
   }
   
-  .form-content *:required,
-  .form-content select {
-    background-repeat: no-repeat;
-    background-position: center right 12px;
-    background-size: 15px 15px;
+  .c_number_spinner::-webkit-inner-spin-button,
+  .c_number_spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-right: -10px;
+    background: var(--spinnerButtonBg);
+    color: var(--spinnerButtonColor); 
+    width: 30px;
+    height: 50px;
+    cursor: pointer;
   }
   
-  .form-content *:required {
-    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg);  
+  .c_number_spinner::-webkit-inner-spin-button:hover,
+  .c_number_spinner::-webkit-outer-spin-button:hover {
+    background: var(--spinnerButtonHoverBg);
+    color: var(--lightBlue); 
   }
   
-  .form-content select {
-    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
+  .c_number_spinner::-moz-focus-inner {
+    border: 0;
   }
   
-  .form-content *:disabled {
-    cursor: default;
-    filter: blur(2px);
+  .c_number_spinner::placeholder {
+    color: var(--lightBlue);
+    opacity: 1;
   }
-  
-  
-  /* FORM BTNS
+
+/* FORM BUTTONS
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.form-content .required-msg {
+  display: none;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg) no-repeat center left / 15px 15px;
+  padding-left: 20px;
+}
+
+.form-content .btn-grid {
+  position: relative;
+  overflow: hidden;
+  transition: filter 0.2s;
+}
+
+.form-content button {
+  font-weight: bold;
+}
+
+.form-content button>* {
+  display: inline-block;
+  width: 100%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.form-content button .back {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-110%, -50%);
+}
+
+.form-content button:enabled:hover .back,
+.form-content button:focus .back {
+  transform: translate(-50%, -50%);
+}
+
+.form-content button:enabled:hover .front,
+.form-content button:focus .front {
+  transform: translateX(110%);
+}
+
+/* CUSTOM CHECKBOX
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.form-content input[type="checkbox"] {
+  position: absolute;
+  left: -9999px;
+}
+
+.form-content input[type="checkbox"]+label {
+  position: relative;
+  display: inline-block;
+  padding-left: 2rem;
+  transition: background 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.form-content input[type="checkbox"]+label::before,
+.form-content input[type="checkbox"]+label::after {
+  content: '';
+  position: absolute;
+}
+
+.form-content input[type="checkbox"]+label::before {
+  left: 0;
+  top: 6px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--lightBlue);
+}
+
+.form-content input[type="checkbox"]:checked+label::before {
+  background: var(--red);
+}
+
+.form-content input[type="checkbox"]:checked+label::after {
+  left: 7px;
+  top: 7px;
+  width: 6px;
+  height: 14px;
+  border-bottom: 2px solid var(--lightBlue);
+  border-right: 2px solid var(--lightBlue);
+  transform: rotate(45deg);
+}
+
+/* CUSTOM DROPDOWN
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.c_dropdown .Select-control {
+  width: 100%;
+  line-height: 1.5;
+  padding: 15px 30px;
+  border: 1px solid var(--borderFormEls);
+  color: var(--lightBlue);
+  background: var(--bgFormEls);
+  transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+    transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.c_dropdown .Select-control .Select-arrow {
+  margin-right: -40px !important;
+}
+
+.c_dropdown .Select-control .Select-clear {
+  margin-right: -30px !important;
+}
+
+.c_dropdown .Select-placeholder {
+  color: var(--lightBlue);
+  opacity: 1;
+}
+
+.c_dropdown .Select-menu-outer {
+  background: var(--bgFormEls);
+  border: 1px solid var(--borderFormEls);
+  color: var(--lightBlue);
+}
+
+.c_dropdown .Select-option {
+  background: var(--bgFormEls);
+  color: var(--lightBlue);
+  padding: 10px;
+}
+
+.c_dropdown .Select-option:hover {
+  background: var(--bgFormElsFocus);
+}
+
+.c_dropdown .Select-arrow {
+  border-color: var(--lightBlue) transparent transparent;
+}
+
+.c_dropdown .Select-control:focus,
+.c_dropdown .Select-control:active,
+.c_dropdown .Select-control:hover {
+  background: var(--bgFormElsFocus);
+  transform: scale(1.02);
+}
+
+.c_dropdown .Select-value {
+  color: var(--lightBlue);
+}
+
+/* New rule to set the selected value label text color to white */
+.c_dropdown .Select-value-label {
+  color: var(--lightBlue) !important;
+}
+
+/* Additional rules to ensure the input text is styled correctly */
+.c_dropdown .Select-input input {
+  color: var(--lightBlue) !important;
+  height: 20%;
+  padding-left: 2rem;
+  background-color: transparent;
+  transition: background 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+  border: none;
+}
+
+.c_dropdown .Select-value-label {
+  color: var(--lightBlue) !important;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Animating the .Select-value-label to fade it out on input focus */
+.c_dropdown .Select-control .Select-input input:focus~.Select-value .Select-value-label {
+  opacity: 0;
+  visibility: hidden;
+  width: 100%;
+}
+
+/* CUSTOM RADIO BUTTON
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.c_radio {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.c_radio label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 30px;
+  border: 1px solid var(--borderFormEls);
+  background: var(--bgFormEls);
+  color: var(--lightBlue);
+  transition: background-color 0.3s, transform 0.3s;
+  border-radius: 5px;
+}
+
+.c_radio input[type="radio"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background-color: var(--red) !important;
+  color: var(--red) !important;
+  border: 2px solid var(--lightBlue);
+  transition: background 0.3s;
+}
+
+
+/* CUSTOM SLIDER
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.rc-slider-track {
+  background-color: #853232; /* Color of the track */
+}
+
+.rc-slider-dot {
+  background-color: var(--lightBlue);
+}
+
+.rc-slider-rail {
+  background-color: var(--white);
+}
+
+.rc-slider-mark-text {
+  color: var(--grey);
+}
+
+.rc-slider-with-marks {
+  background-color: var(--black);
+}
+
+/* Handle */
+.rc-slider-handle {
+  border-color: var(--white); /* Border color of the handle */
+  background-color: var(--blue); /* Background color of the handle */
+}
+
+/* Active Handle */
+.rc-slider-handle:focus, .rc-slider-handle:hover {
+  border-color: #007bff; /* Border color of the handle on hover or focus */
+  box-shadow: 0 0 5px var(--white); /* Box shadow for the handle on hover or focus */
+}
+
+
+
+/* FOOTER
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+footer {
+  font-size: 1rem;
+  text-align: right;
+  backface-visibility: hidden;
+}
+
+footer a {
+  text-decoration: none;
+}
+
+footer span {
+  color: var(--red);
+}
+
+
+/* MEDIA QUERY
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+@media screen and (min-width: 600px) {
+
+  .form-content .grid,
+  .form .section-group {
+    display: grid;
+    grid-gap: 1.5rem;
+  }
+
+  .form-content .section-group {
+    margin-top: 40px;
+  }
+
+  .section-group input {
+    margin-bottom: 20px;
+  }
+
+  .form-content .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-content .grid-3 {
+    grid-template-columns: auto auto auto;
+    align-items: center;
+  }
+
+  .form-content .grid>*:not(:last-child) {
+    margin-bottom: 0;
+  }
+
   .form-content .required-msg {
-    display: none;
-    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg)
-      no-repeat center left / 15px 15px;
-    padding-left: 20px;
+    display: block;
   }
-  
-  .form-content .btn-grid {
-    position: relative;
-    overflow: hidden;
-    transition: filter 0.2s;
+
+  .required-msg {
+    font-size: 14px;
   }
-  
-  .form-content button {
-    font-weight: bold;
+
+  .output-msg {
+    color: var(--blue);
+    padding: 20px;
+    font-size: 18px;
   }
-  
-  .form-content button > * {
-    display: inline-block;
-    width: 100%;
-    transition: transform 0.4s ease-in-out;
-  }
-  
-  .form-content button .back {
-    position: absolute;
-    left: 50%;
+}
+
+@media screen and (min-width: 541px) {
+  .form-content input[type="checkbox"]+label::before {
     top: 50%;
-    transform: translate(-110%, -50%);
+    transform: translateY(-50%);
   }
-  
-  .form-content button:enabled:hover .back,
-  .form-content button:focus .back {
-    transform: translate(-50%, -50%);
-  }
-  
-  .form-content button:enabled:hover .front,
-  .form-content button:focus .front {
-    transform: translateX(110%);
-  }
-  
-  
-  /* CUSTOM CHECKBOX
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  .form-content input[type="checkbox"] {
-    position: absolute;
-    left: -9999px;
-  }
-  
-  .form-content input[type="checkbox"] + label {
-    position: relative;
-    display: inline-block;
-    padding-left: 2rem;
-    transition: background 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
-  }
-  
-  .form-content input[type="checkbox"] + label::before,
-  .form-content input[type="checkbox"] + label::after {
-    content: '';
-    position: absolute;
-  }
-  
-  .form-content input[type="checkbox"] + label::before {
-    left: 0;
-    top: 6px;
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--white);
-  }
-  
-  .form-content input[type="checkbox"]:checked + label::before {
-    background: var(--red);
-  }
-  
-  .form-content input[type="checkbox"]:checked + label::after {
-    left: 7px;
-    top: 7px;
-    width: 6px;
-    height: 14px;
-    border-bottom: 2px solid var(--white);
-    border-right: 2px solid var(--white);
-    transform: rotate(45deg);
-  }
-  
-  
-  /* FOOTER
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  footer {
-    font-size: 1rem;
-    text-align: right;
-    backface-visibility: hidden;
-  }
-  
-  footer a {
-    text-decoration: none;
-  }
-  
-  footer span {
-    color: var(--red);
-  }
-  
-  
-  /* MQ
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  @media screen and (min-width: 600px) {
-    .form-content .grid, .form .section-group {
-      display: grid;
-      grid-gap: 1.5rem;
-    }
 
-    .form-content .section-group {
-      margin-top: 40px;
-    }
-
-    .section-group input {
-      margin-bottom: 20px;
-    }
-  
-    .form-content .grid-2 {
-      grid-template-columns: 1fr 1fr;
-    }
-  
-    .form-content .grid-3 {
-      grid-template-columns: auto auto auto;
-      align-items: center;
-    }
-  
-    .form-content .grid > *:not(:last-child) {
-      margin-bottom: 0;
-    }
-  
-    .form-content .required-msg {
-      display: block;
-    }
-
-    .required-msg {
-      font-size: 14px;
-    }
-
-    .output-msg {
-      color: #337db1;
-      padding: 20px;
-      font-size: 18px;
-    }
+  .form-content input[type="checkbox"]:checked+label::after {
+    top: 3px;
   }
-  
-  @media screen and (min-width: 541px) {
-    .form-content input[type="checkbox"] + label::before {
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  
-    .form-content input[type="checkbox"]:checked + label::after {
-      top: 3px;
-    }
-  }
+}

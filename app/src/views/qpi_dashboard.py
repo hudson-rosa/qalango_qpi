@@ -15,17 +15,22 @@ app = dash.Dash(__name__)
 
 
 def update_figures():
-    chart_args_entries = [
+    chart_args_test_names_and_times = [
         ("data_frame", DataProcessing.get_test_names_and_times_dictionary()),
         ("template", "plotly_dark"),
     ]
+    chart_args_test_categories_and_approaches = [
+        ("data_frame", DataProcessing.get_test_category_and_approaches()),
+        ("template", "plotly_dark"),
+    ]
 
-    pie_fig = PieChart(**dict(chart_args_entries))
-    bar_fig = BarChart(**dict(chart_args_entries))
-    line_fig = LineChart(**dict(chart_args_entries))
+    pie_fig = PieChart(**dict(chart_args_test_names_and_times))
+    bar_fig = BarChart(**dict(chart_args_test_categories_and_approaches))
+    line_fig = LineChart(**dict(chart_args_test_names_and_times))
 
     print("\n------->>> RAW DATA: \n", JsonDataHandler(data_path).compose_data_frame())
-    print("\n------->>> PROCESSED DATA: \n", chart_args_entries)
+    print("\n------->>> PROCESSED DATA - TEST NAMES / TIMES: \n", chart_args_test_names_and_times)
+    print("\n------->>> PROCESSED DATA - TEST CATEGORIES / APPROACHES: \n", chart_args_test_categories_and_approaches)
     return pie_fig, bar_fig, line_fig
 
 
@@ -48,9 +53,9 @@ def refresh_charts():
             title="Test Effort Distribution",
         ),
         bar_fig.create(
-            x_axis="test_name",
-            y_axis="total_time",
-            title="Tests Distribution",
+            x_axis="test_category",
+            y_axis="test_approach",
+            title="Test Pyramid",
         ),
         line_fig.create(
             x_axis="test_name",
@@ -75,12 +80,12 @@ def serve_layout():
     plot_bar_chart = dcc.Graph(
         id="bar-chart",
         figure=bar_fig.create(
-            x_axis="test_name",
-            y_axis="total_time",
-            title="Tests Distribution",
+            x_axis="test_category",
+            y_axis="count",
+            title="Test Pyramid",
         ),
     )
-
+    
     plot_line_chart = dcc.Graph(
         id="line-chart",
         figure=line_fig.create(

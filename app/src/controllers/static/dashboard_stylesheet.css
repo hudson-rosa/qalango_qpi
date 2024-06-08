@@ -1,5 +1,15 @@
+:root {
+    --blue: #337db1;
+    --lightBlue: #82c0ec;
+    --black: #1a1c24;
+    --purple: #612ae3;
+    --red: #d9353a;
+    --white: #d4edff;
+  }
+  
+
 body {
-    background-color: #1a1c24;
+    background-color: var(--black);
     font-family: "Proxima Nova";
     box-sizing: border-box;
     outline: none;
@@ -7,8 +17,15 @@ body {
 
 h1,
 h2,
+h3,
+h4,
 .header-card {
-    color: #337db1;
+    color: var(--blue);
+}
+
+h5 {
+    font-weight: 800;
+    color: var(--lightBlue);
 }
 
 h1, a {
@@ -16,7 +33,7 @@ h1, a {
 }
 
 a {
-    color: #612ae3;
+    color: var(--purple);
 }
 
 .content-frame {
@@ -24,7 +41,7 @@ a {
 }
 
 .form-content {
-    color: #fff;
+    color: var(--white);
     padding: 45px;
 }
 
@@ -38,8 +55,8 @@ a {
     background-color: #20222c;
     border-top: 1px solid #252733;
     border-left: 1px solid #252733;
-    border-right: 1px solid #1a1c24;
-    border-bottom: 1px solid #1a1c24;
+    border-right: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
 }
 
 .chart-card {
