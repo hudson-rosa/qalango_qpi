@@ -65,7 +65,7 @@ def refresh_charts():
     )
 
 
-def serve_layout():
+def render_layout():
     pie_fig, bar_fig, line_fig = update_figures()
 
     plot_pie_chart = dcc.Graph(
@@ -133,4 +133,4 @@ def serve_layout():
     return dashboard_layout
 
 
-app.layout = serve_layout
+app.layout = render_layout
