@@ -73,7 +73,7 @@ def save_update_delete_data(
     total_time,
     delete_test_name,
     test_category,
-    test_approach
+    test_approach,
 ):
 
     ctx = dash.callback_context
@@ -82,74 +82,83 @@ def save_update_delete_data(
     else:
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
-    if button_id == "save-button":
-        try:
-            with open(json_storage, "r") as f:
-                data = json.load(f)
-        except (FileNotFoundError, json.decoder.JSONDecodeError):
-            data = {}
+    match button_id:
+        case "save-button":
+            try:
+                data = load_json_storage(action="r")
+            except (FileNotFoundError, json.decoder.JSONDecodeError):
+                data = {}
 
-        new_data = {
-            "test_name": test_name,
-            "test_suite": test_suite,
-            "project_name": project_name,
-            "total_time": total_time,
-            "test_category": test_category,
-            "test_approach": test_approach
-        }
-        data[test_name] = new_data
+            new_data = {
+                "test_name": test_name,
+                "test_suite": test_suite,
+                "project_name": project_name,
+                "total_time": total_time,
+                "test_category": test_category,
+                "test_approach": test_approach,
+            }
+            data[test_name] = new_data
 
-        with open(json_storage, "w") as f:
-            json.dump(data, f)
+            dump_json_storage(data)
 
-        return "Data saved successfully", None
+            return "Data saved successfully", None
 
-    elif button_id == "update-button":
-        try:
-            with open(json_storage, "r") as f:
-                data = json.load(f)
-        except FileNotFoundError:
-            return None, "No data found. Nothing to update."
+        case "update-button":
+            try:
+                data = load_json_storage(action="r")
+            except FileNotFoundError:
+                return None, "No data found. Nothing to update."
 
-        if test_name in data:
-            data[test_name]["test_suite"] = test_suite
-            data[test_name]["project_name"] = project_name
-            data[test_name]["total_time"] = total_time
-            data[test_name]["test_category"] = test_category
-            data[test_name]["test_approach"] = test_approach
+            if test_name in data:
+                data[test_name]["test_suite"] = test_suite
+                data[test_name]["project_name"] = project_name
+                data[test_name]["total_time"] = total_time
+                data[test_name]["test_category"] = test_category
+                data[test_name]["test_approach"] = test_approach
 
-            with open(json_storage, "w") as f:
-                json.dump(data, f)
+                dump_json_storage(data)
 
-            return "Data updated successfully", None
-        else:
-            return (
-                None,
-                f'Data with test name "{test_name}" not found in JSON. Nothing to update.',
-            )
-
-    elif button_id == "delete-button":
-        try:
-            with open(json_storage, "r") as f:
-                data = json.load(f)
-            if delete_test_name in data:
-                del data[delete_test_name]
-                with open(json_storage, "w") as f:
-                    json.dump(data, f)
-                return (
-                    None,
-                    f'Data with test name "{delete_test_name}" deleted successfully',
-                )
+                return "Data updated successfully", None
             else:
                 return (
                     None,
-                    f'Data with test name "{delete_test_name}" not found in JSON',
+                    f'Data with test name "{test_name}" not found in JSON. Nothing to update.',
                 )
-        except FileNotFoundError:
-            return None, "No data found. Nothing to delete."
 
-    else:
-        return "Please choose an action", None
+        case "delete-button":
+            try:
+                data = load_json_storage(action="r")
+
+                if delete_test_name in data:
+                    del data[delete_test_name]
+
+                    dump_json_storage(data)
+
+                    return (
+                        None,
+                        f'Data with test name "{delete_test_name}" deleted successfully',
+                    )
+                else:
+                    return (
+                        None,
+                        f'Data with test name "{delete_test_name}" not found in JSON',
+                    )
+            except FileNotFoundError:
+                return None, "No data found. Nothing to delete."
+
+        case _:
+            return "Please choose an action", None
+
+
+def dump_json_storage(data):
+    with open(json_storage, "w") as f:
+        json.dump(data, f)
+
+
+def load_json_storage(action="r"):
+    with open(json_storage, action) as f:
+        data = json.load(f)
+    return data
 
 
 app.layout = html_register_efforts.render_layout()
