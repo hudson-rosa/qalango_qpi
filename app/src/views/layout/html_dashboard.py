@@ -2,16 +2,15 @@ import dash
 from dash import dcc, callback, html
 from dash.dependencies import Input, Output
 
-from ..utils.json_data_handler import JsonDataHandler
-from ..models.entity.pie_chart import PieChart
-from ..models.entity.bar_chart import BarChart
-from ..models.entity.line_chart import LineChart
+from src.utils.json_data_handler import JsonDataHandler
+from src.models.entity.pie_chart import PieChart
+from src.models.entity.bar_chart import BarChart
+from src.models.entity.line_chart import LineChart
 
-from ..models.data_processing import DataProcessing
+from src.models.data_processing import DataProcessing
 import src.controllers.app_path_config as app_path_config
 
 data_path = app_path_config.get_data_storage_path()
-app = dash.Dash(__name__)
 
 
 def update_figures():
@@ -29,40 +28,15 @@ def update_figures():
     line_fig = LineChart(**dict(chart_args_test_names_and_times))
 
     print("\n------->>> RAW DATA: \n", JsonDataHandler(data_path).compose_data_frame())
-    print("\n------->>> PROCESSED DATA - TEST NAMES / TIMES: \n", chart_args_test_names_and_times)
-    print("\n------->>> PROCESSED DATA - TEST CATEGORIES / APPROACHES: \n", chart_args_test_categories_and_approaches)
-    return pie_fig, bar_fig, line_fig
-
-
-@app.callback(
-    [
-        Output("pie-chart", "figure"),
-        Output("bar-chart", "figure"),
-        Output("line-chart", "figure"),
-    ]
-)
-def refresh_charts():
-
-    pie_fig, bar_fig, line_fig = update_figures()
-
-    print("Figures updated")
-    return (
-        pie_fig.create(
-            slice_values="total_time",
-            names="test_name",
-            title="Test Effort Distribution",
-        ),
-        bar_fig.create(
-            x_axis="test_category",
-            y_axis="test_approach",
-            title="Test Pyramid",
-        ),
-        line_fig.create(
-            x_axis="test_name",
-            y_axis="total_time",
-            title="Total Time of Manual testing",
-        ),
+    print(
+        "\n------->>> PROCESSED DATA - TEST NAMES / TIMES: \n",
+        chart_args_test_names_and_times,
     )
+    print(
+        "\n------->>> PROCESSED DATA - TEST CATEGORIES / APPROACHES: \n",
+        chart_args_test_categories_and_approaches,
+    )
+    return pie_fig, bar_fig, line_fig
 
 
 def render_layout():
@@ -85,7 +59,7 @@ def render_layout():
             title="Test Pyramid",
         ),
     )
-    
+
     plot_line_chart = dcc.Graph(
         id="line-chart",
         figure=line_fig.create(
@@ -131,6 +105,3 @@ def render_layout():
     )
 
     return dashboard_layout
-
-
-app.layout = render_layout

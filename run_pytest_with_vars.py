@@ -30,7 +30,7 @@ def exportValueToPythonPath(app_paths=[os.path.dirname(os.path.abspath(__file__)
     with open(bashrc_path, "a") as bashrc_file:
         bashrc_file.write(f'export PYTHONPATH="{updated_pythonpath}"\n')
 
-    os.system("sorce")
+    os.system("source")
 
 
 def clean_bashrc(file_path="~/.bashrc"):

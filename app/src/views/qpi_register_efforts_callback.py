@@ -1,8 +1,9 @@
 import dash
+from dash import dcc, callback, html, Input, Output, State
+
 import json
 import src.controllers.app_path_config as app_path_config
-import src.views.dom.html_register_testing_efforts as html_register_efforts
-from dash import dcc, callback, html, Input, Output, State
+import src.views.layout.html_register_testing_efforts as html_register_efforts
 import dash_daq as daq
 
 app = dash.Dash(__name__)

@@ -1,4 +1,4 @@
-from dash import dcc, callback, html, Input, Output, State
+from dash import dcc, html
 
 
 def generate_marks():
@@ -25,6 +25,7 @@ def generate_marks():
 
 
 slider_marks = generate_marks()
+
 
 def render_layout():
     return html.Div(
@@ -57,12 +58,6 @@ def render_layout():
                                         placeholder="Enter project name",
                                         required=True,
                                     ),
-                                    # dcc.Input(
-                                    #     id="total-time",
-                                    #     type="number",
-                                    #     className="c_number_spinner",
-                                    #     placeholder="Enter total execution time (in minutes)",
-                                    # ),
                                     dcc.Dropdown(
                                         options=[
                                             {"label": "Unit", "value": "unit"},
@@ -70,7 +65,10 @@ def render_layout():
                                                 "label": "Integration",
                                                 "value": "integration",
                                             },
-                                            {"label": "Component", "value": "component"},
+                                            {
+                                                "label": "Component",
+                                                "value": "component",
+                                            },
                                             {"label": "Contract", "value": "contract"},
                                             {"label": "API", "value": "api"},
                                             {"label": "End-To-End", "value": "e2e"},
@@ -79,7 +77,10 @@ def render_layout():
                                                 "value": "performance",
                                             },
                                             {"label": "Security", "value": "security"},
-                                            {"label": "Usability", "value": "usability"},
+                                            {
+                                                "label": "Usability",
+                                                "value": "usability",
+                                            },
                                             {
                                                 "label": "Exploratory",
                                                 "value": "exploratory",
@@ -115,7 +116,10 @@ def render_layout():
                                         id="test-approach",
                                         options=[
                                             {"label": "Manual", "value": "manual"},
-                                            {"label": "Automated", "value": "automated"},
+                                            {
+                                                "label": "Automated",
+                                                "value": "automated",
+                                            },
                                         ],
                                         className="c_radio",
                                         value="manual",
@@ -135,14 +139,17 @@ def render_layout():
                                 className="section-group",
                                 children=[
                                     html.Div(
-                                        id="delete-output-message", className="output-msg"
+                                        id="delete-output-message",
+                                        className="output-msg",
                                     ),
                                     dcc.Input(
                                         id="delete-test-name",
                                         type="text",
                                         placeholder="Enter test name to delete",
                                     ),
-                                    html.Button("Delete", id="delete-button", n_clicks=0),
+                                    html.Button(
+                                        "Delete", id="delete-button", n_clicks=0
+                                    ),
                                 ],
                             ),
                         ],
