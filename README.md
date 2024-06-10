@@ -19,10 +19,10 @@ In a browser, open the QPI Dashboard from the URL:
 (QPI DASHBOARD LOCALHOST)[http://127.0.0.1:8050/dashboard]
 
 ## RUNNING THE TESTS
-For isntance, you can run the unit tests through this simple command:
+For instance, you can run the unit tests through this simple command:
 
 ```bash
-    pytest
+    python run_pytest_with_vars.py
 ```
 
 For further configurations, please, adjust the `pytest.ini` file.
@@ -37,7 +37,7 @@ It can be exported directly via terminal:
     export PYTHONPATH=/absolute/path/to/qpi_dashboard/app:$PYTHONPATH
 ```
 
-Or, the tests can be directly triggered with the env variables set via bash script file `sh pytest_env.sh` or even the Python file `run_pytest_with_vars.py`:
+Or, the tests can be directly triggered with the env variables set via bash script file `sh run_pytest_with_vars.sh` or even the Python file `run_pytest_with_vars.py`:
 
 ```bash
     sh run_pytest_with_vars.sh

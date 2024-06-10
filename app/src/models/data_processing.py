@@ -27,6 +27,7 @@ class DataProcessing(JsonDataHandler):
         print("Total Times:", total_times)
         return {"test_name": test_names, "total_time": total_times}
 
+
     def get_test_category_and_approaches(
         data_path=app_path_config.get_data_storage_path(),
     ):
