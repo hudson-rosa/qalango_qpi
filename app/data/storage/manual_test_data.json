@@ -18,5 +18,6 @@
     "total_time": 45,
     "test_category": "e2e",
     "test_approach": "automated"
-  }
+  },
+  "x": { "test_name": "x", "test_suite": "x", "project_name": "x", "total_time": 45, "test_category": "unit", "test_approach": "manual" }
 }

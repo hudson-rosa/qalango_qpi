@@ -1,5 +1,6 @@
 argparse
 black
+chart-studio
 configparser~=5.0.0
 contextvars
 dash

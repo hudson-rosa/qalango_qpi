@@ -13,7 +13,7 @@ class TestDataProcessing(unittest.TestCase):
     def setUpClass(cls):
         cls.data_processing = DataProcessing()
 
-    def test_get_test_names_and_times_dictionary(self):
+    def test_filter_test_names_and_times_dictionary(self):
         expected_result = {
             "test_name": [
                 "Test 0",
@@ -33,7 +33,7 @@ class TestDataProcessing(unittest.TestCase):
                 3: {"test_name": "Test 2", "total_time": 20},
                 4: {"test_name": "Test 3", "total_time": 1000000},
             }
-            result = DataProcessing.get_test_names_and_times_dictionary()
+            result = DataProcessing.filter_test_names_and_times_dictionary()
 
         self.assertEqual(result, expected_result)
 
@@ -42,7 +42,7 @@ class TestDataProcessing(unittest.TestCase):
             patch_data_processing_fn_compose_data_frame
         ) as mock_compose_data_frame:
             mock_compose_data_frame.return_value = {}
-            result = DataProcessing.get_test_names_and_times_dictionary()
+            result = DataProcessing.filter_test_names_and_times_dictionary()
         self.assertEqual(result, {"test_name": [], "total_time": []})
 
     def test_get_test_names_and_times_missing_data(self):
@@ -53,7 +53,7 @@ class TestDataProcessing(unittest.TestCase):
                 1: {"test_name": "Test 0", "total_time": 0.0},
                 2: {"test_name": "Test 1"},  # Missing total_time
             }
-            result = DataProcessing.get_test_names_and_times_dictionary()
+            result = DataProcessing.filter_test_names_and_times_dictionary()
         self.assertEqual(result, {"test_name": ["Test 0"], "total_time": [0.0]})
 
 

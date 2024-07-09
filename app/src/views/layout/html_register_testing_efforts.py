@@ -72,30 +72,45 @@ def render_layout():
                                     ),
                                     dcc.Dropdown(
                                         options=[
-                                            {"label": "Unit", "value": "unit"},
                                             {
-                                                "label": "Integration",
-                                                "value": "integration",
+                                                "label": TestCategory().get_option("label", "unit"),
+                                                "value": TestCategory().get_option("ref", "unit"),
                                             },
                                             {
-                                                "label": "Component",
-                                                "value": "component",
-                                            },
-                                            {"label": "Contract", "value": "contract"},
-                                            {"label": "API", "value": "api"},
-                                            {"label": "End-To-End", "value": "e2e"},
-                                            {
-                                                "label": "Performance (Load, Stress)",
-                                                "value": "performance",
-                                            },
-                                            {"label": "Security", "value": "security"},
-                                            {
-                                                "label": "Usability",
-                                                "value": "usability",
+                                                "label": TestCategory().get_option("label", "integration"),
+                                                "value": TestCategory().get_option("ref", "integration"),
                                             },
                                             {
-                                                "label": "Exploratory",
-                                                "value": "exploratory",
+                                                "label": TestCategory().get_option("label", "component"),
+                                                "value": TestCategory().get_option("ref", "component"),
+                                            },
+                                            {
+                                                "label": TestCategory().get_option("label", "contract"),
+                                                "value": TestCategory().get_option("ref", "contract"),
+                                            },
+                                            {
+                                                "label": TestCategory().get_option("label", "api"),
+                                                "value": TestCategory().get_option("ref", "api"),
+                                            },
+                                            {
+                                                "label": TestCategory().get_option("label", "e2e"),
+                                                "value": TestCategory().get_option("ref", "e2e"),
+                                            },
+                                            {
+                                                "label": TestCategory().get_option("label", "performance"),
+                                                "value": TestCategory().get_option("ref", "performance"),
+                                            },
+                                            {
+                                                "label": TestCategory().get_option("label", "security"),
+                                                "value": TestCategory().get_option("ref", "security"),
+                                            },
+                                            {
+                                                "label": TestCategory().get_option("label", "usability"),
+                                                "value": TestCategory().get_option("ref", "usability"),
+                                            },
+                                            {
+                                                "label": TestCategory().get_option("label", "exploratory"),
+                                                "value": TestCategory().get_option("ref", "exploratory"),
                                             },
                                         ],
                                         id="test-category",
