@@ -1,4 +1,12 @@
 from dash import dcc, html
+from src.utils.assets_handler import AssetsHandler
+from src.models.entity.test_category import TestCategory
+import src.controllers.app_path_config as app_path_config
+
+
+decoded_logo_img = AssetsHandler(
+    app_path_config.get_assets_image_logo()
+).decode_base64()
 
 
 def generate_marks():
@@ -30,8 +38,12 @@ slider_marks = generate_marks()
 def render_layout():
     return html.Div(
         [
-            html.H1("Registering Testing Efforts Page"),
-            dcc.Link("Go to Dashboard", href="/dashboard"),
+            html.Img(
+                src=decoded_logo_img,
+                className="qpi_logo",
+            ),
+            html.H1("Testing Efforts"),
+            dcc.Link("View Analytics Dashboard", href="/dashboard"),
             html.Div(
                 className="form-content",
                 children=[

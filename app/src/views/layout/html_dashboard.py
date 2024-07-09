@@ -11,6 +11,9 @@ from src.models.data_processing import DataProcessing
 import src.controllers.app_path_config as app_path_config
 
 data_path = app_path_config.get_data_storage_path()
+decoded_logo_img = AssetsHandler(
+    app_path_config.get_assets_image_logo()
+).decode_base64()
 
 
 def update_figures():
@@ -71,8 +74,21 @@ def render_layout():
 
     dashboard_layout = html.Div(
         [
-            html.H1("Dashboard Page"),
-            dcc.Link("Go to Testing Efforts Registration", href="/register_tests"),
+            html.Img(
+                src=decoded_logo_img,
+                className="qpi_logo",
+            ),
+            html.H1("Analytics"),
+            dcc.Tabs(
+                id="tabs-example",
+                value="tab-1",
+                children=[
+                    dcc.Tab(label="Analytics", value="tab-1"),
+                    dcc.Tab(label="Register Test Efforts", value="tab-2"),
+                ],
+            ),
+            html.Div(id="tabs-content-example"),
+            dcc.Link("Register Test Efforts", href="/register_tests"),
             html.Div(
                 className="content-frame",
                 children=[

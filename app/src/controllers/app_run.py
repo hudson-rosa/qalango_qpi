@@ -24,4 +24,5 @@ def display_page(pathname):
 
 if __name__ == "__main__":
     app.config.suppress_callback_exceptions = True
+    print("Open the QPI Dashboard in the browser: http://127.0.0.1:8050/dashboard")
     app.run_server(debug=True)

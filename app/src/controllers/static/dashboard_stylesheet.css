@@ -62,3 +62,10 @@ a {
 .chart-card {
     margin-top: 10px;
 }
+
+.qpi_logo {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 400px;
+}

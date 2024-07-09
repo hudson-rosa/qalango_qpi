@@ -32,3 +32,9 @@ def get_dashboard_stylesheet_css_path():
 @staticmethod
 def get_forms_stylesheet_css_path():
     return "./static/forms_stylesheet.css"
+
+
+@staticmethod
+def get_assets_image_logo():
+    return "app/assets/images/qpi_logo_transp_1000x322.png"
+
