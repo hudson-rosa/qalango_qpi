@@ -6,45 +6,45 @@ import numpy as np
 
 class PyramidChart(Chart):
 
-    def __init__(self, data_frame_left, data_frame_right, template="plotly_dark"):
-        self.data_frame_left = np.array(data_frame_left)
-        self.data_frame_right = np.array(data_frame_right)
+    def __init__(self, data_frame_group_a, data_frame_group_b, template="plotly_dark"):
+        self.data_frame_group_a = np.array(data_frame_group_a)
+        self.data_frame_group_b = np.array(data_frame_group_b)
         self.template = template
         self.fig = go.Figure()
 
         super().__init__(
-            data_frame=data_frame_left,
-            addit_data_frame=data_frame_right,
+            data_frame=data_frame_group_a,
+            addit_data_frame=data_frame_group_b,
             template=template,
         )
 
     def create(
         self,
-        x_left_axis,
-        y_left_axis,
-        x_right_axis,
-        y_right_axis,
+        x_group_a_axis,
+        y_group_a_axis,
+        x_group_b_axis,
+        y_group_b_axis,
         title_x,
         title_y,
-        legend_left_axis="Data_A",
-        legend_right_axis="Data_B",
+        legend_group_a_axis="Data_A",
+        legend_group_b_axis="Data_B",
     ):
 
-        left_x_data = [item[x_left_axis] for item in self.data_frame_left]
-        left_y_data = [item[y_left_axis] for item in self.data_frame_left]
-        right_x_data = [item[x_right_axis] for item in self.data_frame_right]
-        right_y_data = [item[y_right_axis] for item in self.data_frame_right]
+        group_a_x_data = [item[x_group_a_axis] for item in self.data_frame_group_a]
+        group_a_y_data = [item[y_group_a_axis] for item in self.data_frame_group_a]
+        group_b_x_data = [item[x_group_b_axis] for item in self.data_frame_group_b]
+        group_b_y_data = [item[y_group_b_axis] for item in self.data_frame_group_b]
 
-        print(f"left_x_data: {left_x_data}")
-        print(f"left_y_data: {left_y_data}")
-        print(f"right_x_data: {right_x_data}")
-        print(f"right_y_data: {right_y_data}")
+        print(f"group_a_x_data: {group_a_x_data}")
+        print(f"group_a_y_data: {group_a_y_data}")
+        print(f"group_b_x_data: {group_b_x_data}")
+        print(f"group_b_y_data: {group_b_y_data}")
 
         self.fig.add_trace(
             go.Bar(
-                x=np.array(left_x_data),
-                y=np.array(left_y_data),
-                name=legend_left_axis,
+                x=np.array(group_a_x_data),
+                y=np.array(group_a_y_data),
+                name=legend_group_a_axis,
                 orientation="h",
                 marker=dict(color="seagreen"),
                 hoverinfo="x",
@@ -53,9 +53,9 @@ class PyramidChart(Chart):
 
         self.fig.add_trace(
             go.Bar(
-                x=np.array(right_x_data),
-                y=np.array(right_y_data),
-                name=legend_right_axis,
+                x=np.array(group_b_x_data),
+                y=np.array(group_b_y_data),
+                name=legend_group_b_axis,
                 orientation="h",
                 marker=dict(color="orange"),
                 hoverinfo="x",

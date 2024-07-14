@@ -32,13 +32,13 @@ def update_figures():
     
     chart_args_test_segregated_categories_and_approaches = [
         (
-            "data_frame_left",
+            "data_frame_group_a",
             DataProcessing.filter_test_category_and_approaches_by(
                 filter_by_key="test_approach", filter_by_value="automated"
             ),
         ),
         (
-            "data_frame_right",
+            "data_frame_group_b",
             DataProcessing.filter_test_category_and_approaches_by(
                 filter_by_key="test_approach", filter_by_value="manual"
             ),
@@ -80,14 +80,14 @@ def render_layout():
     plot_pyramid_chart = dcc.Graph(
         id="pyramid-chart",
         figure=pyramid_fig.create(
-            x_left_axis="count",
-            y_left_axis="test_category",
-            x_right_axis="count",
-            y_right_axis="test_category",
+            x_group_a_axis="count",
+            y_group_a_axis="test_category",
+            x_group_b_axis="count",
+            y_group_b_axis="test_category",
             title_x="Total",
             title_y="Test Level",
-            legend_left_axis="Automated",
-            legend_right_axis="Manual",
+            legend_group_a_axis="Automated",
+            legend_group_b_axis="Manual",
         ),
     )
 

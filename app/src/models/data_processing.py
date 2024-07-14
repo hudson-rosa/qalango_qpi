@@ -81,4 +81,5 @@ class DataProcessing(JsonDataHandler):
             for (category, approach), count in category_approach_counts.items()
         ]
         
+        data.sort(key=lambda prop: prop['level'])
         return data
