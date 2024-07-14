@@ -46,8 +46,8 @@ def update_figures():
         ("template", "plotly_dark"),
     ]
 
-    pie_fig = PieChart(**dict(chart_args_test_names_and_times))
-    bar_fig = BarChart(**dict(chart_args_test_categories_and_approaches))
+    pie_fig = PieChart(**dict(chart_args_test_categories_and_approaches))
+    bar_fig = BarChart(**dict(chart_args_test_names_and_times))
     line_fig = LineChart(**dict(chart_args_test_names_and_times))
     pyramid_fig = PyramidChart(
         **dict(chart_args_test_segregated_categories_and_approaches)
@@ -64,16 +64,10 @@ def render_layout():
     plot_pie_chart = dcc.Graph(
         id="pie-chart",
         figure=pie_fig.create(
-            slice_values="total_time",
-            names="test_name",
-            title="Test Effort Distribution",
-        ),
-    )
-
-    plot_bar_chart = dcc.Graph(
-        id="bar-chart",
-        figure=bar_fig.create(
-            x_axis="test_category", y_axis="count", title="Test Pyramid"
+            slice_values="count",
+            names="test_approach",
+            title="Test Coverage: Automated Vs. Manual",
+            slice_colors = ['seagreen', 'orange']
         ),
     )
 
@@ -84,10 +78,18 @@ def render_layout():
             y_group_a_axis="test_category",
             x_group_b_axis="count",
             y_group_b_axis="test_category",
-            title_x="Total",
-            title_y="Test Level",
+            title_x="Total tests",
+            title_y="Test category",
             legend_group_a_axis="Automated",
             legend_group_b_axis="Manual",
+            title="Test Pyramid Coverage"
+        ),
+    )
+    
+    plot_bar_chart = dcc.Graph(
+        id="bar-chart",
+        figure=bar_fig.create(
+            x_axis="test_name", y_axis="total_time", title="Test Effort Distribution"
         ),
     )
 

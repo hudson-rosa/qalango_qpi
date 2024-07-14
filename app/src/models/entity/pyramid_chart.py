@@ -28,6 +28,7 @@ class PyramidChart(Chart):
         title_y,
         legend_group_a_axis="Data_A",
         legend_group_b_axis="Data_B",
+        title=None
     ):
 
         group_a_x_data = [item[x_group_a_axis] for item in self.data_frame_group_a]
@@ -63,7 +64,7 @@ class PyramidChart(Chart):
         )
 
         self.fig.update_layout(
-            title=title_y,
+            title=title,
             barmode="group", # other modes: group, stack, relative, overlay
             bargap=0.2,
             xaxis=dict(
@@ -71,6 +72,7 @@ class PyramidChart(Chart):
                 # tickvals=[],
                 # ticktext=[],
             ),
+            yaxis=dict(title=title_y),
             plot_bgcolor="#111111",
             paper_bgcolor="#111111",
             font=dict(color="#fff"),

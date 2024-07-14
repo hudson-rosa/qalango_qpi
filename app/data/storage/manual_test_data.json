@@ -12,7 +12,7 @@
   "test8": { "test_name": "test8", "test_suite": "suite25", "project_name": "project2", "total_time": 3, "test_category": "e2e", "test_approach": "automated" },
   "test98": { "test_name": "test98", "test_suite": "suite100", "project_name": "project100", "total_time": 1, "test_category": "integration", "test_approach": "automated" },
   "Authentication successfull": {
-    "test_name": "Authentication successfull",
+    "test_name": "Authentication",
     "test_suite": "Registration",
     "project_name": "Sample",
     "total_time": 45,
