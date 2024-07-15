@@ -27,14 +27,14 @@ class DataProcessing(JsonDataHandler):
         return {"test_name": test_names, "total_time": total_times}
 
     def filter_test_category_and_approaches(
-        data_path=app_path_config.get_data_storage_path()
+        data_path=app_path_config.get_data_storage_path(),
     ):
         data = []
         category_approach_counts = defaultdict(int)
         data_handler = JsonDataHandler(data_path).compose_data_frame()
 
         for key, value in data_handler.items():
-            test_category = value.get("test_category") 
+            test_category = value.get("test_category")
             test_approach = value.get("test_approach")
 
             category_approach_counts[(test_category, test_approach)] += 1
@@ -49,19 +49,20 @@ class DataProcessing(JsonDataHandler):
             }
             for (category, approach), count in category_approach_counts.items()
         ]
-        
+
         return data
-    
+
     def filter_test_category_and_approaches_by(
         data_path=app_path_config.get_data_storage_path(),
-        filter_by_key="", filter_by_value=""
+        filter_by_key="",
+        filter_by_value="",
     ):
         data = []
         category_approach_counts = defaultdict(int)
         data_handler = JsonDataHandler(data_path).compose_data_frame()
 
         for key, value in data_handler.items():
-            test_category = value.get("test_category") 
+            test_category = value.get("test_category")
             test_approach = value.get("test_approach")
 
             if value.get(filter_by_key) == filter_by_value:
@@ -73,6 +74,7 @@ class DataProcessing(JsonDataHandler):
             {
                 "test_category": category,
                 "test_approach": approach,
+                
                 "count": count,
                 "level": TestCategory().get_option(
                     property_to_pick="tier", from_category=category
@@ -80,6 +82,32 @@ class DataProcessing(JsonDataHandler):
             }
             for (category, approach), count in category_approach_counts.items()
         ]
-        
-        data.sort(key=lambda prop: prop['level'])
+
+        data.sort(key=lambda prop: prop["level"])
+        return data
+
+    def filter_test_suites(
+        data_path=app_path_config.get_data_storage_path(),
+    ):
+        data = []
+        suite_counts = defaultdict(int)
+        data_handler = JsonDataHandler(data_path).compose_data_frame()
+
+        for key, value in data_handler.items():
+            test_suite = value.get("test_suite")
+            total_time = value.get("total_time")
+
+            suite_counts[(test_suite)] += 1
+
+        print("Test Counts per Suite:", dict(suite_counts))
+
+        data = [
+            {
+                "test_suites": suite,
+                "total_time": total_time,
+                "count": count,
+            }
+            for (suite), count in suite_counts.items()
+        ]
+
         return data

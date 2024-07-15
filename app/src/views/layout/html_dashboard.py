@@ -29,7 +29,11 @@ def update_figures():
         ("data_frame", DataProcessing.filter_test_category_and_approaches()),
         ("template", "plotly_dark"),
     ]
-    
+    chart_args_test_suites = [
+        ("data_frame", DataProcessing.filter_test_suites()),
+        ("template", "plotly_dark"),
+    ]
+
     chart_args_test_segregated_categories_and_approaches = [
         (
             "data_frame_group_a",
@@ -46,28 +50,37 @@ def update_figures():
         ("template", "plotly_dark"),
     ]
 
-    pie_fig = PieChart(**dict(chart_args_test_categories_and_approaches))
-    bar_fig = BarChart(**dict(chart_args_test_names_and_times))
+    pie_fig_1 = PieChart(**dict(chart_args_test_categories_and_approaches))
+    pie_fig_2 = PieChart(**dict(chart_args_test_suites))
+    bar_fig_1 = BarChart(**dict(chart_args_test_names_and_times))
     line_fig = LineChart(**dict(chart_args_test_names_and_times))
     pyramid_fig = PyramidChart(
         **dict(chart_args_test_segregated_categories_and_approaches)
     )
+    bar_fig_2 = BarChart(**dict(chart_args_test_suites))
 
     print("\n------->>> RAW DATA: \n", JsonDataHandler(data_path).compose_data_frame())
 
-    return pie_fig, bar_fig, line_fig, pyramid_fig
+    return pie_fig_1, pie_fig_2, bar_fig_1, bar_fig_2, line_fig, pyramid_fig
 
 
 def render_layout():
-    pie_fig, bar_fig, line_fig, pyramid_fig = update_figures()
+    pie_fig_1, pie_fig_2, bar_fig_1, bar_fig_2, line_fig, pyramid_fig = update_figures()
 
-    plot_pie_chart = dcc.Graph(
+    plot_pie_chart_1 = dcc.Graph(
         id="pie-chart",
-        figure=pie_fig.create(
+        figure=pie_fig_1.create(
             slice_values="count",
             names="test_approach",
             title="Test Coverage: Automated Vs. Manual",
-            slice_colors = ['seagreen', 'orange']
+            slice_colors=["seagreen", "orange"],
+        ),
+    )
+
+    plot_pie_chart_2 = dcc.Graph(
+        id="pie-chart",
+        figure=pie_fig_2.create(
+            slice_values="count", names="test_suites", title="Test Coverage per Suite"
         ),
     )
 
@@ -82,13 +95,13 @@ def render_layout():
             title_y="Test category",
             legend_group_a_axis="Automated",
             legend_group_b_axis="Manual",
-            title="Test Pyramid Coverage"
+            title="Test Pyramid Coverage",
         ),
     )
-    
+
     plot_bar_chart = dcc.Graph(
         id="bar-chart",
-        figure=bar_fig.create(
+        figure=bar_fig_1.create(
             x_axis="test_name", y_axis="total_time", title="Test Effort Distribution"
         ),
     )
@@ -98,7 +111,16 @@ def render_layout():
         figure=line_fig.create(
             x_axis="test_name",
             y_axis="total_time",
-            title="Total Time of Manual testing",
+            title="Test Effort Distribution",
+        ),
+    )
+    
+    plot_bar_chart_2 = dcc.Graph(
+        id="line-chart",
+        figure=bar_fig_2.create(
+            x_axis="test_suites",
+            y_axis="count",
+            title="Total Tests per Suite",
         ),
     )
 
@@ -131,23 +153,38 @@ def render_layout():
                         className="header-card",
                     ),
                     html.Div(
-                        children=plot_pie_chart,
-                        id="pie-chart-container",
-                        className="chart-card",
+                        className="row",
+                        children=[
+                            html.Div(
+                                children=plot_pie_chart_1,
+                                id="pie-chart-container",
+                                className="chart-card-flex",
+                            ),
+                            html.Div(
+                                children=plot_pie_chart_2,
+                                id="pie-chart-container",
+                                className="chart-card-flex",
+                            ),
+                        ],
                     ),
                     html.Div(
                         children=plot_pyramid_chart,
                         id="pyramid-chart-container",
                         className="chart-card",
                     ),
-                    html.Div(
-                        children=plot_bar_chart,
-                        id="bar-chart-container",
-                        className="chart-card",
-                    ),
+                    # html.Div(
+                    #     children=plot_bar_chart,
+                    #     id="bar-chart-container",
+                    #     className="chart-card",
+                    # ),
                     html.Div(
                         children=plot_line_chart,
                         id="line-chart-container",
+                        className="chart-card",
+                    ),
+                    html.Div(
+                        children=plot_bar_chart_2,
+                        id="bar-chart-container",
                         className="chart-card",
                     ),
                 ],

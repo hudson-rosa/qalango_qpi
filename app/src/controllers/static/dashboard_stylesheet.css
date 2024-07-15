@@ -49,8 +49,14 @@ a {
     padding: 15px;
 }
 
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .header-card,
-.chart-card {
+.chart-card, 
+.chart-card-flex {
     padding: 15px !important;
     background-color: #20222c;
     border-top: 1px solid #252733;
@@ -59,8 +65,14 @@ a {
     border-bottom: 1px solid var(--black);
 }
 
-.chart-card {
+.chart-card, .chart-card-flex {
     margin-top: 10px;
+}
+
+.chart-card-flex {
+    flex: 1;
+    padding: 10px;
+    min-width: 300px;
 }
 
 .qpi_logo {
