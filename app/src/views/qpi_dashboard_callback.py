@@ -38,5 +38,4 @@ def refresh_charts():
         ),
     )
 
-
 app.layout = html_dashboard.render_layout()

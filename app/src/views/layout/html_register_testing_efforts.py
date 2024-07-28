@@ -43,7 +43,21 @@ def render_layout():
                 className="qpi_logo",
             ),
             html.H1("Testing Efforts"),
-            dcc.Link("View Analytics Dashboard", href="/dashboard"),
+            html.Div(
+                className="tabs",
+                children=[
+                    dcc.Link(
+                        "Register Test Efforts",
+                        href="/register_tests",
+                        className="tab--selected",
+                    ),
+                    dcc.Link(
+                        "View Analytics Dashboard",
+                        href="/dashboard",
+                        className="tab--unselected",
+                    ),
+                ],
+            ),
             html.Div(
                 className="form-content",
                 children=[
@@ -73,44 +87,84 @@ def render_layout():
                                     dcc.Dropdown(
                                         options=[
                                             {
-                                                "label": TestCategory().get_option("label", "unit"),
-                                                "value": TestCategory().get_option("ref", "unit"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "unit"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "unit"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "integration"),
-                                                "value": TestCategory().get_option("ref", "integration"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "integration"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "integration"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "component"),
-                                                "value": TestCategory().get_option("ref", "component"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "component"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "component"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "contract"),
-                                                "value": TestCategory().get_option("ref", "contract"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "contract"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "contract"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "api"),
-                                                "value": TestCategory().get_option("ref", "api"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "api"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "api"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "e2e"),
-                                                "value": TestCategory().get_option("ref", "e2e"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "e2e"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "e2e"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "performance"),
-                                                "value": TestCategory().get_option("ref", "performance"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "performance"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "performance"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "security"),
-                                                "value": TestCategory().get_option("ref", "security"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "security"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "security"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "usability"),
-                                                "value": TestCategory().get_option("ref", "usability"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "usability"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "usability"
+                                                ),
                                             },
                                             {
-                                                "label": TestCategory().get_option("label", "exploratory"),
-                                                "value": TestCategory().get_option("ref", "exploratory"),
+                                                "label": TestCategory().get_option(
+                                                    "label", "exploratory"
+                                                ),
+                                                "value": TestCategory().get_option(
+                                                    "ref", "exploratory"
+                                                ),
                                             },
                                         ],
                                         id="test-category",

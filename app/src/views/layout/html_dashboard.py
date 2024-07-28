@@ -114,7 +114,7 @@ def render_layout():
             title="Test Effort Distribution",
         ),
     )
-    
+
     plot_bar_chart_2 = dcc.Graph(
         id="line-chart",
         figure=bar_fig_2.create(
@@ -131,16 +131,21 @@ def render_layout():
                 className="qpi_logo",
             ),
             html.H1("Analytics"),
-            dcc.Tabs(
-                id="tabs-example",
-                value="tab-1",
+            html.Div(
+                className="tabs",
                 children=[
-                    dcc.Tab(label="Analytics", value="tab-1"),
-                    dcc.Tab(label="Register Test Efforts", value="tab-2"),
+                    dcc.Link(
+                        "Register Test Efforts",
+                        href="/register_tests",
+                        className="tab--unselected",
+                    ),
+                    dcc.Link(
+                        "View Analytics Dashboard",
+                        href="/dashboard",
+                        className="tab--selected",
+                    ),
                 ],
             ),
-            html.Div(id="tabs-content-example"),
-            dcc.Link("Register Test Efforts", href="/register_tests"),
             html.Div(
                 className="content-frame",
                 children=[
@@ -172,11 +177,6 @@ def render_layout():
                         id="pyramid-chart-container",
                         className="chart-card",
                     ),
-                    # html.Div(
-                    #     children=plot_bar_chart,
-                    #     id="bar-chart-container",
-                    #     className="chart-card",
-                    # ),
                     html.Div(
                         children=plot_line_chart,
                         id="line-chart-container",
