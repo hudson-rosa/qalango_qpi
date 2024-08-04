@@ -47,14 +47,14 @@ def render_layout():
                 className="tabs",
                 children=[
                     dcc.Link(
-                        "Register Test Efforts",
-                        href="/register_tests",
-                        className="tab--selected",
-                    ),
-                    dcc.Link(
                         "View Analytics Dashboard",
                         href="/dashboard",
                         className="tab--unselected",
+                    ),
+                    dcc.Link(
+                        "Register Test Efforts",
+                        href="/register_tests",
+                        className="tab--selected",
                     ),
                 ],
             ),

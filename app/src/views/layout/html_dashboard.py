@@ -67,7 +67,7 @@ def update_figures():
 def render_layout():
     pie_fig_1, pie_fig_2, bar_fig_1, bar_fig_2, line_fig, pyramid_fig = update_figures()
 
-    plot_pie_chart_1 = dcc.Graph(
+    plot_pie_chart_auto_and_manual_cov = dcc.Graph(
         id="pie-chart",
         figure=pie_fig_1.create(
             slice_values="count",
@@ -77,7 +77,7 @@ def render_layout():
         ),
     )
 
-    plot_pie_chart_2 = dcc.Graph(
+    plot_pie_chart_suite_cov = dcc.Graph(
         id="pie-chart",
         figure=pie_fig_2.create(
             slice_values="count", names="test_suites", title="Test Coverage per Suite"
@@ -95,28 +95,21 @@ def render_layout():
             title_y="Test category",
             legend_group_a_axis="Automated",
             legend_group_b_axis="Manual",
-            title="Test Pyramid Coverage",
+            title="Test Pyramid Coverage (per level)",
         ),
     )
 
-    plot_bar_chart = dcc.Graph(
-        id="bar-chart",
-        figure=bar_fig_1.create(
-            x_axis="test_name", y_axis="total_time", title="Test Effort Distribution"
-        ),
-    )
-
-    plot_line_chart = dcc.Graph(
+    plot_line_chart_effort = dcc.Graph(
         id="line-chart",
         figure=line_fig.create(
             x_axis="test_name",
             y_axis="total_time",
-            title="Test Effort Distribution",
+            title="Test Effort Distribution (in seconds)",
         ),
     )
 
-    plot_bar_chart_2 = dcc.Graph(
-        id="line-chart",
+    plot_bar_chart_total_tests = dcc.Graph(
+        id="bar-chart",
         figure=bar_fig_2.create(
             x_axis="test_suites",
             y_axis="count",
@@ -135,14 +128,14 @@ def render_layout():
                 className="tabs",
                 children=[
                     dcc.Link(
-                        "Register Test Efforts",
-                        href="/register_tests",
-                        className="tab--unselected",
-                    ),
-                    dcc.Link(
                         "View Analytics Dashboard",
                         href="/dashboard",
                         className="tab--selected",
+                    ),
+                    dcc.Link(
+                        "Register Test Efforts",
+                        href="/register_tests",
+                        className="tab--unselected",
                     ),
                 ],
             ),
@@ -161,12 +154,12 @@ def render_layout():
                         className="row",
                         children=[
                             html.Div(
-                                children=plot_pie_chart_1,
+                                children=plot_pie_chart_auto_and_manual_cov,
                                 id="pie-chart-container",
                                 className="chart-card-flex",
                             ),
                             html.Div(
-                                children=plot_pie_chart_2,
+                                children=plot_pie_chart_suite_cov,
                                 id="pie-chart-container",
                                 className="chart-card-flex",
                             ),
@@ -178,12 +171,12 @@ def render_layout():
                         className="chart-card",
                     ),
                     html.Div(
-                        children=plot_line_chart,
+                        children=plot_line_chart_effort,
                         id="line-chart-container",
                         className="chart-card",
                     ),
                     html.Div(
-                        children=plot_bar_chart_2,
+                        children=plot_bar_chart_total_tests,
                         id="bar-chart-container",
                         className="chart-card",
                     ),
