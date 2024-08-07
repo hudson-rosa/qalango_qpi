@@ -4,13 +4,13 @@ from dash import dcc, callback, html
 from dash.dependencies import Input, Output
 
 from src.utils.assets_handler import AssetsHandler
-from src.utils.json_data_handler import JsonDataHandler
 from src.models.entity.pie_chart import PieChart
 from src.models.entity.bar_chart import BarChart
 from src.models.entity.line_chart import LineChart
 from src.models.entity.pyramid_chart import PyramidChart
 
-from src.models.data_processing import DataProcessing
+from src.models.mapper.data_mapper import DataMapper
+from src.models.mapper.filtering_mapper import FilteringMapper
 import src.controllers.app_path_config as app_path_config
 
 
@@ -22,28 +22,28 @@ decoded_logo_img = AssetsHandler(
 
 def update_figures():
     chart_args_test_names_and_times = [
-        ("data_frame", DataProcessing.filter_test_names_and_times_dictionary()),
+        ("data_frame", FilteringMapper.filter_test_names_and_times_dictionary()),
         ("template", "plotly_dark"),
     ]
     chart_args_test_categories_and_approaches = [
-        ("data_frame", DataProcessing.filter_test_category_and_approaches()),
+        ("data_frame", FilteringMapper.filter_test_category_and_approaches()),
         ("template", "plotly_dark"),
     ]
     chart_args_test_suites = [
-        ("data_frame", DataProcessing.filter_test_suites()),
+        ("data_frame", FilteringMapper.filter_test_suites()),
         ("template", "plotly_dark"),
     ]
 
     chart_args_test_segregated_categories_and_approaches = [
         (
             "data_frame_group_a",
-            DataProcessing.filter_test_category_and_approaches_by(
+            FilteringMapper.filter_test_category_and_approaches_by(
                 filter_by_key="test_approach", filter_by_value="automated"
             ),
         ),
         (
             "data_frame_group_b",
-            DataProcessing.filter_test_category_and_approaches_by(
+            FilteringMapper.filter_test_category_and_approaches_by(
                 filter_by_key="test_approach", filter_by_value="manual"
             ),
         ),
@@ -59,7 +59,7 @@ def update_figures():
     )
     bar_fig_2 = BarChart(**dict(chart_args_test_suites))
 
-    print("\n------->>> RAW DATA: \n", JsonDataHandler(data_path).compose_data_frame())
+    print("\n------->>> RAW DATA: \n", DataMapper(data_path).compose_data_frame())
 
     return pie_fig_1, pie_fig_2, bar_fig_1, bar_fig_2, line_fig, pyramid_fig
 

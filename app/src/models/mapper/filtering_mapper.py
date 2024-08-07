@@ -2,11 +2,11 @@ import json
 import pandas as pd
 import src.controllers.app_path_config as app_path_config
 from src.models.entity.test_category import TestCategory
-from src.utils.json_data_handler import JsonDataHandler
+from src.models.mapper.data_mapper import DataMapper
 from collections import defaultdict
 
 
-class DataProcessing(JsonDataHandler):
+class FilteringMapper(DataMapper):
 
     @staticmethod
     def filter_test_names_and_times_dictionary(
@@ -14,7 +14,7 @@ class DataProcessing(JsonDataHandler):
     ):
         test_names = []
         total_times = []
-        data_handler = JsonDataHandler(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).compose_data_frame()
 
         for key, value in data_handler.items():
             test_name = value.get("test_name")
@@ -31,7 +31,7 @@ class DataProcessing(JsonDataHandler):
     ):
         data = []
         category_approach_counts = defaultdict(int)
-        data_handler = JsonDataHandler(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).compose_data_frame()
 
         for key, value in data_handler.items():
             test_category = value.get("test_category")
@@ -59,7 +59,7 @@ class DataProcessing(JsonDataHandler):
     ):
         data = []
         category_approach_counts = defaultdict(int)
-        data_handler = JsonDataHandler(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).compose_data_frame()
 
         for key, value in data_handler.items():
             test_category = value.get("test_category")
@@ -91,7 +91,7 @@ class DataProcessing(JsonDataHandler):
     ):
         data = []
         suite_counts = defaultdict(int)
-        data_handler = JsonDataHandler(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).compose_data_frame()
 
         for key, value in data_handler.items():
             test_suite = value.get("test_suite")
