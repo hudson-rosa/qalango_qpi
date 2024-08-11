@@ -15,6 +15,7 @@ import src.controllers.app_path_config as app_path_config
 
 
 data_path = app_path_config.get_data_storage_path()
+data_mapper_instance = DataMapper(filename=data_path)
 decoded_logo_img = AssetsHandler(
     app_path_config.get_assets_image_logo()
 ).decode_base64()
@@ -59,7 +60,7 @@ def update_figures():
     )
     bar_fig_2 = BarChart(**dict(chart_args_test_suites))
 
-    print("\n------->>> RAW DATA: \n", DataMapper(data_path).compose_data_frame())
+    print("\n------->>> RAW DATA: \n", data_mapper_instance.get_composed_data_frame())
 
     return pie_fig_1, pie_fig_2, bar_fig_1, bar_fig_2, line_fig, pyramid_fig
 

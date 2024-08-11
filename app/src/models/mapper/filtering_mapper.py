@@ -14,7 +14,7 @@ class FilteringMapper(DataMapper):
     ):
         test_names = []
         total_times = []
-        data_handler = DataMapper(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
             test_name = value.get("test_name")
@@ -31,7 +31,7 @@ class FilteringMapper(DataMapper):
     ):
         data = []
         category_approach_counts = defaultdict(int)
-        data_handler = DataMapper(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
             test_category = value.get("test_category")
@@ -59,7 +59,7 @@ class FilteringMapper(DataMapper):
     ):
         data = []
         category_approach_counts = defaultdict(int)
-        data_handler = DataMapper(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
             test_category = value.get("test_category")
@@ -91,7 +91,7 @@ class FilteringMapper(DataMapper):
     ):
         data = []
         suite_counts = defaultdict(int)
-        data_handler = DataMapper(data_path).compose_data_frame()
+        data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
             test_suite = value.get("test_suite")

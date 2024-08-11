@@ -4,12 +4,13 @@ from dash import dcc, callback, html, Input, Output, State
 import json
 import src.controllers.app_path_config as app_path_config
 import src.views.layout.html_register_testing_efforts as html_register_efforts
+from src.models.mapper.data_mapper import DataMapper
 import dash_daq as daq
 
 app = dash.Dash(__name__)
 
 json_storage = app_path_config.get_data_storage_path()
-
+data_mapper_instance = DataMapper(filename=json_storage)
 
 def generate_marks():
     marks = {}
@@ -86,7 +87,7 @@ def save_update_delete_data(
     match button_id:
         case "save-button":
             try:
-                data = load_json_storage(action="r")
+                data = data_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
@@ -97,13 +98,13 @@ def save_update_delete_data(
             }
             data[test_name] = new_data
 
-            dump_json_storage(data)
+            data_mapper_instance.save_to_json_storage(data)
 
             return "Project saved successfully", None
 
         case "update-button":
             try:
-                data = load_json_storage(action="r")
+                data = data_mapper_instance.load_from_json_storage()
             except FileNotFoundError:
                 return None, "No data found. Nothing to update."
 
@@ -114,7 +115,7 @@ def save_update_delete_data(
                 data[test_name]["test_category"] = test_category
                 data[test_name]["test_approach"] = test_approach
 
-                dump_json_storage(data)
+                data_mapper_instance.save_to_json_storage(data)
 
                 return "Project updated successfully", None
             else:
@@ -125,12 +126,12 @@ def save_update_delete_data(
 
         case "delete-button":
             try:
-                data = load_json_storage(action="r")
+                data = data_mapper_instance.load_from_json_storage()
 
                 if project_test_name in data:
                     del data[project_test_name]
 
-                    dump_json_storage(data)
+                    data_mapper_instance.save_to_json_storage(data)
 
                     return (
                         None,
@@ -146,17 +147,6 @@ def save_update_delete_data(
 
         case _:
             return "Please choose an action", None
-
-
-def dump_json_storage(data):
-    with open(json_storage, "w") as f:
-        json.dump(data, f)
-
-
-def load_json_storage(action="r"):
-    with open(json_storage, action) as f:
-        data = json.load(f)
-    return data
 
 
 app.layout = html_register_efforts.render_layout()
