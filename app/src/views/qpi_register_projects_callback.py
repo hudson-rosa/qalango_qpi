@@ -61,7 +61,7 @@ def update_output(value):
         State("project-name", "value"),
         State("total-time", "value"),
         State("delete-test-name", "value"),
-        State("test-category", "value"),
+        State("test-level", "value"),
         State("test-approach", "value"),
     ],
 )
@@ -74,7 +74,7 @@ def save_update_delete_data(
     project_name,
     total_time,
     project_test_name,
-    test_category,
+    test_level,
     test_approach,
 ):
 
@@ -94,7 +94,7 @@ def save_update_delete_data(
             new_data = {
                 "project_name": project_name,
                 "description": total_time,
-                "creation_date": test_category,
+                "creation_date": test_level,
             }
             data[test_name] = new_data
 
@@ -112,7 +112,7 @@ def save_update_delete_data(
                 data[test_name]["test_suite"] = test_suite
                 data[test_name]["project_name"] = project_name
                 data[test_name]["total_time"] = total_time
-                data[test_name]["test_category"] = test_category
+                data[test_name]["test_level"] = test_level
                 data[test_name]["test_approach"] = test_approach
 
                 data_mapper_instance.save_to_json_storage(data)

@@ -1,6 +1,6 @@
 from dash import dcc, html
 from src.utils.assets_handler import AssetsHandler
-from src.models.entity.test_category import TestCategory
+from src.models.entity.test_level import TestLevel
 import src.controllers.app_path_config as app_path_config
 
 
@@ -87,88 +87,88 @@ def render_layout():
                                     dcc.Dropdown(
                                         options=[
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "unit"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "unit"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "integration"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "integration"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "component"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "component"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "contract"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "contract"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "api"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "api"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "e2e"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "e2e"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "performance"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "performance"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "security"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "security"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "usability"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "usability"
                                                 ),
                                             },
                                             {
-                                                "label": TestCategory().get_option(
+                                                "label": TestLevel().get_option(
                                                     "label", "exploratory"
                                                 ),
-                                                "value": TestCategory().get_option(
+                                                "value": TestLevel().get_option(
                                                     "ref", "exploratory"
                                                 ),
                                             },
                                         ],
-                                        id="test-category",
-                                        placeholder="Enter test category",
+                                        id="test-level",
+                                        placeholder="Enter test level",
                                         searchable=True,
                                         className="c_dropdown",
                                         value="exploratory",

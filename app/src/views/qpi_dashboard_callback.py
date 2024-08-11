@@ -27,7 +27,7 @@ def refresh_charts():
             title="Test Effort Distribution",
         ),
         bar_fig.create(
-            x_axis="test_category",
+            x_axis="test_level",
             y_axis="test_approach",
             title="Test Pyramid",
         ),

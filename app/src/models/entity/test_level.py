@@ -1,7 +1,7 @@
 import inspect
 
 
-class TestCategory:
+class TestLevel:
 
     level = {
         "unit": {"label": "Unit", "tier": 1, "ref": "unit"},
@@ -17,5 +17,5 @@ class TestCategory:
     }
 
     @classmethod
-    def get_option(cls, property_to_pick="", from_category=""):
-        return cls.level[from_category][property_to_pick]
+    def get_option(cls, property_to_pick="", from_level=""):
+        return cls.level[from_level][property_to_pick]
