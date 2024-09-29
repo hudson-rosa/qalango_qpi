@@ -485,6 +485,11 @@ footer span {
     margin-bottom: 20px;
   }
 
+  .form-content .inline-grid {
+    display: inline-block;
+    max-width: 20%;
+  }
+
   .form-content .grid-2 {
     grid-template-columns: 1fr 1fr;
   }

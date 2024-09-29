@@ -25,6 +25,10 @@ def get_data_storage_path():
 
 
 @staticmethod
+def get_data_storage_project_path():
+    return "app/data/storage/project_data.json"
+
+@staticmethod
 def get_dashboard_stylesheet_css_path():
     return "./static/dashboard_stylesheet.css"
 

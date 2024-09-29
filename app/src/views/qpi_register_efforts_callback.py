@@ -12,31 +12,6 @@ app = dash.Dash(__name__)
 json_storage = app_path_config.get_data_storage_path()
 data_mapper_instance = DataMapper(filename=json_storage)
 
-def generate_marks():
-    marks = {}
-    step_size = 15
-    num_intervals = 30
-
-    # First 5 minutes: steps of 1 minute
-    for i in range(0, 6, 1):
-        marks[i] = f"{i%60:01d}"
-
-    # Subsequent 15 minutes: steps of 3 minutes
-    for i in range(6, 16, 3):
-        marks[i] = f"{i%60:01d}"
-
-    # Subsequent minutes until 3 hours: steps of 15 minutes
-    for i in range(num_intervals + 1):
-        time_in_minutes = i * step_size
-        hours = time_in_minutes // 60
-        minutes = time_in_minutes % 60
-        marks[time_in_minutes] = f"{hours}:{minutes:02d}"
-
-    return marks
-
-
-slider_marks = generate_marks()
-
 
 @callback(
     dash.dependencies.Output("slider-output", "children"),
@@ -49,20 +24,20 @@ def update_output(value):
 
 
 @callback(
-    [Output("output-message", "children"), Output("delete-output-message", "children")],
+    [Output("rte--output-message", "children"), Output("rte--delete-output-message", "children")],
     [
-        Input("save-button", "n_clicks"),
-        Input("update-button", "n_clicks"),
-        Input("delete-button", "n_clicks"),
+        Input("rte--save-button", "n_clicks"),
+        Input("rte--update-button", "n_clicks"),
+        Input("rte--delete-button", "n_clicks"),
     ],
     [
-        State("test-name", "value"),
-        State("test-suite", "value"),
-        State("project-name", "value"),
-        State("total-time", "value"),
-        State("delete-test-name", "value"),
-        State("test-level", "value"),
-        State("test-approach", "value"),
+        State("rte--test-name", "value"),
+        State("rte--test-suite", "value"),
+        State("rte--project-name", "value"),
+        State("rte--total-time", "value"),
+        State("rte--delete-test-name", "value"),
+        State("rte--test-level", "value"),
+        State("rte--test-approach", "value"),
     ],
 )
 def save_update_delete_data(
@@ -85,7 +60,7 @@ def save_update_delete_data(
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
     match button_id:
-        case "save-button":
+        case "rte--save-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
 
@@ -106,7 +81,7 @@ def save_update_delete_data(
   
             return "Data saved successfully", None
 
-        case "update-button":
+        case "rte--update-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
 
@@ -129,7 +104,7 @@ def save_update_delete_data(
                     f'Data with test name "{test_name}" not found in JSON. Nothing to update.',
                 )
 
-        case "delete-button":
+        case "rte--delete-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
 

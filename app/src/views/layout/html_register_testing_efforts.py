@@ -56,6 +56,20 @@ def render_layout():
                         href="/register_tests",
                         className="tab--selected",
                     ),
+                    dcc.Link(
+                        "Register Project",
+                        href="/register_project",
+                        className="tab--unselected",
+                    ),
+                ],
+            ),
+            html.Div(
+                className="content-frame",
+                children=[
+                    html.Div(
+                        children="Enter the test details to ensure realistic KPIs for Quality Assurance",
+                        className="header-card",
+                    )
                 ],
             ),
             html.Div(
@@ -67,19 +81,19 @@ def render_layout():
                                 className="grid grid-2",
                                 children=[
                                     dcc.Input(
-                                        id="test-name",
+                                        id="rte--test-name",
                                         type="text",
                                         placeholder="Enter test title",
                                         required=True,
                                     ),
                                     dcc.Input(
-                                        id="test-suite",
+                                        id="rte--test-suite",
                                         type="text",
                                         placeholder="Enter test suite",
                                         required=True,
                                     ),
                                     dcc.Input(
-                                        id="project-name",
+                                        id="rte--project-name",
                                         type="text",
                                         placeholder="Enter project name",
                                         required=True,
@@ -167,7 +181,7 @@ def render_layout():
                                                 ),
                                             },
                                         ],
-                                        id="test-level",
+                                        id="rte--test-level",
                                         placeholder="Enter test level",
                                         searchable=True,
                                         className="c_dropdown",
@@ -177,7 +191,7 @@ def render_layout():
                                         [
                                             html.H4("Enter total test execution time"),
                                             dcc.Slider(
-                                                id="total-time",
+                                                id="rte--total-time",
                                                 min=0,
                                                 max=301,
                                                 marks=slider_marks,
@@ -190,11 +204,11 @@ def render_layout():
                                                 },
                                                 className="c_slider",
                                             ),
-                                            html.H5(id="slider-output"),
+                                            html.H5(id="rte--slider-output"),
                                         ]
                                     ),
                                     dcc.RadioItems(
-                                        id="test-approach",
+                                        id="rte--test-approach",
                                         options=[
                                             {"label": "Manual", "value": "manual"},
                                             {
@@ -210,26 +224,26 @@ def render_layout():
                         )
                     ),
                     html.Label("Required fields", className="required-msg"),
-                    html.Div(id="output-message", className="output-msg"),
+                    html.Div(id="rte--output-message", className="output-msg"),
                     html.Div(
                         className="grid grid-2",
                         children=[
-                            html.Button("Save", id="save-button", n_clicks=0),
-                            html.Button("Update", id="update-button", n_clicks=0),
+                            html.Button("Save", id="rte--save-button", n_clicks=0),
+                            html.Button("Update", id="rte--update-button", n_clicks=0),
                             html.Div(
                                 className="section-group",
                                 children=[
                                     html.Div(
-                                        id="delete-output-message",
+                                        id="rte--delete-output-message",
                                         className="output-msg",
                                     ),
                                     dcc.Input(
-                                        id="delete-test-name",
+                                        id="rte--delete-test-name",
                                         type="text",
-                                        placeholder="Enter test name to delete",
+                                        placeholder="Enter a name to delete",
                                     ),
                                     html.Button(
-                                        "Delete", id="delete-button", n_clicks=0
+                                        "Delete", id="rte--delete-button", n_clicks=0
                                     ),
                                 ],
                             ),

@@ -138,17 +138,18 @@ def render_layout():
                         href="/register_tests",
                         className="tab--unselected",
                     ),
+                    dcc.Link(
+                        "Register Project",
+                        href="/register_project",
+                        className="tab--unselected",
+                    ),
                 ],
             ),
             html.Div(
                 className="content-frame",
                 children=[
                     html.H2(
-                        children="Test Efforts Dashboard",
-                        className="header-card",
-                    ),
-                    html.Div(
-                        children="Check here all the details regarding the manual testing efforts",
+                        children="Test Distribution & Coverage",
                         className="header-card",
                     ),
                     html.Div(
