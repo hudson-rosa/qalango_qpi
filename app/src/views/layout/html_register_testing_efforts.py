@@ -1,6 +1,7 @@
 from dash import dcc, html
 from src.utils.assets_handler import AssetsHandler
 from src.models.entity.test_level import TestLevel
+from src.models.mapper.project_mapper import ProjectMapper
 import src.controllers.app_path_config as app_path_config
 
 
@@ -33,6 +34,8 @@ def generate_marks():
 
 
 slider_marks = generate_marks()
+
+select_project = ProjectMapper.get_project_options()
 
 
 def render_layout():
@@ -92,11 +95,12 @@ def render_layout():
                                         placeholder="Enter test suite",
                                         required=True,
                                     ),
-                                    dcc.Input(
+                                    dcc.Dropdown(
                                         id="rte--project-name",
-                                        type="text",
-                                        placeholder="Enter project name",
-                                        required=True,
+                                        options=select_project,
+                                        placeholder="Select project name",
+                                        searchable=True,
+                                        className="c_dropdown",
                                     ),
                                     dcc.Dropdown(
                                         options=[
@@ -240,7 +244,7 @@ def render_layout():
                                     dcc.Input(
                                         id="rte--delete-test-name",
                                         type="text",
-                                        placeholder="Enter a name to delete",
+                                        placeholder="Enter an existing Test Title to delete",
                                     ),
                                     html.Button(
                                         "Delete", id="rte--delete-button", n_clicks=0

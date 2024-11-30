@@ -61,8 +61,7 @@ def render_layout():
                                             html.Button(
                                                 "Generate new ID",
                                                 id="rp--generate-id-button",
-                                                className="inline-grid",
-                                                # style={"max-width": "150px"}
+                                                className="inline-grid"
                                             ),
                                         ],
                                     ),

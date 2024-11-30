@@ -70,7 +70,7 @@ def save_update_delete_data(
             new_data = {
                 "test_name": test_name,
                 "test_suite": test_suite,
-                "project_name": project_name,
+                "project_name": project_name.split("(")[1].rstrip(")"),
                 "total_time": total_time,
                 "test_level": test_level,
                 "test_approach": test_approach,
