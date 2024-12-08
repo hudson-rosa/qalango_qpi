@@ -4,7 +4,7 @@ from src.models.entity.test_level import TestLevel
 from src.models.mapper.project_mapper import ProjectMapper
 
 import src.controllers.app_path_config as app_path_config
-from src.views.layout import html_component_tabs
+from src.views.layout import html_component_header_tabs
 from src.utils.assets_handler import AssetsHandler
 
 
@@ -13,7 +13,7 @@ decoded_logo_img = AssetsHandler(
 ).decode_base64()
 
 
-def generate_marks():
+def generate_slider_marks():
     marks = {}
     step_size = 15
     num_intervals = 30
@@ -36,7 +36,7 @@ def generate_marks():
     return marks
 
 
-slider_marks = generate_marks()
+slider_marks = generate_slider_marks()
 
 select_project = ProjectMapper.get_project_options()
 
@@ -44,11 +44,11 @@ select_project = ProjectMapper.get_project_options()
 def render_layout():
     return html.Div(
         [
-            html_component_tabs.render_logo(),
-            html_component_tabs.render_page_title(
+            html_component_header_tabs.render_logo(),
+            html_component_header_tabs.render_page_title(
                 current_page_identifier="test_efforts"
             ),
-            html_component_tabs.render_tabs(active_tab_identifier="test_efforts"),
+            html_component_header_tabs.render_tabs(active_tab_identifier="test_efforts"),
             html.Div(
                 className="content-frame",
                 children=[

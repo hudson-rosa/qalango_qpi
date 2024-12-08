@@ -11,7 +11,7 @@ from src.models.entity.pyramid_chart import PyramidChart
 from src.models.mapper.data_mapper import DataMapper
 from src.models.mapper.filtering_mapper import FilteringMapper
 import src.controllers.app_path_config as app_path_config
-from src.views.layout import html_component_tabs
+from src.views.layout import html_component_header_tabs
 from src.utils.assets_handler import AssetsHandler
 
 
@@ -119,9 +119,9 @@ def render_layout():
 
     dashboard_layout = html.Div(
         [
-            html_component_tabs.render_logo(),
-            html_component_tabs.render_page_title(current_page_identifier="dashboard"),
-            html_component_tabs.render_tabs(active_tab_identifier="dashboard"),
+            html_component_header_tabs.render_logo(),
+            html_component_header_tabs.render_page_title(current_page_identifier="dashboard"),
+            html_component_header_tabs.render_tabs(active_tab_identifier="dashboard"),
             html.Div(
                 className="content-frame",
                 children=[

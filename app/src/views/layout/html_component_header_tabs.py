@@ -33,7 +33,7 @@ def get_page_tabs_info():
         {
             "identifier": "test_efforts",
             "route": "/register_tests",
-            "tab_title": "Register a test efforts",
+            "tab_title": "Register test efforts",
             "page_title": "Testing Efforts",
         }
     ]

@@ -5,7 +5,7 @@ from dash import dcc, callback, html, Input, Output, State
 from src.models.mapper.data_mapper import DataMapper
 
 import src.controllers.app_path_config as app_path_config
-import src.views.layout.html_register_project as html_register_project
+import src.views.layout.html_register_feature as html_register_feature
 from src.utils.data_generator import DataGenerator
 import dash_daq as daq
 
@@ -16,37 +16,33 @@ data_mapper_instance = DataMapper(filename=json_storage)
 
 
 @callback(
-    Output("rp--project-id", "value"),
+    Output("rp--feature-id", "value"),
     Input("rp--generate-id-button", "n_clicks"),
-    prevent_initial_call=False,
+    prevent_initial_call=False
 )
 def update_random_id(n_clicks):
-    return "idproj_" + DataGenerator.generate_aggregated_uuid(length_threshold=5)
-
+    return "idfeat_" + DataGenerator.generate_aggregated_uuid()
 
 @callback(
-    [
-        Output("rp--output-message-projects", "children"),
-        Output("rp--delete-output-message-projects", "children"),
-    ],
+    [Output("rp--output-message-features", "children"), Output("rp--delete-output-message-features", "children")],
     [
         Input("rp--save-button", "n_clicks"),
         Input("rp--update-button", "n_clicks"),
         Input("rp--delete-button", "n_clicks"),
     ],
     [
-        State("rp--project-id", "value"),
-        State("rp--project-name", "value"),
-        State("rp--delete-project-id", "value"),
+        State("rp--feature-id", "value"),
+        State("rp--feature-name", "value"),
+        State("rp--delete-feature-id", "value")
     ],
 )
 def save_update_delete_data(
     save_clicks,
     update_clicks,
     delete_clicks,
-    project_id,
-    project_name,
-    delete_project_id,
+    feature_id,
+    feature_name,
+    delete_feature_id
 ):
 
     ctx = dash.callback_context
@@ -62,12 +58,15 @@ def save_update_delete_data(
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
-            new_data = {"project_id": project_id, "project_name": project_name}
-            data[project_id] = new_data
+            new_data = {
+                "feature_id": feature_id,
+                "feature_name": feature_name
+            }
+            data[feature_id] = new_data
 
             data_mapper_instance.save_to_json_storage(data)
 
-            return "Project saved successfully", None
+            return "Feature saved successfully", None
 
         case "rp--update-button":
             try:
@@ -75,35 +74,35 @@ def save_update_delete_data(
             except FileNotFoundError:
                 return None, "No data found. Nothing to update."
 
-            if project_id in data:
-                data[project_id]["project_name"] = project_name
+            if feature_id in data:
+                data[feature_id]["feature_name"] = feature_name
 
                 data_mapper_instance.save_to_json_storage(data)
 
-                return "Project updated successfully", None
+                return "Feature updated successfully", None
             else:
                 return (
                     None,
-                    f'Data with project ID "{project_id}" not found in JSON. Nothing to update.',
+                    f'Data with feature ID "{feature_id}" not found in JSON. Nothing to update.',
                 )
 
         case "rp--delete-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
 
-                if delete_project_id in data:
-                    del data[delete_project_id]
+                if delete_feature_id in data:
+                    del data[delete_feature_id]
 
                     data_mapper_instance.save_to_json_storage(data)
 
                     return (
                         None,
-                        f'Project with test name "{delete_project_id} - {project_name}" deleted successfully',
+                        f'Feature with test name "{delete_feature_id} - {feature_name}" deleted successfully',
                     )
                 else:
                     return (
                         None,
-                        f'Project with test name "{delete_project_id}" not found in JSON',
+                        f'Feature with test name "{delete_feature_id}" not found in JSON',
                     )
             except FileNotFoundError:
                 return None, "No data found. Nothing to delete."
@@ -112,4 +111,4 @@ def save_update_delete_data(
             return "Please choose an action", None
 
 
-app.layout = html_register_project.render_layout()
+app.layout = html_register_feature.render_layout()

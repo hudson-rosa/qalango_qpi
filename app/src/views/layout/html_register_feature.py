@@ -3,7 +3,7 @@ import string
 from dash import dcc, html
 
 import src.controllers.app_path_config as app_path_config
-from src.views.layout import html_component_tabs
+from src.views.layout import html_component_header_tabs
 from src.utils.assets_handler import AssetsHandler
 
 
@@ -15,9 +15,9 @@ decoded_logo_img = AssetsHandler(
 def render_layout():
     return html.Div(
         [
-            html_component_tabs.render_logo(),
-            html_component_tabs.render_page_title(current_page_identifier="features"),
-            html_component_tabs.render_tabs(active_tab_identifier="features"),
+            html_component_header_tabs.render_logo(),
+            html_component_header_tabs.render_page_title(current_page_identifier="features"),
+            html_component_header_tabs.render_tabs(active_tab_identifier="features"),
             html.Div(
                 className="form-content",
                 children=[
@@ -30,9 +30,9 @@ def render_layout():
                                         className="grid-2",
                                         children=[
                                             dcc.Input(
-                                                id="rp--project-id",
+                                                id="rp--feature-id",
                                                 type="text",
-                                                placeholder="Project id",
+                                                placeholder="Feature id",
                                                 required=True,
                                                 readOnly=True,
                                                 className="inline-grid"
@@ -45,9 +45,9 @@ def render_layout():
                                         ],
                                     ),
                                     dcc.Input(
-                                        id="rp--project-name",
+                                        id="rp--feature-name",
                                         type="text",
-                                        placeholder="Enter project name",
+                                        placeholder="Enter feature name",
                                         required=True
                                     ),
                                 ],
@@ -55,7 +55,7 @@ def render_layout():
                         )
                     ),
                     html.Label("Required fields", className="required-msg"),
-                    html.Div(id="rp--output-message", className="output-msg"),
+                    html.Div(id="rp--output-message-features", className="output-msg"),
                     html.Div(
                         className="grid grid-2",
                         children=[
@@ -65,13 +65,13 @@ def render_layout():
                                 className="section-group",
                                 children=[
                                     html.Div(
-                                        id="rp--delete-output-message",
+                                        id="rp--delete-output-message-features",
                                         className="output-msg",
                                     ),
                                     dcc.Input(
-                                        id="rp--delete-project-id",
+                                        id="rp--delete-feature-id",
                                         type="text",
-                                        placeholder="Enter a project ID to delete",
+                                        placeholder="Enter a feature ID to delete",
                                     ),
                                     html.Button(
                                         "Delete", id="rp--delete-button", n_clicks=0

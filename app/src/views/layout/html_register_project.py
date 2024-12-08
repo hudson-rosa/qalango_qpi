@@ -1,7 +1,7 @@
 from dash import dcc, html
 
 import src.controllers.app_path_config as app_path_config
-from src.views.layout import html_component_tabs
+from src.views.layout import html_component_header_tabs
 from src.utils.assets_handler import AssetsHandler
 
 decoded_logo_img = AssetsHandler(
@@ -12,9 +12,9 @@ decoded_logo_img = AssetsHandler(
 def render_layout():
     return html.Div(
         [
-            html_component_tabs.render_logo(),
-            html_component_tabs.render_page_title(current_page_identifier="projects"),
-            html_component_tabs.render_tabs(active_tab_identifier="projects"),
+            html_component_header_tabs.render_logo(),
+            html_component_header_tabs.render_page_title(current_page_identifier="projects"),
+            html_component_header_tabs.render_tabs(active_tab_identifier="projects"),
             html.Div(
                 className="form-content",
                 children=[
@@ -52,7 +52,7 @@ def render_layout():
                         )
                     ),
                     html.Label("Required fields", className="required-msg"),
-                    html.Div(id="rp--output-message", className="output-msg"),
+                    html.Div(id="rp--output-message-projects", className="output-msg"),
                     html.Div(
                         className="grid grid-2",
                         children=[
@@ -62,7 +62,7 @@ def render_layout():
                                 className="section-group",
                                 children=[
                                     html.Div(
-                                        id="rp--delete-output-message",
+                                        id="rp--delete-output-message-projects",
                                         className="output-msg",
                                     ),
                                     dcc.Input(
