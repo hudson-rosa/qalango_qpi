@@ -11,7 +11,7 @@ import dash_daq as daq
 
 app = dash.Dash(__name__)
 
-json_storage = app_path_config.get_data_storage_project_path()
+json_storage = app_path_config.get_data_storage_projects_path()
 data_mapper_instance = DataMapper(filename=json_storage)
 
 def generate_random_id(starts_with="p"):

@@ -1,8 +1,11 @@
+import random
+import string
 from dash import dcc, html
 
 import src.controllers.app_path_config as app_path_config
 from src.views.layout import html_component_tabs
 from src.utils.assets_handler import AssetsHandler
+
 
 decoded_logo_img = AssetsHandler(
     app_path_config.get_assets_image_logo()
@@ -13,8 +16,8 @@ def render_layout():
     return html.Div(
         [
             html_component_tabs.render_logo(),
-            html_component_tabs.render_page_title(current_page_identifier="projects"),
-            html_component_tabs.render_tabs(active_tab_identifier="projects"),
+            html_component_tabs.render_page_title(current_page_identifier="features"),
+            html_component_tabs.render_tabs(active_tab_identifier="features"),
             html.Div(
                 className="form-content",
                 children=[
@@ -32,12 +35,12 @@ def render_layout():
                                                 placeholder="Project id",
                                                 required=True,
                                                 readOnly=True,
-                                                className="inline-grid",
+                                                className="inline-grid"
                                             ),
                                             html.Button(
                                                 "Generate new ID",
                                                 id="rp--generate-id-button",
-                                                className="inline-grid",
+                                                className="inline-grid"
                                             ),
                                         ],
                                     ),
@@ -45,7 +48,7 @@ def render_layout():
                                         id="rp--project-name",
                                         type="text",
                                         placeholder="Enter project name",
-                                        required=True,
+                                        required=True
                                     ),
                                 ],
                             )

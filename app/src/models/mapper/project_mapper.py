@@ -8,7 +8,7 @@ class ProjectMapper(DataMapper):
 
     @staticmethod
     def get_project_options():
-        data_path = app_path_config.get_data_storage_project_path()
+        data_path = app_path_config.get_data_storage_projects_path()
         data_handler = DataMapper(data_path).get_composed_data_frame()
         
         list_of_projects = []

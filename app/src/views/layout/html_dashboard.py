@@ -3,7 +3,6 @@ import dash
 from dash import dcc, callback, html
 from dash.dependencies import Input, Output
 
-from src.utils.assets_handler import AssetsHandler
 from src.models.entity.pie_chart import PieChart
 from src.models.entity.bar_chart import BarChart
 from src.models.entity.line_chart import LineChart
@@ -12,6 +11,8 @@ from src.models.entity.pyramid_chart import PyramidChart
 from src.models.mapper.data_mapper import DataMapper
 from src.models.mapper.filtering_mapper import FilteringMapper
 import src.controllers.app_path_config as app_path_config
+from src.views.layout import html_component_tabs
+from src.utils.assets_handler import AssetsHandler
 
 
 data_path = app_path_config.get_data_storage_path()
@@ -55,9 +56,7 @@ def update_figures():
     pie_fig_2 = PieChart(**dict(chart_args_test_suites))
     bar_fig_1 = BarChart(**dict(chart_args_test_names_and_times))
     line_fig = LineChart(**dict(chart_args_test_names_and_times))
-    pyramid_fig = PyramidChart(
-        **dict(chart_args_test_segregated_levels_and_approaches)
-    )
+    pyramid_fig = PyramidChart(**dict(chart_args_test_segregated_levels_and_approaches))
     bar_fig_2 = BarChart(**dict(chart_args_test_suites))
 
     print("\n------->>> RAW DATA: \n", data_mapper_instance.get_composed_data_frame())
@@ -120,31 +119,9 @@ def render_layout():
 
     dashboard_layout = html.Div(
         [
-            html.Img(
-                src=decoded_logo_img,
-                className="qpi_logo",
-            ),
-            html.H1("Analytics"),
-            html.Div(
-                className="tabs",
-                children=[
-                    dcc.Link(
-                        "View Analytics Dashboard",
-                        href="/dashboard",
-                        className="tab--selected",
-                    ),
-                    dcc.Link(
-                        "Register Test Efforts",
-                        href="/register_tests",
-                        className="tab--unselected",
-                    ),
-                    dcc.Link(
-                        "Register Project",
-                        href="/register_project",
-                        className="tab--unselected",
-                    ),
-                ],
-            ),
+            html_component_tabs.render_logo(),
+            html_component_tabs.render_page_title(current_page_identifier="dashboard"),
+            html_component_tabs.render_tabs(active_tab_identifier="dashboard"),
             html.Div(
                 className="content-frame",
                 children=[

@@ -1,8 +1,11 @@
 from dash import dcc, html
-from src.utils.assets_handler import AssetsHandler
+
 from src.models.entity.test_level import TestLevel
 from src.models.mapper.project_mapper import ProjectMapper
+
 import src.controllers.app_path_config as app_path_config
+from src.views.layout import html_component_tabs
+from src.utils.assets_handler import AssetsHandler
 
 
 decoded_logo_img = AssetsHandler(
@@ -41,31 +44,11 @@ select_project = ProjectMapper.get_project_options()
 def render_layout():
     return html.Div(
         [
-            html.Img(
-                src=decoded_logo_img,
-                className="qpi_logo",
+            html_component_tabs.render_logo(),
+            html_component_tabs.render_page_title(
+                current_page_identifier="test_efforts"
             ),
-            html.H1("Testing Efforts"),
-            html.Div(
-                className="tabs",
-                children=[
-                    dcc.Link(
-                        "View Analytics Dashboard",
-                        href="/dashboard",
-                        className="tab--unselected",
-                    ),
-                    dcc.Link(
-                        "Register Test Efforts",
-                        href="/register_tests",
-                        className="tab--selected",
-                    ),
-                    dcc.Link(
-                        "Register Project",
-                        href="/register_project",
-                        className="tab--unselected",
-                    ),
-                ],
-            ),
+            html_component_tabs.render_tabs(active_tab_identifier="test_efforts"),
             html.Div(
                 className="content-frame",
                 children=[

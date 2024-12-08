@@ -21,12 +21,15 @@ def find_folder_in_path(start_path, folder_name):
 
 @staticmethod
 def get_data_storage_path():
-    return "app/data/storage/manual_test_data.json"
-
+    return "app/data/storage/test_efforts_data.json"
 
 @staticmethod
-def get_data_storage_project_path():
-    return "app/data/storage/project_data.json"
+def get_data_storage_projects_path():
+    return "app/data/storage/projects_data.json"
+
+@staticmethod
+def get_data_storage_features_path():
+    return "app/data/storage/features_data.json"
 
 @staticmethod
 def get_dashboard_stylesheet_css_path():
