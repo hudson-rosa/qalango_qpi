@@ -3,6 +3,7 @@ import string
 from dash import dcc, html
 from src.utils.assets_handler import AssetsHandler
 import src.controllers.app_path_config as app_path_config
+from src.utils.constants.constants import Constants
 
 
 decoded_logo_img = AssetsHandler(
@@ -14,25 +15,25 @@ def get_page_tabs_info():
     return [
         {
             "identifier": "dashboard",
-            "route": "/dashboard",
+            "route": Constants.Routes.DASHBOARD,
             "tab_title": "Analytics KPI",
             "page_title": "KPIs",
         },
         {
             "identifier": "projects",
-            "route": "/register_projects",
+            "route": Constants.Routes.REGISTER_PROJECTS,
             "tab_title": "Register a project",
             "page_title": "Project",
         },
         {
             "identifier": "features",
-            "route": "/register_features",
+            "route": Constants.Routes.REGISTER_FEATURES,
             "tab_title": "Register a feature",
             "page_title": "Feature",
         },
         {
             "identifier": "test_efforts",
-            "route": "/register_tests",
+            "route": Constants.Routes.REGISTER_TESTS,
             "tab_title": "Register test efforts",
             "page_title": "Testing Efforts",
         }
