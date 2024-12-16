@@ -4,108 +4,113 @@ import json
 from dash import dcc, callback, html, Input, Output, State
 from src.models.mapper.data_mapper import DataMapper
 
-import src.controllers.app_path_config as app_path_config
 import src.views.layout.html_register_feature as html_register_feature
 from src.utils.data_generator import DataGenerator
-import dash_daq as daq
+from src.utils.file_handler import FileHandler
+from src.utils.constants.constants import Constants
+
 
 app = dash.Dash(__name__)
 
-json_storage = app_path_config.get_data_storage_projects_path()
-data_mapper_instance = DataMapper(filename=json_storage)
+features_json_storage = Constants.FilePaths.FEATURES_DATA_JSON_PATH
+features_mapper_instance = DataMapper(filename=features_json_storage)
 
 
 @callback(
-    Output("rp--feature-id", "value"),
-    Input("rp--generate-id-button", "n_clicks"),
-    prevent_initial_call=False
+    Output("rf--feature-id", "value"),
+    Input("rf--generate-id-button", "n_clicks"),
+    prevent_initial_call=False,
 )
 def update_random_id(n_clicks):
     return "idfeat_" + DataGenerator.generate_aggregated_uuid()
 
+
 @callback(
-    [Output("rp--output-message-features", "children"), Output("rp--delete-output-message-features", "children")],
+    Output("rf--output-message", "children"),
     [
-        Input("rp--save-button", "n_clicks"),
-        Input("rp--update-button", "n_clicks"),
-        Input("rp--delete-button", "n_clicks"),
+        Input("rf--submit-bdd-button", "n_clicks"),
+        Input("rf--delete-file-button", "n_clicks"),
     ],
     [
-        State("rp--feature-id", "value"),
-        State("rp--feature-name", "value"),
-        State("rp--delete-feature-id", "value")
+        State("rf--feature-id", "value"),
+        State("rf--feature-name", "value"),
+        State("rf--bdd-editor", "value"),
     ],
 )
 def save_update_delete_data(
-    save_clicks,
-    update_clicks,
-    delete_clicks,
+    submit_clicks,
+    delete_file_clicks,
     feature_id,
-    feature_name,
-    delete_feature_id
+    feature_name="undefined",
+    bdd_content=None,
 ):
-
     ctx = dash.callback_context
+    feature_name_edited = str(feature_name).strip().replace(" ", "_")
+    feature_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{feature_id}--{feature_name_edited.lower()}.feature"
+
     if not ctx.triggered:
         button_id = None
     else:
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
     match button_id:
-        case "rp--save-button":
+        case "rf--submit-bdd-button":
             try:
-                data = data_mapper_instance.load_from_json_storage()
+                data = features_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
-
+                
+            bdd_content_lower = str(bdd_content).lower()
             new_data = {
-                "feature_id": feature_id,
-                "feature_name": feature_name
+                Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
+                Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_edited,
+                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: bdd_content_lower.count("scenario:") + bdd_content_lower.count("scenario outline:"),
+                Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_content_lower.count("@integration"),
+                Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_content_lower.count("@component"),
+                Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_content_lower.count("@contract"),
+                Constants.FeaturesDataJSON.QTY_OF_API: bdd_content_lower.count("@api"),
+                Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_content_lower.count("@e2e"),
+                Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_content_lower.count("@performance"),
+                Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_content_lower.count("@security"),
+                Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_content_lower.count("@usability"),
+                Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_content_lower.count("@exploratory"),
+                Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_content_lower.count("@automated"),
             }
             data[feature_id] = new_data
 
-            data_mapper_instance.save_to_json_storage(data)
+            features_mapper_instance.save_to_json_storage(data)
 
-            return "Feature saved successfully", None
+            FileHandler.save_new_file(
+                file_pathname=feature_file_pathname, content=bdd_content
+            )
 
-        case "rp--update-button":
+            return (
+                html.Pre(f"BDD Feature saved successfully:\n\n{feature_file_pathname}"),
+                None,
+            )
+
+        case "rf--delete-file-button":
             try:
-                data = data_mapper_instance.load_from_json_storage()
-            except FileNotFoundError:
-                return None, "No data found. Nothing to update."
+                data = features_mapper_instance.load_from_json_storage()
 
-            if feature_id in data:
-                data[feature_id]["feature_name"] = feature_name
+                FileHandler.delete_file(feature_file_pathname)
 
-                data_mapper_instance.save_to_json_storage(data)
+                if feature_id in data:
+                    del data[feature_id]
 
-                return "Feature updated successfully", None
-            else:
-                return (
-                    None,
-                    f'Data with feature ID "{feature_id}" not found in JSON. Nothing to update.',
-                )
-
-        case "rp--delete-button":
-            try:
-                data = data_mapper_instance.load_from_json_storage()
-
-                if delete_feature_id in data:
-                    del data[delete_feature_id]
-
-                    data_mapper_instance.save_to_json_storage(data)
+                    features_mapper_instance.save_to_json_storage(data)
 
                     return (
                         None,
-                        f'Feature with test name "{delete_feature_id} - {feature_name}" deleted successfully',
+                        f"Feature file deleted successfully",
                     )
                 else:
                     return (
                         None,
-                        f'Feature with test name "{delete_feature_id}" not found in JSON',
+                        f"Feature file was not found",
                     )
             except FileNotFoundError:
-                return None, "No data found. Nothing to delete."
+                return None, "Deletion not possible. The JSON file was not found."
 
         case _:
             return "Please choose an action", None

@@ -6,6 +6,7 @@ import src.views.qpi_register_projects_callback as register_projects
 import src.views.qpi_register_features_callback as register_features
 from src.utils.constants.constants import Constants
 
+
 def display_page_callback(pathname):
     match pathname:
         case Constants.Routes.REGISTER_PROJECTS:

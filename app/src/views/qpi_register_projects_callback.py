@@ -4,14 +4,14 @@ import json
 from dash import dcc, callback, html, Input, Output, State
 from src.models.mapper.data_mapper import DataMapper
 
-import src.controllers.app_path_config as app_path_config
 import src.views.layout.html_register_project as html_register_project
 from src.utils.data_generator import DataGenerator
-import dash_daq as daq
+from src.utils.constants.constants import Constants
+
 
 app = dash.Dash(__name__)
 
-json_storage = app_path_config.get_data_storage_projects_path()
+json_storage = Constants.FilePaths.PROJECTS_DATA_JSON_PATH
 data_mapper_instance = DataMapper(filename=json_storage)
 
 

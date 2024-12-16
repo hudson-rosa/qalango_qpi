@@ -9,44 +9,42 @@ from src.models.entity.line_chart import LineChart
 from src.models.entity.pyramid_chart import PyramidChart
 
 from src.models.mapper.data_mapper import DataMapper
-from src.models.mapper.filtering_mapper import FilteringMapper
-import src.controllers.app_path_config as app_path_config
+from src.models.mapper.test_efforts_mapper import TestEffortsMapper
 from src.views.layout import html_component_header_tabs
-from src.utils.assets_handler import AssetsHandler
+from src.utils.constants.constants import Constants
 
 
-data_path = app_path_config.get_data_storage_path()
+data_path = Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH
 data_mapper_instance = DataMapper(filename=data_path)
-decoded_logo_img = AssetsHandler(
-    app_path_config.get_assets_image_logo()
-).decode_base64()
 
 
 def update_figures():
     chart_args_test_names_and_times = [
-        ("data_frame", FilteringMapper.filter_test_names_and_times_dictionary()),
+        ("data_frame", TestEffortsMapper.filter_test_names_and_times_dictionary()),
         ("template", "plotly_dark"),
     ]
     chart_args_test_levels_and_approaches = [
-        ("data_frame", FilteringMapper.filter_test_level_and_approaches()),
+        ("data_frame", TestEffortsMapper.filter_test_level_and_approaches()),
         ("template", "plotly_dark"),
     ]
     chart_args_test_suites = [
-        ("data_frame", FilteringMapper.filter_test_suites()),
+        ("data_frame", TestEffortsMapper.filter_test_suites()),
         ("template", "plotly_dark"),
     ]
 
     chart_args_test_segregated_levels_and_approaches = [
         (
             "data_frame_group_a",
-            FilteringMapper.filter_test_level_and_approaches_by(
-                filter_by_key="test_approach", filter_by_value="automated"
+            TestEffortsMapper.filter_test_level_and_approaches_by(
+                filter_by_key=Constants.TestEffortsDataJSON.TEST_APPROACH,
+                filter_by_value="automated",
             ),
         ),
         (
             "data_frame_group_b",
-            FilteringMapper.filter_test_level_and_approaches_by(
-                filter_by_key="test_approach", filter_by_value="manual"
+            TestEffortsMapper.filter_test_level_and_approaches_by(
+                filter_by_key=Constants.TestEffortsDataJSON.TEST_APPROACH,
+                filter_by_value="manual",
             ),
         ),
         ("template", "plotly_dark"),
@@ -71,7 +69,7 @@ def render_layout():
         id="pie-chart",
         figure=pie_fig_1.create(
             slice_values="count",
-            names="test_approach",
+            names=Constants.TestEffortsDataJSON.TEST_APPROACH,
             title="Test Coverage: Automated Vs. Manual",
             slice_colors=["seagreen", "orange"],
         ),
@@ -80,7 +78,9 @@ def render_layout():
     plot_pie_chart_suite_cov = dcc.Graph(
         id="pie-chart",
         figure=pie_fig_2.create(
-            slice_values="count", names="test_suites", title="Test Coverage per Suite"
+            slice_values="count",
+            names="number_of_test_suites",
+            title="Test Coverage per Suite",
         ),
     )
 
@@ -88,9 +88,9 @@ def render_layout():
         id="pyramid-chart",
         figure=pyramid_fig.create(
             x_group_a_axis="count",
-            y_group_a_axis="test_level",
+            y_group_a_axis=Constants.TestEffortsDataJSON.TEST_LEVEL,
             x_group_b_axis="count",
-            y_group_b_axis="test_level",
+            y_group_b_axis=Constants.TestEffortsDataJSON.TEST_LEVEL,
             title_x="Total tests",
             title_y="Test level",
             legend_group_a_axis="Automated",
@@ -102,8 +102,8 @@ def render_layout():
     plot_line_chart_effort = dcc.Graph(
         id="line-chart",
         figure=line_fig.create(
-            x_axis="test_name",
-            y_axis="total_time",
+            x_axis=Constants.TestEffortsDataJSON.TEST_NAME,
+            y_axis=Constants.TestEffortsDataJSON.TOTAL_TIME,
             title="Test Effort Distribution (in seconds)",
         ),
     )
@@ -111,7 +111,7 @@ def render_layout():
     plot_bar_chart_total_tests = dcc.Graph(
         id="bar-chart",
         figure=bar_fig_2.create(
-            x_axis="test_suites",
+            x_axis="number_of_test_suites",
             y_axis="count",
             title="Total Tests per Suite",
         ),
@@ -120,8 +120,12 @@ def render_layout():
     dashboard_layout = html.Div(
         [
             html_component_header_tabs.render_logo(),
-            html_component_header_tabs.render_page_title(current_page_identifier="dashboard"),
-            html_component_header_tabs.render_tabs(active_tab_identifier="dashboard"),
+            html_component_header_tabs.render_page_title(
+                current_page_identifier=Constants.PageIdentifiers.DASHBOARD
+            ),
+            html_component_header_tabs.render_tabs(
+                active_tab_identifier=Constants.PageIdentifiers.DASHBOARD
+            ),
             html.Div(
                 className="content-frame",
                 children=[

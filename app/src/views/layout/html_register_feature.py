@@ -1,23 +1,19 @@
-import random
-import string
 from dash import dcc, html
 
-import src.controllers.app_path_config as app_path_config
 from src.views.layout import html_component_header_tabs
-from src.utils.assets_handler import AssetsHandler
-
-
-decoded_logo_img = AssetsHandler(
-    app_path_config.get_assets_image_logo()
-).decode_base64()
+from src.utils.constants.constants import Constants
 
 
 def render_layout():
     return html.Div(
         [
             html_component_header_tabs.render_logo(),
-            html_component_header_tabs.render_page_title(current_page_identifier="features"),
-            html_component_header_tabs.render_tabs(active_tab_identifier="features"),
+            html_component_header_tabs.render_page_title(
+                current_page_identifier=Constants.PageIdentifiers.FEATURES
+            ),
+            html_component_header_tabs.render_tabs(
+                active_tab_identifier=Constants.PageIdentifiers.FEATURES
+            ),
             html.Div(
                 className="form-content",
                 children=[
@@ -30,53 +26,73 @@ def render_layout():
                                         className="grid-2",
                                         children=[
                                             dcc.Input(
-                                                id="rp--feature-id",
+                                                id="rf--feature-id",
                                                 type="text",
                                                 placeholder="Feature id",
                                                 required=True,
                                                 readOnly=True,
-                                                className="inline-grid"
+                                                className="inline-grid",
                                             ),
                                             html.Button(
                                                 "Generate new ID",
-                                                id="rp--generate-id-button",
-                                                className="inline-grid"
+                                                id="rf--generate-id-button",
+                                                className="inline-grid",
                                             ),
                                         ],
                                     ),
                                     dcc.Input(
-                                        id="rp--feature-name",
+                                        id="rf--feature-name",
                                         type="text",
                                         placeholder="Enter feature name",
-                                        required=True
+                                        required=True,
                                     ),
                                 ],
                             )
                         )
                     ),
-                    html.Label("Required fields", className="required-msg"),
-                    html.Div(id="rp--output-message-features", className="output-msg"),
+                    html.Div(
+                        children=[
+                            html.H3("Enter your BDD Scenarios:"),
+                            dcc.Textarea(
+                                id="rf--bdd-editor",
+                                style={"width": "100%", "height": "300px"},
+                                value="""# Example - BDD scenario
+Feature: User Login
+
+Scenario: Successful login
+    Given the user is on the login page
+    When they enter valid credentials
+    Then they should be redirected to the dashboard
+                                    """,
+                            ),
+                        ],
+                        style={"marginBottom": "20px"},
+                    ),
+                    html.Div(
+                        id="rf--output-message",
+                        className="output-msg",
+                    ),
                     html.Div(
                         className="grid grid-2",
                         children=[
-                            html.Button("Save", id="rp--save-button", n_clicks=0),
-                            html.Button("Update", id="rp--update-button", n_clicks=0),
                             html.Div(
-                                className="section-group",
                                 children=[
-                                    html.Div(
-                                        id="rp--delete-output-message-features",
-                                        className="output-msg",
-                                    ),
-                                    dcc.Input(
-                                        id="rp--delete-feature-id",
-                                        type="text",
-                                        placeholder="Enter a feature ID to delete",
-                                    ),
                                     html.Button(
-                                        "Delete", id="rp--delete-button", n_clicks=0
+                                        "Submit Feature",
+                                        id="rf--submit-bdd-button",
+                                        n_clicks=0,
+                                        className="submit-btn",
                                     ),
-                                ],
+                                ]
+                            ),
+                            html.Div(
+                                children=[
+                                    html.Button(
+                                        "Delete File",
+                                        id="rf--delete-file-button",
+                                        n_clicks=0,
+                                    ),
+                                ]
                             ),
                         ],
                     ),

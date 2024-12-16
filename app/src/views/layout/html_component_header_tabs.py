@@ -1,49 +1,44 @@
-import random
-import string
 from dash import dcc, html
 from src.utils.assets_handler import AssetsHandler
-import src.controllers.app_path_config as app_path_config
 from src.utils.constants.constants import Constants
 
 
-decoded_logo_img = AssetsHandler(
-    app_path_config.get_assets_image_logo()
-).decode_base64()
+decoded_logo_img = AssetsHandler(Constants.FilePaths.QPI_LOGO_PNG_PATH).decode_base64()
 
 
 def get_page_tabs_info():
     return [
         {
-            "identifier": "dashboard",
+            "identifier": Constants.PageIdentifiers.DASHBOARD,
             "route": Constants.Routes.DASHBOARD,
             "tab_title": "Analytics KPI",
             "page_title": "KPIs",
         },
         {
-            "identifier": "projects",
+            "identifier": Constants.PageIdentifiers.PROJECTS,
             "route": Constants.Routes.REGISTER_PROJECTS,
-            "tab_title": "Register a project",
+            "tab_title": "Register project",
             "page_title": "Project",
         },
         {
-            "identifier": "features",
+            "identifier": Constants.PageIdentifiers.FEATURES,
             "route": Constants.Routes.REGISTER_FEATURES,
-            "tab_title": "Register a feature",
+            "tab_title": "Register feature",
             "page_title": "Feature",
         },
         {
-            "identifier": "test_efforts",
+            "identifier": Constants.PageIdentifiers.TEST_EFFORTS,
             "route": Constants.Routes.REGISTER_TESTS,
             "tab_title": "Register test efforts",
             "page_title": "Testing Efforts",
-        }
+        },
     ]
 
 
 def render_logo():
     return html.Img(
         src=decoded_logo_img,
-        className="qpi_logo",
+        className="qpi-logo",
     )
 
 

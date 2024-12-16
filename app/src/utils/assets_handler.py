@@ -13,5 +13,3 @@ class AssetsHandler:
     
     def decode_base64(self):
         return "data:image/png;base64,{}".format(self.encode_file_to_base64().decode())
-        
-    

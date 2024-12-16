@@ -1,7 +1,5 @@
 import json
 import pandas as pd
-import random
-from datetime import datetime, timedelta
 
 
 class DataMapper:

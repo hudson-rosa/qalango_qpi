@@ -19,5 +19,6 @@
     "test_level": "e2e",
     "test_approach": "automated"
   },
-  "XYZ": { "test_name": "XYZ", "test_suite": "XYZ", "project_name": "YYYY", "total_time": 105, "test_level": "performance", "test_approach": "automated" }
+  "XYZ": { "test_name": "XYZ", "test_suite": "XYZ", "project_name": "YYYY", "total_time": 105, "test_level": "performance", "test_approach": "automated" },
+  "test": { "test_name": "test", "test_suite": "XYZ", "project_name": "p_003", "total_time": 0, "test_level": "exploratory", "test_approach": "automated" }
 }

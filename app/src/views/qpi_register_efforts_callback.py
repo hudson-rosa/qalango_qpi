@@ -3,14 +3,14 @@ import json
 from dash import dcc, callback, html, Input, Output, State
 from src.models.mapper.data_mapper import DataMapper
 
-import src.controllers.app_path_config as app_path_config
 import src.views.layout.html_register_testing_efforts as html_register_efforts
-import dash_daq as daq
+from src.utils.constants.constants import Constants
+
 
 app = dash.Dash(__name__)
 
-json_storage = app_path_config.get_data_storage_path()
-data_mapper_instance = DataMapper(filename=json_storage)
+json_storage = Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH
+test_efforts_data_mapper_instance = DataMapper(filename=json_storage)
 
 
 @callback(
@@ -24,7 +24,10 @@ def update_output(value):
 
 
 @callback(
-    [Output("rte--output-message", "children"), Output("rte--delete-output-message", "children")],
+    [
+        Output("rte--output-message", "children"),
+        Output("rte--delete-output-message", "children"),
+    ],
     [
         Input("rte--save-button", "n_clicks"),
         Input("rte--update-button", "n_clicks"),
@@ -62,7 +65,7 @@ def save_update_delete_data(
     match button_id:
         case "rte--save-button":
             try:
-                data = data_mapper_instance.load_from_json_storage()
+                data = test_efforts_data_mapper_instance.load_from_json_storage()
 
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
@@ -70,20 +73,20 @@ def save_update_delete_data(
             new_data = {
                 "test_name": test_name,
                 "test_suite": test_suite,
-                "project_name": project_name.split("(")[1].rstrip(")"),
+                "project_name": str(project_name).split("(")[1].rstrip(")"),
                 "total_time": total_time,
                 "test_level": test_level,
                 "test_approach": test_approach,
             }
             data[test_name] = new_data
 
-            data_mapper_instance.save_to_json_storage(new_data=data)
-  
+            test_efforts_data_mapper_instance.save_to_json_storage(new_data=data)
+
             return "Data saved successfully", None
 
         case "rte--update-button":
             try:
-                data = data_mapper_instance.load_from_json_storage()
+                data = test_efforts_data_mapper_instance.load_from_json_storage()
 
             except FileNotFoundError:
                 return None, "No data found. Nothing to update."
@@ -95,7 +98,7 @@ def save_update_delete_data(
                 data[test_name]["test_level"] = test_level
                 data[test_name]["test_approach"] = test_approach
 
-                data_mapper_instance.save_to_json_storage(new_data=data)
+                test_efforts_data_mapper_instance.save_to_json_storage(new_data=data)
 
                 return "Data updated successfully", None
             else:
@@ -106,12 +109,14 @@ def save_update_delete_data(
 
         case "rte--delete-button":
             try:
-                data = data_mapper_instance.load_from_json_storage()
+                data = test_efforts_data_mapper_instance.load_from_json_storage()
 
                 if delete_test_name in data:
                     del data[delete_test_name]
 
-                    data_mapper_instance.save_to_json_storage(new_data=data)
+                    test_efforts_data_mapper_instance.save_to_json_storage(
+                        new_data=data
+                    )
 
                     return (
                         None,
@@ -126,6 +131,7 @@ def save_update_delete_data(
                 return None, "No data found. Nothing to delete."
 
         case _:
-            return "Please choose an action", None   
+            return "Please choose an action", None
+
 
 app.layout = html_register_efforts.render_layout()

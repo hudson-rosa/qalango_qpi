@@ -1,20 +1,19 @@
 from dash import dcc, html
 
-import src.controllers.app_path_config as app_path_config
 from src.views.layout import html_component_header_tabs
-from src.utils.assets_handler import AssetsHandler
-
-decoded_logo_img = AssetsHandler(
-    app_path_config.get_assets_image_logo()
-).decode_base64()
+from src.utils.constants.constants import Constants
 
 
 def render_layout():
     return html.Div(
         [
             html_component_header_tabs.render_logo(),
-            html_component_header_tabs.render_page_title(current_page_identifier="projects"),
-            html_component_header_tabs.render_tabs(active_tab_identifier="projects"),
+            html_component_header_tabs.render_page_title(
+                current_page_identifier=Constants.PageIdentifiers.PROJECTS
+            ),
+            html_component_header_tabs.render_tabs(
+                active_tab_identifier=Constants.PageIdentifiers.PROJECTS
+            ),
             html.Div(
                 className="form-content",
                 children=[

@@ -2,6 +2,7 @@
     --blue: #337db1;
     --lightBlue: #82c0ec;
     --black: #1a1c24;
+    --green: #0bb787;
     --purple: #612ae3;
     --red: #d9353a;
     --white: #d4edff;
@@ -28,11 +29,14 @@ h5 {
     color: var(--lightBlue);
 }
 
-h1, a {
-    padding: 15px
+h1 {
+    padding-left: 50px;
+    padding-top: 30px;
+    padding-bottom: 15px;
 }
 
 a {
+    padding-left: 20px;
     color: var(--purple);
 }
 
@@ -42,7 +46,9 @@ a {
 
 .form-content {
     color: var(--white);
+    width: 80%;
     padding: 45px;
+    margin: auto;
 }
 
 .form-content label {
@@ -105,13 +111,14 @@ a {
 }
 
 .tab--selected {
-    background-color: #0bb787 !important;
+    background-color: var(--green) !important;
     color: #20222c;
 }
 
-.qpi_logo {
+.qpi-logo {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     width: 400px;
+    padding-left: 35px
 }

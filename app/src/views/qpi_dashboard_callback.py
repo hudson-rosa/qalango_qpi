@@ -2,9 +2,10 @@ import dash
 from dash.dependencies import Input, Output
 
 import src.views.layout.html_dashboard as html_dashboard
-import src.controllers.app_path_config as app_path_config
+from src.utils.constants.constants import Constants
 
-data_path = app_path_config.get_data_storage_path()
+
+data_path = Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH
 app = dash.Dash(__name__)
 
 
@@ -37,5 +38,6 @@ def refresh_charts():
             title="Total Time of Manual testing",
         ),
     )
+
 
 app.layout = html_dashboard.render_layout()

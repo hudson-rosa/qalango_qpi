@@ -1,16 +1,20 @@
 :root {
   --black: #1a1c24;
+  --darkBlue: #11456a;
   --blue: #337db1;
   --grey: #6a91ad;
   --lightBlue: #82c0ec;
+  --lightGreen: #73d5b9;
   --red: #d9353a;
   --white: #d4edff;
   --borderFormEls: hsl(0, 0%, 10%);
   --bgFormEls: hsl(228deg 18.55% 16.04%);
   --bgFormElsFocus: hsl(220, 20%, 9%);
+  --bgFormElsBlueFocus: hsl(205, 73%, 24%);
   --spinnerButtonColor: var(--lightBlue);
   --spinnerButtonBg: var(--bgFormEls);
   --spinnerButtonHoverBg: var(--bgFormElsFocus);
+  --spinnerButtonHoverBlueBg: var(--bgFormElsBlueFocus);
 }
 
 * {
@@ -136,10 +140,13 @@ body {
 .form-content select:focus,
 .form-content input:focus,
 .form-content textarea:focus,
-.form-content button:enabled:hover,
-.form-content button:focus,
 .form-content input[type="checkbox"]:focus+label {
   background: var(--bgFormElsFocus);
+}
+
+.form-content button:enabled:hover,
+.form-content button:focus {
+  background: var(--bgFormElsBlueFocus);
 }
 
 .form-content select:focus,

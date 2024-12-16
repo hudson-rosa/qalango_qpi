@@ -1,16 +1,9 @@
 from dash import dcc, html
 
-from src.models.entity.test_level import TestLevel
 from src.models.mapper.project_mapper import ProjectMapper
-
-import src.controllers.app_path_config as app_path_config
+from src.models.mapper.test_efforts_mapper import TestEffortsMapper
 from src.views.layout import html_component_header_tabs
-from src.utils.assets_handler import AssetsHandler
-
-
-decoded_logo_img = AssetsHandler(
-    app_path_config.get_assets_image_logo()
-).decode_base64()
+from src.utils.constants.constants import Constants
 
 
 def generate_slider_marks():
@@ -46,9 +39,11 @@ def render_layout():
         [
             html_component_header_tabs.render_logo(),
             html_component_header_tabs.render_page_title(
-                current_page_identifier="test_efforts"
+                current_page_identifier=Constants.PageIdentifiers.TEST_EFFORTS
             ),
-            html_component_header_tabs.render_tabs(active_tab_identifier="test_efforts"),
+            html_component_header_tabs.render_tabs(
+                active_tab_identifier=Constants.PageIdentifiers.TEST_EFFORTS
+            ),
             html.Div(
                 className="content-frame",
                 children=[
@@ -86,88 +81,7 @@ def render_layout():
                                         className="c_dropdown",
                                     ),
                                     dcc.Dropdown(
-                                        options=[
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "unit"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "unit"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "integration"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "integration"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "component"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "component"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "contract"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "contract"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "api"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "api"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "e2e"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "e2e"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "performance"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "performance"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "security"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "security"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "usability"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "usability"
-                                                ),
-                                            },
-                                            {
-                                                "label": TestLevel().get_option(
-                                                    "label", "exploratory"
-                                                ),
-                                                "value": TestLevel().get_option(
-                                                    "ref", "exploratory"
-                                                ),
-                                            },
-                                        ],
+                                        options=TestEffortsMapper.get_list_of_test_levels(),
                                         id="rte--test-level",
                                         placeholder="Enter test level",
                                         searchable=True,
