@@ -45,6 +45,10 @@ class Constants:
         SECURITY = "security"
         USABILITY = "usability"
         EXPLORATORY = "exploratory"
+        
+    class TestTypesEntity:
+        AUTOMATED = "automated"
+        MANUAL = "manual"
 
     class FilePaths:
         DASHBOARD_STYLESHEET_CSS_PATH = "./static/dashboard_stylesheet.css"

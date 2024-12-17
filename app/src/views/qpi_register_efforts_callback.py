@@ -71,12 +71,12 @@ def save_update_delete_data(
                 data = {}
 
             new_data = {
-                "test_name": test_name,
-                "test_suite": test_suite,
-                "project_name": str(project_name).split("(")[1].rstrip(")"),
-                "total_time": total_time,
-                "test_level": test_level,
-                "test_approach": test_approach,
+                Constants.TestEffortsDataJSON.TEST_NAME: test_name,
+                Constants.TestEffortsDataJSON.TEST_SUITE: test_suite,
+                Constants.TestEffortsDataJSON.PROJECT_NAME: str(project_name).split("(")[1].rstrip(")"),
+                Constants.TestEffortsDataJSON.TOTAL_TIME: total_time,
+                Constants.TestEffortsDataJSON.TEST_LEVEL: test_level,
+                Constants.TestEffortsDataJSON.TEST_APPROACH: test_approach,
             }
             data[test_name] = new_data
 
@@ -92,11 +92,11 @@ def save_update_delete_data(
                 return None, "No data found. Nothing to update."
 
             if test_name in data:
-                data[test_name]["test_suite"] = test_suite
-                data[test_name]["project_name"] = project_name
-                data[test_name]["total_time"] = total_time
-                data[test_name]["test_level"] = test_level
-                data[test_name]["test_approach"] = test_approach
+                data[test_name][Constants.TestEffortsDataJSON.TEST_SUITE] = test_suite
+                data[test_name][Constants.TestEffortsDataJSON.PROJECT_NAME] = project_name
+                data[test_name][Constants.TestEffortsDataJSON.TOTAL_TIME] = total_time
+                data[test_name][Constants.TestEffortsDataJSON.TEST_LEVEL] = test_level
+                data[test_name][Constants.TestEffortsDataJSON.TEST_APPROACH] = test_approach
 
                 test_efforts_data_mapper_instance.save_to_json_storage(new_data=data)
 

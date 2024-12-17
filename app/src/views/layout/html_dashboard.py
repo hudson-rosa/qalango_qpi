@@ -37,14 +37,14 @@ def update_figures():
             "data_frame_group_a",
             TestEffortsMapper.filter_test_level_and_approaches_by(
                 filter_by_key=Constants.TestEffortsDataJSON.TEST_APPROACH,
-                filter_by_value="automated",
+                filter_by_value=Constants.TestTypesEntity.AUTOMATED,
             ),
         ),
         (
             "data_frame_group_b",
             TestEffortsMapper.filter_test_level_and_approaches_by(
                 filter_by_key=Constants.TestEffortsDataJSON.TEST_APPROACH,
-                filter_by_value="manual",
+                filter_by_value=Constants.TestTypesEntity.MANUAL,
             ),
         ),
         ("template", "plotly_dark"),

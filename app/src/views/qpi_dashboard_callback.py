@@ -23,18 +23,18 @@ def refresh_charts():
     print("Figures updated")
     return (
         pie_fig.create(
-            slice_values="total_time",
-            names="test_name",
+            slice_values=Constants.TestEffortsDataJSON.TOTAL_TIME,
+            names=Constants.TestEffortsDataJSON.TEST_NAME,
             title="Test Effort Distribution",
         ),
         bar_fig.create(
-            x_axis="test_level",
-            y_axis="test_approach",
+            x_axis=Constants.TestEffortsDataJSON.TEST_LEVEL,
+            y_axis=Constants.TestEffortsDataJSON.TEST_APPROACH,
             title="Test Pyramid",
         ),
         line_fig.create(
-            x_axis="test_name",
-            y_axis="total_time",
+            x_axis=Constants.TestEffortsDataJSON.TEST_NAME,
+            y_axis=Constants.TestEffortsDataJSON.TOTAL_TIME,
             title="Total Time of Manual testing",
         ),
     )

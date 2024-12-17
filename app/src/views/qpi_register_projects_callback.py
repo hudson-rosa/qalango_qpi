@@ -62,7 +62,10 @@ def save_update_delete_data(
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
-            new_data = {"project_id": project_id, "project_name": project_name}
+            new_data = {
+                Constants.ProjectDataJSON.PROJECT_ID: project_id,
+                Constants.ProjectDataJSON.PROJECT_NAME: project_name,
+            }
             data[project_id] = new_data
 
             data_mapper_instance.save_to_json_storage(data)
@@ -76,7 +79,7 @@ def save_update_delete_data(
                 return None, "No data found. Nothing to update."
 
             if project_id in data:
-                data[project_id]["project_name"] = project_name
+                data[project_id][Constants.ProjectDataJSON.PROJECT_NAME] = project_name
 
                 data_mapper_instance.save_to_json_storage(data)
 

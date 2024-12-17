@@ -111,14 +111,17 @@ def render_layout():
                                     dcc.RadioItems(
                                         id="rte--test-approach",
                                         options=[
-                                            {"label": "Manual", "value": "manual"},
+                                            {
+                                                "label": "Manual",
+                                                "value": Constants.TestTypesEntity.MANUAL,
+                                            },
                                             {
                                                 "label": "Automated",
-                                                "value": "automated",
+                                                "value": Constants.TestTypesEntity.AUTOMATED,
                                             },
                                         ],
                                         className="c_radio",
-                                        value="manual",
+                                        value=Constants.TestTypesEntity.MANUAL,
                                     ),
                                 ],
                             )
