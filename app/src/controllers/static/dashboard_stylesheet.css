@@ -6,8 +6,8 @@
     --purple: #612ae3;
     --red: #d9353a;
     --white: #d4edff;
-  }
-  
+}
+
 
 body {
     background-color: var(--black);
@@ -16,7 +16,11 @@ body {
     outline: none;
 }
 
-h1,
+h1 {
+    padding: 20px;
+    color: var(--green);
+}
+
 h2,
 h3,
 h4,
@@ -27,12 +31,6 @@ h4,
 h5 {
     font-weight: 800;
     color: var(--lightBlue);
-}
-
-h1 {
-    padding-left: 50px;
-    padding-top: 30px;
-    padding-bottom: 15px;
 }
 
 a {
@@ -61,7 +59,7 @@ a {
 }
 
 .header-card,
-.chart-card, 
+.chart-card,
 .chart-card-flex {
     padding: 15px !important;
     background-color: #20222c;
@@ -71,7 +69,8 @@ a {
     border-bottom: 1px solid var(--black);
 }
 
-.chart-card, .chart-card-flex {
+.chart-card,
+.chart-card-flex {
     margin-top: 10px;
 }
 
@@ -81,14 +80,19 @@ a {
     min-width: 300px;
 }
 
+/* TABS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
 .tabs {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
 }
 
-.tab--unselected, .tab--selected {
-    flex-grow: 1; /* Allow tabs to grow equally */
+.tab--unselected,
+.tab--selected {
+    flex-grow: 1;
+    /* Allow tabs to grow equally */
     height: 40px;
     padding: 5px !important;
     padding-left: 5px !important;
@@ -98,7 +102,7 @@ a {
     border-left: 1px solid #252733 !important;
     border-right: 1px solid var(--black) !important;
     border-bottom: 1px solid var(--black) !important;
-   
+
     text-align: center;
     display: flex;
     align-items: center;
@@ -115,10 +119,79 @@ a {
     color: #20222c;
 }
 
+/* HEADER
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
 .qpi-logo {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: 400px;
-    padding-left: 35px
+    padding-left: 20px;
+    max-width: 220px;
+}
+
+.header-group {
+    flex: 1;
+    display: inline-table;
+    flex-wrap: wrap;
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    max-width: 15%;
+}
+
+.title-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    padding-left: 20px
+}
+
+@media screen and (max-width: 1500px) {
+    .logo-container {
+        display: flex;
+        align-items: center;
+        max-width: 20%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .logo-container {
+        display: flex;
+        align-items: center;
+        max-width: 25%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .grid-container {
+        display: block;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .logo-container,
+    .title-container {
+        width: 100%;
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .qpi-logo {
+        width: 200px;
+    }
 }

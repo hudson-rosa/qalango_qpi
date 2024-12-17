@@ -119,8 +119,7 @@ def render_layout():
 
     dashboard_layout = html.Div(
         [
-            html_component_header_tabs.render_logo(),
-            html_component_header_tabs.render_page_title(
+            html_component_header_tabs.render_header(
                 current_page_identifier=Constants.PageIdentifiers.DASHBOARD
             ),
             html_component_header_tabs.render_tabs(

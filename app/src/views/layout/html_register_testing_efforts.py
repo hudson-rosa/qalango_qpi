@@ -37,8 +37,7 @@ select_project = ProjectMapper.get_project_options()
 def render_layout():
     return html.Div(
         [
-            html_component_header_tabs.render_logo(),
-            html_component_header_tabs.render_page_title(
+            html_component_header_tabs.render_header(
                 current_page_identifier=Constants.PageIdentifiers.TEST_EFFORTS
             ),
             html_component_header_tabs.render_tabs(

@@ -53,7 +53,7 @@ class Constants:
     class FilePaths:
         DASHBOARD_STYLESHEET_CSS_PATH = "./static/dashboard_stylesheet.css"
         FORMS_STYLESHEET_CSS_PATH = "./static/forms_stylesheet.css"
-        QPI_LOGO_PNG_PATH = "app/assets/images/qpi_logo_transp_1000x322.png"
+        QPI_LOGO_PNG_PATH = "app/assets/images/Qalango_logo_transp.png"
         FEATURES_DATA_JSON_PATH = "app/data/storage/features_data.json"
         PROJECTS_DATA_JSON_PATH = "app/data/storage/projects_data.json"
         TEST_EFFORTS_DATA_JSON_PATH = "app/data/storage/test_efforts_data.json"

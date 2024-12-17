@@ -26,6 +26,20 @@ def update_random_id(n_clicks):
 
 
 @callback(
+    Output("rf--bdd-editor", "style"),
+    Input("rf--bdd-editor", "value"),
+    State("rf--bdd-editor", "style"),
+)
+def auto_resize_textarea(content, current_style):
+    if content:
+        line_count = str(content).count("\n") + 1
+        new_dynamic_height = min(100 + line_count * 20, 800)
+        updated_style = {**current_style, "height": f"{new_dynamic_height}px"}
+        return updated_style
+    return current_style
+
+
+@callback(
     Output("rf--output-message", "children"),
     [
         Input("rf--submit-bdd-button", "n_clicks"),
@@ -59,22 +73,45 @@ def save_update_delete_data(
                 data = features_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
-                
+
             bdd_content_lower = str(bdd_content).lower()
             new_data = {
                 Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_edited,
-                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: bdd_content_lower.count("scenario:") + bdd_content_lower.count("scenario outline:"),
-                Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.INTEGRATION}"),
-                Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.COMPONENT}"),
-                Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.CONTRACT}"),
-                Constants.FeaturesDataJSON.QTY_OF_API: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.API}"),
-                Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.E2E}"),
-                Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.PERFORMANCE}"),
-                Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.SECURITY}"),
-                Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.USABILITY}"),
-                Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_content_lower.count(f"@{Constants.TestLevelsEntity.EXPLORATORY}"),
-                Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_content_lower.count(f"@{Constants.TestTypesEntity.AUTOMATED}"),
+                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: bdd_content_lower.count(
+                    "scenario:"
+                )
+                + bdd_content_lower.count("scenario outline:"),
+                Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.INTEGRATION}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.COMPONENT}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.CONTRACT}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_API: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.API}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.E2E}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.PERFORMANCE}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.SECURITY}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.USABILITY}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_content_lower.count(
+                    f"@{Constants.TestLevelsEntity.EXPLORATORY}"
+                ),
+                Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_content_lower.count(
+                    f"@{Constants.TestTypesEntity.AUTOMATED}"
+                ),
             }
             data[feature_id] = new_data
 
