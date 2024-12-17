@@ -17,6 +17,7 @@ class PieChart(Chart):
             names=names,
             title=title,
             template=self.template,
-            color_discrete_sequence=slice_colors
+            color_discrete_sequence=slice_colors,
+            hole=0.5
         )
         return fig
