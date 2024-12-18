@@ -3,7 +3,7 @@ from src.utils.assets_handler import AssetsHandler
 from src.utils.constants.constants import Constants
 
 
-decoded_logo_img = AssetsHandler(Constants.FilePaths.QPI_LOGO_PNG_PATH).decode_base64()
+decoded_logo_img = AssetsHandler(Constants.FilePaths.QALANGO_LOGO_PNG_PATH).decode_base64()
 
 
 def get_page_tabs_info():
@@ -41,7 +41,7 @@ def render_logo():
         children=[
             html.Img(
                 src=decoded_logo_img,
-                className="qpi-logo",
+                className="qalango-logo",
             )
         ],
     )

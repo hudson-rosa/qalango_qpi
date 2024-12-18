@@ -1,9 +1,9 @@
 import dash
 from dash import dcc, html
-import src.views.qpi_dashboard_callback as dashboard
-import src.views.qpi_register_efforts_callback as register_tests
-import src.views.qpi_register_projects_callback as register_projects
-import src.views.qpi_register_features_callback as register_features
+import src.views.dashboard_callback as dashboard
+import src.views.register_efforts_callback as register_tests
+import src.views.register_projects_callback as register_projects
+import src.views.register_features_callback as register_features
 from src.utils.constants.constants import Constants
 
 
