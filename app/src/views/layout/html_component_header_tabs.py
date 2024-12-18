@@ -11,7 +11,7 @@ def get_page_tabs_info():
         {
             "identifier": Constants.PageIdentifiers.DASHBOARD,
             "route": Constants.Routes.DASHBOARD,
-            "tab_title": "Coverage KPI",
+            "tab_title": "Test Coverage KPIs",
             "page_title": "Test Coverage KPIs",
         },
         {

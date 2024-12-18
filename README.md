@@ -4,14 +4,14 @@
 Install all the dependencies and ensure the python environment is properly set by running this command:
 
 ```bash
-    python3 setup_requirements.py
+    python3.11 setup_requirements.py
 ```
 
 ## RUNNING THE QALANGO QPI
 Once the environment is ready for usage, run the QALANGO QPI App via command line:
 
 ```bash
-    python3 app/src/controllers/app_run.py
+    python3.11 app/src/controllers/app_run.py
 ```
 
 In a browser, open the QALANGO QPI Dashboard from the URL:
@@ -41,5 +41,5 @@ Or, the tests can be directly triggered with the env variables set via bash scri
 
 ```bash
     sh run_pytest_with_vars.sh
-    python3 run_pytest_with_vars.py
+    python3.11 run_pytest_with_vars.py
 ```
