@@ -1,10 +1,11 @@
 class Constants:
 
     class Routes:
-        DASHBOARD = "/dashboard"
-        REGISTER_FEATURES = "/register_features"
-        REGISTER_PROJECTS = "/register_projects"
-        REGISTER_TESTS = "/register_tests"
+        KPIS = "/kpis"
+        REGISTER_PROJECTS = "/register-projects"
+        REGISTER_SCENARIOS = "/register-scenarios"
+        REGISTER_SUITES = "/register-suites"
+        REGISTER_TESTS_EFFORTS = "/register-test-efforts"
 
     class FeaturesDataJSON:
         FEATURE_ID = "feature_id"
@@ -25,13 +26,18 @@ class Constants:
         PROJECT_ID = "project_id"
         PROJECT_NAME = "project_name"
 
+    class SuiteDataJSON:
+        SUITE_ID = "suite_id"
+        SUITE_NAME = "suite_name"
+
     class TestEffortsDataJSON:
         PROJECT_NAME = "project_name"
         PROJECT_ID = "project_id"
         TEST_APPROACH = "test_approach"
+        TEST_ID = "test_id"
         TEST_NAME = "test_name"
         TEST_LEVEL = "test_level"
-        TEST_SUITE = "test_suite"
+        SUITE_NAME = "suite_name"
         TOTAL_TIME = "total_time"
 
     class TestLevelsEntity:
@@ -45,7 +51,7 @@ class Constants:
         SECURITY = "security"
         USABILITY = "usability"
         EXPLORATORY = "exploratory"
-        
+
     class TestTypesEntity:
         AUTOMATED = "automated"
         MANUAL = "manual"
@@ -55,14 +61,18 @@ class Constants:
         FORMS_STYLESHEET_CSS_PATH = "./static/forms_stylesheet.css"
         QALANGO_LOGO_PNG_PATH = "app/assets/images/Qalango_logo_transp.png"
         FEATURES_DATA_JSON_PATH = "app/data/storage/features_data.json"
+        SCRIPTED_TESTS_DATA_JSON_PATH = "app/data/storage/test_cases_data.json"
         PROJECTS_DATA_JSON_PATH = "app/data/storage/projects_data.json"
+        SUITES_DATA_JSON_PATH = "app/data/storage/suites_data.json"
         TEST_EFFORTS_DATA_JSON_PATH = "app/data/storage/test_efforts_data.json"
 
     class Folders:
         FEATURES_FOLDER = "app/data/storage/features"
+        TEST_CASES_FOLDER = "app/data/storage/test_cases"
 
     class PageIdentifiers:
         DASHBOARD = "dashboard"
-        PROJECTS = "projects"
         FEATURES = "features"
+        PROJECTS = "projects"
+        SUITES = "suites"
         TEST_EFFORTS = "test_efforts"

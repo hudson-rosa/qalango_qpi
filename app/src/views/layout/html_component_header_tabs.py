@@ -10,7 +10,7 @@ def get_page_tabs_info():
     return [
         {
             "identifier": Constants.PageIdentifiers.DASHBOARD,
-            "route": Constants.Routes.DASHBOARD,
+            "route": Constants.Routes.KPIS,
             "tab_title": "Test Coverage KPIs",
             "page_title": "Test Coverage KPIs",
         },
@@ -21,14 +21,20 @@ def get_page_tabs_info():
             "page_title": "Projects",
         },
         {
+            "identifier": Constants.PageIdentifiers.SUITES,
+            "route": Constants.Routes.REGISTER_SUITES,
+            "tab_title": "Register suite",
+            "page_title": "Suites",
+        },
+        {
             "identifier": Constants.PageIdentifiers.FEATURES,
-            "route": Constants.Routes.REGISTER_FEATURES,
-            "tab_title": "Register feature",
-            "page_title": "BDD Features",
+            "route": Constants.Routes.REGISTER_SCENARIOS,
+            "tab_title": "Register scenarios",
+            "page_title": "Scenarios",
         },
         {
             "identifier": Constants.PageIdentifiers.TEST_EFFORTS,
-            "route": Constants.Routes.REGISTER_TESTS,
+            "route": Constants.Routes.REGISTER_TESTS_EFFORTS,
             "tab_title": "Register test efforts",
             "page_title": "Testing Efforts",
         },

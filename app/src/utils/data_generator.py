@@ -42,3 +42,10 @@ class DataGenerator:
             DataGenerator.generate_encrypted_data(entry_data)
         )
         return str(random_id[:length_threshold]).lower()
+
+    @staticmethod
+    def truncate_longer_name(string_to_truncate, max_char_length_to_strict=20):
+        truncated_chars_length = int(max_char_length_to_strict / 2)
+        if len(string_to_truncate) > max_char_length_to_strict:
+            return f"{string_to_truncate[:truncated_chars_length]}...{string_to_truncate[-truncated_chars_length:]}"
+        return string_to_truncate

@@ -128,7 +128,7 @@ body {
 }
 
 .form-content textarea {
-  height: 170px;
+  min-height: 150px;
 }
 
 .form-content ::placeholder {
@@ -474,6 +474,32 @@ footer span {
 }
 
 
+
+/* TOGGLE BUTTON
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-btn {
+  cursor: pointer;
+}
+
+.toggle-btn.active {
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+.add-step-btn {
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+
 /* MEDIA QUERY
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
 @media screen and (min-width: 600px) {
@@ -488,7 +514,7 @@ footer span {
     margin-top: 40px;
   }
 
-  .section-group input {
+  .section-group input, .section-group .c_dropdown {
     margin-bottom: 20px;
   }
 

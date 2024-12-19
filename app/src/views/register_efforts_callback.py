@@ -35,7 +35,7 @@ def update_output(value):
     ],
     [
         State("rte--test-name", "value"),
-        State("rte--test-suite", "value"),
+        State("rte--suite-name", "value"),
         State("rte--project-name", "value"),
         State("rte--total-time", "value"),
         State("rte--delete-test-name", "value"),
@@ -48,7 +48,7 @@ def save_update_delete_data(
     update_clicks,
     delete_clicks,
     test_name,
-    test_suite,
+    suite_name,
     project_name,
     total_time,
     delete_test_name,
@@ -72,7 +72,7 @@ def save_update_delete_data(
 
             new_data = {
                 Constants.TestEffortsDataJSON.TEST_NAME: test_name,
-                Constants.TestEffortsDataJSON.TEST_SUITE: test_suite,
+                Constants.TestEffortsDataJSON.SUITE_NAME: suite_name,
                 Constants.TestEffortsDataJSON.PROJECT_NAME: str(project_name).split("(")[1].rstrip(")"),
                 Constants.TestEffortsDataJSON.TOTAL_TIME: total_time,
                 Constants.TestEffortsDataJSON.TEST_LEVEL: test_level,
@@ -92,7 +92,7 @@ def save_update_delete_data(
                 return None, "No data found. Nothing to update."
 
             if test_name in data:
-                data[test_name][Constants.TestEffortsDataJSON.TEST_SUITE] = test_suite
+                data[test_name][Constants.TestEffortsDataJSON.SUITE_NAME] = suite_name
                 data[test_name][Constants.TestEffortsDataJSON.PROJECT_NAME] = project_name
                 data[test_name][Constants.TestEffortsDataJSON.TOTAL_TIME] = total_time
                 data[test_name][Constants.TestEffortsDataJSON.TEST_LEVEL] = test_level

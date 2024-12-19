@@ -3,10 +3,10 @@ import dash
 from dash import dcc, callback, html
 from dash.dependencies import Input, Output
 
-from src.models.entity.pie_chart import PieChart
-from src.models.entity.bar_chart import BarChart
-from src.models.entity.line_chart import LineChart
-from src.models.entity.pyramid_chart import PyramidChart
+from src.models.entity.chart.pie_chart import PieChart
+from src.models.entity.chart.bar_chart import BarChart
+from src.models.entity.chart.line_chart import LineChart
+from src.models.entity.chart.pyramid_chart import PyramidChart
 
 from src.models.mapper.data_mapper import DataMapper
 from src.models.mapper.test_efforts_mapper import TestEffortsMapper

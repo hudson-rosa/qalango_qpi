@@ -1,10 +1,6 @@
 {
-  "p_001": { "project_id": "p_001", "project_name": "project X" },
-  "p_002": { "project_id": "p_002", "project_name": "Project 46" },
-  "p_003": { "project_id": "p_003", "project_name": "Project A51" },
-  "p_qiwzorol": { "project_id": "p_qiwzorol", "project_name": "My New Project Under Testing" },
-  "p_kvrtrhod": { "project_id": "p_kvrtrhod", "project_name": "My New Project" },
-  "p_e8rbbt7r": { "project_id": "p_e8rbbt7r", "project_name": "TestZero" },
-  "p_pzprahkx": { "project_id": "p_pzprahkx", "project_name": "xxxxxx" },
-  "idproj_caaaa": { "project_id": "idproj_caaaa", "project_name": "RefctTest" }
+  "idproj_26ce0": { "project_id": "idproj_26ce0", "project_name": "XFiles" },
+  "idproj_25c54": { "project_id": "idproj_25c54", "project_name": "Project46" },
+  "idproj_226e0": { "project_id": "idproj_226e0", "project_name": "Marvel" },
+  "idproj_e3209": { "project_id": "idproj_e3209", "project_name": "One Ring" }
 }

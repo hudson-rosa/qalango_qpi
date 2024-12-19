@@ -96,10 +96,10 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
-            test_suite = value.get(Constants.TestEffortsDataJSON.TEST_SUITE)
+            suite_name = value.get(Constants.TestEffortsDataJSON.SUITE_NAME)
             total_time = value.get(Constants.TestEffortsDataJSON.TOTAL_TIME)
 
-            suite_counts[(test_suite)] += 1
+            suite_counts[(suite_name)] += 1
 
         print("Test Counts per Suite:", dict(suite_counts))
 

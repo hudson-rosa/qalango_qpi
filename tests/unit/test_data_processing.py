@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import MagicMock, patch
-from models.mapper.test_efforts_mapper import TestEffortsMapper
-from models.mapper.data_mapper import DataMapper
+from app.src.models.mapper.test_efforts_mapper import TestEffortsMapper
+from app.src.models.mapper.data_mapper import DataMapper
 
 patch_data_processing_fn_compose_data_frame = (
-    "src.models.mapper.data_mapper.DataMapper.compose_data_frame"
+    "app.src.models.mapper.data_mapper.DataMapper.get_composed_data_frame"
 )
 
 

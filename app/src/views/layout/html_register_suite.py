@@ -8,10 +8,10 @@ def render_layout():
     return html.Div(
         [
             html_component_header_tabs.render_header(
-                current_page_identifier=Constants.PageIdentifiers.FEATURES
+                current_page_identifier=Constants.PageIdentifiers.SUITES
             ),
             html_component_header_tabs.render_tabs(
-                active_tab_identifier=Constants.PageIdentifiers.FEATURES
+                active_tab_identifier=Constants.PageIdentifiers.SUITES
             ),
             html.Div(
                 className="form-content",
@@ -25,73 +25,53 @@ def render_layout():
                                         className="grid-2",
                                         children=[
                                             dcc.Input(
-                                                id="rf--feature-id",
+                                                id="rs--suite-id",
                                                 type="text",
-                                                placeholder="Feature id",
+                                                placeholder="Suite id",
                                                 required=True,
                                                 readOnly=True,
                                                 className="inline-grid",
                                             ),
                                             html.Button(
                                                 "Generate new ID",
-                                                id="rf--generate-id-button",
+                                                id="rs--generate-id-button",
                                                 className="inline-grid",
                                             ),
                                         ],
                                     ),
                                     dcc.Input(
-                                        id="rf--feature-name",
+                                        id="rs--suite-name",
                                         type="text",
-                                        placeholder="Enter feature name",
+                                        placeholder="Enter suite name",
                                         required=True,
                                     ),
                                 ],
                             )
                         )
                     ),
-                    html.Div(
-                        children=[
-                            html.H3("Enter your BDD Scenarios:"),
-                            dcc.Textarea(
-                                id="rf--bdd-editor",
-                                style={"width": "100%", "height": "300px"},
-                                value="""# Example - BDD scenario
-Feature: User Login
-
-Scenario: Successful login
-    Given the user is on the login page
-    When they enter valid credentials
-    Then they should be redirected to the dashboard
-                                    """,
-                            ),
-                        ],
-                        style={"marginBottom": "20px"},
-                    ),
-                    html.Div(
-                        id="rf--output-message",
-                        className="output-msg",
-                    ),
+                    html.Label("Required fields", className="required-msg"),
+                    html.Div(id="rs--output-message-suites", className="output-msg"),
                     html.Div(
                         className="grid grid-2",
                         children=[
+                            html.Button("Save", id="rs--save-button", n_clicks=0),
+                            html.Button("Update", id="rs--update-button", n_clicks=0),
                             html.Div(
+                                className="section-group",
                                 children=[
-                                    html.Button(
-                                        "Submit Feature",
-                                        id="rf--submit-bdd-button",
-                                        n_clicks=0,
-                                        className="submit-btn",
+                                    html.Div(
+                                        id="rs--delete-output-message-suites",
+                                        className="output-msg",
                                     ),
-                                ]
-                            ),
-                            html.Div(
-                                children=[
-                                    html.Button(
-                                        "Delete File",
-                                        id="rf--delete-file-button",
-                                        n_clicks=0,
+                                    dcc.Input(
+                                        id="rs--delete-suite-id",
+                                        type="text",
+                                        placeholder="Enter a suite ID to delete",
                                     ),
-                                ]
+                                    html.Button(
+                                        "Delete", id="rs--delete-button", n_clicks=0
+                                    ),
+                                ],
                             ),
                         ],
                     ),

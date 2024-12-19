@@ -1,6 +1,7 @@
 from dash import dcc, html
 
 from src.models.mapper.project_mapper import ProjectMapper
+from src.models.mapper.suite_mapper import SuiteMapper
 from src.models.mapper.test_efforts_mapper import TestEffortsMapper
 from src.views.layout import html_component_header_tabs
 from src.utils.constants.constants import Constants
@@ -31,6 +32,7 @@ def generate_slider_marks():
 
 slider_marks = generate_slider_marks()
 
+select_suite = SuiteMapper.get_suite_options()
 select_project = ProjectMapper.get_project_options()
 
 
@@ -60,24 +62,25 @@ def render_layout():
                             html.Div(
                                 className="grid grid-2",
                                 children=[
-                                    dcc.Input(
-                                        id="rte--test-name",
-                                        type="text",
-                                        placeholder="Enter test title",
-                                        required=True,
-                                    ),
-                                    dcc.Input(
-                                        id="rte--test-suite",
-                                        type="text",
-                                        placeholder="Enter test suite",
-                                        required=True,
-                                    ),
                                     dcc.Dropdown(
                                         id="rte--project-name",
                                         options=select_project,
                                         placeholder="Select project name",
                                         searchable=True,
                                         className="c_dropdown",
+                                    ),
+                                    dcc.Dropdown(
+                                        id="rte--suite-name",
+                                        options=select_suite,
+                                        placeholder="Select suite name",
+                                        searchable=True,
+                                        className="c_dropdown",
+                                    ),
+                                    dcc.Input(
+                                        id="rte--test-name",
+                                        type="text",
+                                        placeholder="Enter test title",
+                                        required=True,
                                     ),
                                     dcc.Dropdown(
                                         options=TestEffortsMapper.get_list_of_test_levels(),
