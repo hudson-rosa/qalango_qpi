@@ -8,6 +8,7 @@ import src.views.layout.html_register_feature_or_tests as html_register_feature_
 from src.utils.data_generator import DataGenerator
 from src.utils.file_handler import FileHandler
 from src.utils.constants.constants import Constants
+from src.utils.validation_utils import ValidationUtils
 
 
 app = dash.Dash(__name__)
@@ -137,6 +138,7 @@ def submit_bdd_data(
     feature_id="",
     feature_name="",
     bdd_content="",
+    suite_name="",
     project_name="",
 ):
     ctx = dash.callback_context
@@ -151,6 +153,16 @@ def submit_bdd_data(
 
     match button_id:
         case "rf--submit-bdd-button":
+            is_valid, message = ValidationUtils.validate_mandatory_fields(
+                feature_id=feature_id,
+                feature_name=feature_name,
+                bdd_content=bdd_content,
+                suite_name=suite_name,
+                project_name=project_name
+            )
+            if not is_valid:
+                return message, None
+            
             try:
                 data = features_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
@@ -160,6 +172,9 @@ def submit_bdd_data(
             new_data = {
                 Constants.FeaturesDataJSON.FEATURE_ID: feature_id_pattern,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
+                Constants.SuiteDataJSON.SUITE_NAME: str(suite_name)
+                .split("(")[1]
+                .rstrip(")"),
                 Constants.ProjectDataJSON.PROJECT_NAME: str(project_name)
                 .split("(")[1]
                 .rstrip(")"),
@@ -273,6 +288,18 @@ def submit_scripted_test(
 
     match button_id:
         case "rf--submit-scripted-button":
+            is_valid, message = ValidationUtils.validate_mandatory_fields(
+                feature_id=test_id,
+                test_name=test_name,
+                preconditions_children=preconditions_children,
+                steps_children=steps_children,
+                test_level=test_level,
+                suite_name=suite_name,
+                project_name=project_name
+            )
+            if not is_valid:
+                return message, None
+            
             try:
                 data = features_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):

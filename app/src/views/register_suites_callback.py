@@ -7,6 +7,7 @@ from src.models.mapper.data_mapper import DataMapper
 import src.views.layout.html_register_suite as html_register_suite
 from src.utils.data_generator import DataGenerator
 from src.utils.constants.constants import Constants
+from src.utils.validation_utils import ValidationUtils
 
 
 app = dash.Dash(__name__)
@@ -57,6 +58,13 @@ def save_update_delete_data(
 
     match button_id:
         case "rs--save-button":
+            is_valid, message = ValidationUtils.validate_mandatory_fields(
+                suite_id=suite_id,
+                suite_name=suite_name
+            )
+            if not is_valid:
+                return message, None
+
             try:
                 data = data_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):

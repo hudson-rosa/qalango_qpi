@@ -14,5 +14,21 @@
     "qty_of_usability": 0,
     "qty_of_exploratory": 0,
     "qty_of_automated": 0
+  },
+  "idfeat_idfeat_537ccc689d": {
+    "feature_id": "idfeat_idfeat_537ccc689d",
+    "feature_name": "testing",
+    "project_name": "idproj_25c54",
+    "qty_of_scenarios": 2,
+    "qty_of_integration": 0,
+    "qty_of_component": 0,
+    "qty_of_contract": 0,
+    "qty_of_api": 0,
+    "qty_of_e2e": 1,
+    "qty_of_performance": 0,
+    "qty_of_security": 0,
+    "qty_of_usability": 1,
+    "qty_of_exploratory": 0,
+    "qty_of_automated": 0
   }
 }

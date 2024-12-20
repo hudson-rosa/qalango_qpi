@@ -1,6 +1,1 @@
-{
-  "idsuite_6d251": { "suite_id": "idsuite_6d251", "suite_name": "Login" },
-  "idsuite_41af6": { "suite_id": "idsuite_41af6", "suite_name": "Ordering" },
-  "idsuite_93198": { "suite_id": "idsuite_93198", "suite_name": "Payment" },
-  "idsuite_e406b": { "suite_id": "idsuite_e406b", "suite_name": "Account Creation" }
-}
+{"idsuite_6d251": {"suite_id": "idsuite_6d251", "suite_name": "Login"}, "idsuite_41af6": {"suite_id": "idsuite_41af6", "suite_name": "Ordering"}, "idsuite_93198": {"suite_id": "idsuite_93198", "suite_name": "Payment"}, "idsuite_e406b": {"suite_id": "idsuite_e406b", "suite_name": "Account Creation"}, "idsuite_0b62c": {"suite_id": "idsuite_0b62c", "suite_name": null}}

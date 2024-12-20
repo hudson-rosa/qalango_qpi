@@ -5,6 +5,7 @@ from src.models.mapper.data_mapper import DataMapper
 
 import src.views.layout.html_register_testing_efforts as html_register_efforts
 from src.utils.constants.constants import Constants
+from src.utils.validation_utils import ValidationUtils
 
 
 app = dash.Dash(__name__)
@@ -64,6 +65,17 @@ def save_update_delete_data(
 
     match button_id:
         case "rte--save-button":
+            is_valid, message = ValidationUtils.validate_mandatory_fields(
+                test_name=test_name,
+                suite_name=suite_name,
+                project_name=project_name,
+                total_time=total_time,
+                test_level=test_level,
+                test_approach=test_approach,
+            )
+            if not is_valid:
+                return message, None
+            
             try:
                 data = test_efforts_data_mapper_instance.load_from_json_storage()
 
