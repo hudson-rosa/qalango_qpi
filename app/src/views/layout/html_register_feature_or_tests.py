@@ -115,13 +115,38 @@ def register_bdd_feature_scenarios():
             ),
             html.Div(
                 children=[
-                    html.H3("Enter your BDD Scenarios:"),
+                    html.H3("Enter your BDD Scenarios"),
+                    html.H4(
+                        "Add the BDD tags before each Scenario keyword to track the test level/approach for coverage purposes."
+                    ),
+                    html.H4(
+                        f"""Test Levels: 
+                            @{Constants.TestLevelsEntity.INTEGRATION}
+                            @{Constants.TestLevelsEntity.COMPONENT}
+                            @{Constants.TestLevelsEntity.CONTRACT}
+                            @{Constants.TestLevelsEntity.API}
+                            @{Constants.TestLevelsEntity.E2E}
+                            @{Constants.TestLevelsEntity.PERFORMANCE}
+                            @{Constants.TestLevelsEntity.SECURITY}
+                            @{Constants.TestLevelsEntity.USABILITY}
+                            @{Constants.TestLevelsEntity.EXPLORATORY}
+                        """,
+                        className="info-highlight",
+                    ),
+                    html.H4(
+                        f"""Test Approaches: 
+                            @{Constants.TestTypesEntity.AUTOMATED}
+                            @{Constants.TestTypesEntity.MANUAL}
+                        """,
+                        className="info-highlight",
+                    ),
                     dcc.Textarea(
                         id="rf--bdd-editor",
                         style={"height": "400px"},
-                        value="""
-# Example
+                        value="""# Example
 Feature: User Login
+
+@automated @e2e
 Scenario: Successful login
     Given the user is on the login page
     When they enter valid credentials
@@ -182,6 +207,21 @@ def register_scripted_test_cases():
                 searchable=True,
                 className="c_dropdown",
                 value="exploratory",
+            ),
+            dcc.RadioItems(
+                id="rf--test-approach",
+                options=[
+                    {
+                        "label": "Manual",
+                        "value": Constants.TestTypesEntity.MANUAL,
+                    },
+                    {
+                        "label": "Automated",
+                        "value": Constants.TestTypesEntity.AUTOMATED,
+                    },
+                ],
+                className="c_radio",
+                value=Constants.TestTypesEntity.MANUAL,
             ),
             html.H3("Enter the Preconditions for this Test Case:"),
             html.Div(

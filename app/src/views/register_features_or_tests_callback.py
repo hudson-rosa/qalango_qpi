@@ -150,8 +150,8 @@ def submit_bdd_data(
     feature_id="",
     feature_name="",
     bdd_content="",
-    suite_id="",
-    project_id="",
+    suite_ref="",
+    project_ref="",
 ):
     ctx = dash.callback_context
     feature_name_underlined = str(feature_name).strip().replace(" ", "_")
@@ -168,8 +168,8 @@ def submit_bdd_data(
                 feature_id=feature_id,
                 feature_name=feature_name,
                 bdd_content=bdd_content,
-                suite_id=suite_id,
-                project_id=project_id,
+                suite_ref=suite_ref,
+                project_ref=project_ref,
             )
             if not is_valid:
                 return message, None
@@ -180,61 +180,77 @@ def submit_bdd_data(
                 data = {}
 
             bdd_content_lower = str(bdd_content).lower()
+            project_id = str(project_ref).split("(")[1].rstrip(")")
+            project_name = str(project_ref).split("(")[0].strip()
+            suite_name = str(suite_ref).split("(")[0].strip()
+
+            scenarios_count = bdd_content_lower.count(
+                "scenario:"
+            ) + bdd_content_lower.count("scenario outline:")
+
             new_data = {
                 Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
-                Constants.SuiteDataJSON.SUITE_ID: str(suite_id)
-                .split("(")[1]
-                .rstrip(")"),
-                Constants.ProjectDataJSON.PROJECT_ID: str(project_id)
-                .split("(")[1]
-                .rstrip(")"),
-                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: bdd_content_lower.count(
-                    "scenario:"
-                )
-                + bdd_content_lower.count("scenario outline:"),
-                Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.INTEGRATION}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.COMPONENT}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.CONTRACT}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_API: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.API}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.E2E}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.PERFORMANCE}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.SECURITY}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.USABILITY}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_content_lower.count(
-                    f"@{Constants.TestLevelsEntity.EXPLORATORY}"
-                ),
-                Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_content_lower.count(
-                    f"@{Constants.TestTypesEntity.AUTOMATED}"
-                ),
+                Constants.SuiteDataJSON.SUITE_NAME: suite_name,
+                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: scenarios_count,
+                "test_levels": {
+                    Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.INTEGRATION}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.COMPONENT}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.CONTRACT}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_API: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.API}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.E2E}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.PERFORMANCE}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.SECURITY}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.USABILITY}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_content_lower.count(
+                        f"@{Constants.TestLevelsEntity.EXPLORATORY}"
+                    ),
+                },
+                "test_approaches": {
+                    Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_content_lower.count(
+                        f"@{Constants.TestTypesEntity.AUTOMATED}"
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_MANUAL: scenarios_count
+                    - bdd_content_lower.count(
+                        f"@{Constants.TestTypesEntity.AUTOMATED}"
+                    ),
+                },
             }
-            data[feature_id] = new_data
+
+            if project_id not in data:
+                data[project_id] = {
+                    Constants.ProjectDataJSON.PROJECT_NAME: project_name,
+                    Constants.SuiteDataJSON.SUITE_REF: suite_ref,
+                    "scenarios": [],
+                }
+
+            data[project_id]["scenarios"].append(new_data)
 
             features_mapper_instance.save_to_json_storage(data)
 
-            FileHandler.save_new_file(
-                file_pathname=feature_file_pathname, content=bdd_content
+            features_mapper_instance.save_content_to_new_file(
+                new_file=feature_file_pathname, new_data=bdd_content
             )
 
             return (
                 html.Pre(f"BDD Feature saved successfully:\n\n{feature_file_pathname}"),
-                None,
+                DataGenerator.generate_aggregated_uuid(),
             )
 
         case "rf--delete-bdd-file-button":
@@ -273,6 +289,7 @@ def submit_bdd_data(
         State("rf--preconditions-container", "children"),
         State("rf--steps-container", "children"),
         State("rf--test-level", "value"),
+        State("rf--test-approach", "value"),
         State("rf--suite-dropdown", "value"),
         State("rf--project-dropdown", "value"),
     ],
@@ -284,13 +301,12 @@ def submit_scripted_test(
     preconditions_children="",
     steps_children="",
     test_level="",
-    suite_id="",
-    project_id="",
+    test_approach="",
+    suite_ref="",
+    project_ref="",
 ):
     ctx = dash.callback_context
-    # test_name_underlined = str(test_name).strip().replace(" ", "_")
-    # test_case_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{test_id_pattern}--{DataGenerator.truncate_longer_name(test_name_underlined).lower()}.testcase"
-
+ 
     if not ctx.triggered:
         button_id = None
     else:
@@ -304,8 +320,8 @@ def submit_scripted_test(
                 preconditions_children=preconditions_children,
                 steps_children=steps_children,
                 test_level=test_level,
-                suite_id=suite_id,
-                project_id=project_id,
+                suite_ref=suite_ref,
+                project_ref=project_ref,
             )
             if not is_valid:
                 return message, None
@@ -343,27 +359,68 @@ def submit_scripted_test(
             ):
                 return "All fields (Feature ID, Test Title, and Steps) must be filled."
 
-            entered_new_test_data = {
+            project_id = str(project_ref).split("(")[1].rstrip(")")
+            project_name = str(project_ref).split("(")[0].strip()
+            suite_name = str(suite_ref).split("(")[0].strip()
+
+            new_data = {
                 Constants.TestEffortsDataJSON.TEST_ID: test_id,
-                "test_name": test_name,
-                "preconditions": preconditions_data,
-                "steps": steps_and_expected_data,
-                Constants.TestEffortsDataJSON.TEST_LEVEL: test_level,
-                Constants.SuiteDataJSON.SUITE_ID: str(suite_id)
-                .split("(")[1]
-                .rstrip(")"),
-                Constants.ProjectDataJSON.PROJECT_ID: str(project_id)
-                .split("(")[1]
-                .rstrip(")"),
+                Constants.TestEffortsDataJSON.TEST_NAME: test_name,
+                Constants.SuiteDataJSON.SUITE_NAME: suite_name,
+                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: 1,
+                "test_script": {
+                    "preconditions": preconditions_data,
+                    "steps": steps_and_expected_data,
+                },
+                "test_levels": {
+                    Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.INTEGRATION
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_COMPONENT: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.COMPONENT
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_CONTRACT: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.CONTRACT
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_API: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.API
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_E2E: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.E2E
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.PERFORMANCE
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_SECURITY: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.SECURITY
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_USABILITY: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.USABILITY
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: is_matching_test_level(
+                        test_level, Constants.TestLevelsEntity.EXPLORATORY
+                    ),
+                },
+                "test_approaches": {
+                    Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: is_matching_test_level(
+                        test_approach, Constants.TestTypesEntity.AUTOMATED
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_MANUAL: is_matching_test_level(
+                        test_approach, Constants.TestTypesEntity.MANUAL
+                    ),
+                },
             }
 
-            data[test_id] = entered_new_test_data
+            if project_id not in data:
+                data[project_id] = {
+                    Constants.ProjectDataJSON.PROJECT_NAME: project_name,
+                    Constants.SuiteDataJSON.SUITE_REF: suite_ref,
+                    "scenarios": [],
+                }
+
+            data[project_id]["scenarios"].append(new_data)
 
             test_cases_mapper_instance.save_to_json_storage(data)
-
-            # FileHandler.save_new_file(
-            #     file_pathname=test_case_file_pathname, content=steps_and_expected_data
-            # )
 
             return (
                 html.Pre(f"Test Case saved successfully"),
@@ -371,6 +428,10 @@ def submit_scripted_test(
             )
         case _:
             return "Please fill out the fields before submitting a test case", None
+
+
+def is_matching_test_level(current_test_level, expected=""):
+    return int(current_test_level == expected)
 
 
 app.layout = html_register_feature_or_tests.render_layout()

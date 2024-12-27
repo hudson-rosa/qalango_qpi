@@ -21,6 +21,7 @@ class Constants:
         QTY_OF_USABILITY = "qty_of_usability"
         QTY_OF_EXPLORATORY = "qty_of_exploratory"
         QTY_OF_AUTOMATED = "qty_of_automated"
+        QTY_OF_MANUAL = "qty_of_manual"
 
     class ProjectDataJSON:
         PROJECT_ID = "project_id"
