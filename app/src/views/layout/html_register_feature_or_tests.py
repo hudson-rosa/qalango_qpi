@@ -39,196 +39,209 @@ def render_layout():
                     html.Div(
                         className="section-group",
                         children=[
-                            html.Div(
-                                className="grid-2",
-                                children=[
-                                    dcc.Input(
-                                        id="rf--feature-or-test-id",
-                                        type="text",
-                                        placeholder="Feature id",
-                                        required=True,
-                                        readOnly=True,
-                                        className="inline-grid",
-                                    ),
-                                    html.Button(
-                                        "Generate new ID",
-                                        id="rf--generate-id-button",
-                                        className="inline-grid",
-                                    ),
-                                ],
-                            ),
-                            html.Div(
-                                className="grid grid-2",
-                                children=[
-                                    dcc.Dropdown(
-                                        id="rf--project-dropdown",
-                                        options=ProjectMapper.get_project_options(),
-                                        placeholder="Select project name",
-                                        searchable=True,
-                                        className="c_dropdown",
-                                    ),
-                                    dcc.Dropdown(
-                                        id="rf--suite-dropdown",
-                                        options=SuiteMapper.get_suite_options(),
-                                        placeholder="Select suite name",
-                                        searchable=True,
-                                        className="c_dropdown",
-                                    ),
-                                ],
-                            ),
+                            generate_new_id(),
+                            define_project_and_suite(),
                         ],
                     ),
-                    # Container for BDD Scenarios registration
+                    register_bdd_feature_scenarios(),
+                    register_scripted_test_cases(),
+                ],
+            ),
+        ]
+    )
+
+
+def generate_new_id():
+    return html.Div(
+        className="grid-2",
+        children=[
+            dcc.Input(
+                id="rf--feature-or-test-id",
+                type="text",
+                placeholder="Feature id",
+                required=True,
+                readOnly=True,
+                className="inline-grid",
+            ),
+            html.Button(
+                "Generate new ID",
+                id="rf--generate-id-button",
+                className="inline-grid",
+            ),
+        ],
+    )
+
+
+def define_project_and_suite():
+    return html.Div(
+        className="grid grid-2",
+        children=[
+            dcc.Dropdown(
+                id="rf--project-dropdown",
+                options=ProjectMapper.get_project_options(),
+                placeholder="Select project name",
+                searchable=True,
+                className="c_dropdown",
+            ),
+            dcc.Dropdown(
+                id="rf--suite-dropdown",
+                options=SuiteMapper.get_suite_options(),
+                placeholder="Select suite name",
+                searchable=True,
+                className="c_dropdown",
+            ),
+        ],
+    )
+
+
+def register_bdd_feature_scenarios():
+    return html.Div(
+        id="rf--bdd-container",
+        children=[
+            html.Ul(
+                html.Li(
                     html.Div(
-                        id="rf--bdd-container",
+                        className="section-group",
                         children=[
-                            html.Ul(
-                                html.Li(
-                                    html.Div(
-                                        className="section-group",
-                                        children=[
-                                            dcc.Input(
-                                                id="rf--feature-name",
-                                                type="text",
-                                                placeholder="Enter feature name",
-                                                required=True,
-                                            ),
-                                        ],
-                                    )
-                                ),
+                            dcc.Input(
+                                id="rf--feature-name",
+                                type="text",
+                                placeholder="Enter feature name",
+                                required=True,
                             ),
-                            html.Div(
-                                children=[
-                                    html.H3("Enter your BDD Scenarios:"),
-                                    dcc.Textarea(
-                                        id="rf--bdd-editor",
-                                        style={"height": "400px"},
-                                        value="""
+                        ],
+                    )
+                ),
+            ),
+            html.Div(
+                children=[
+                    html.H3("Enter your BDD Scenarios:"),
+                    dcc.Textarea(
+                        id="rf--bdd-editor",
+                        style={"height": "400px"},
+                        value="""
 # Example
 Feature: User Login
-
 Scenario: Successful login
     Given the user is on the login page
     When they enter valid credentials
     Then they should be redirected to the dashboard
 """,
-                                    ),
-                                ],
-                                style={"marginBottom": "20px"},
-                            ),
-                            html.Div(
-                                id="rf--bdd-output-message",
-                                className="output-msg",
-                            ),
-                            html.Div(
-                                className="grid grid-2",
-                                children=[
-                                    html.Div(
-                                        children=[
-                                            html.Button(
-                                                "Save feature",
-                                                id="rf--submit-bdd-button",
-                                                n_clicks=0,
-                                                className="submit-btn",
-                                            ),
-                                        ]
-                                    ),
-                                    html.Div(
-                                        children=[
-                                            html.Button(
-                                                "Delete File",
-                                                id="rf--delete-bdd-file-button",
-                                                n_clicks=0,
-                                            ),
-                                        ]
-                                    ),
-                                ],
-                            ),
-                        ],
-                        style={"display": "block"},
                     ),
-                    # Container for Scripted Test registration
+                ],
+                style={"marginBottom": "20px"},
+            ),
+            html.Div(
+                id="rf--bdd-output-message",
+                className="output-msg",
+            ),
+            html.Div(
+                className="grid grid-2",
+                children=[
                     html.Div(
-                        id="rf--scripted-container",
-                        className="section-group",
                         children=[
-                            dcc.Input(
-                                id="rf--test-name",
-                                type="text",
-                                placeholder="Enter test case title",
-                                required=True,
-                            ),
-                            dcc.Dropdown(
-                                options=TestEffortsMapper.get_list_of_test_levels(),
-                                id="rf--test-level",
-                                placeholder="Enter test level",
-                                searchable=True,
-                                className="c_dropdown",
-                                value="exploratory",
-                            ),
-                            html.H3("Enter the Preconditions for this Test Case:"),
-                            html.Div(
-                                id="rf--preconditions-container",
-                                children=[
-                                    dcc.Textarea(
-                                        id="rf--precondition-1",
-                                        placeholder="Enter precondition 1",
-                                        required=True,
-                                    )
-                                ],
-                            ),
                             html.Button(
-                                "+ Add Precondition",
-                                id="rf--add-precondition",
+                                "Save feature",
+                                id="rf--submit-bdd-button",
                                 n_clicks=0,
-                                className="add-precondition-btn",
+                                className="submit-btn",
                             ),
-                            html.H3("Enter the Test Case steps and expected results:"),
-                            html.Div(
-                                id="rf--steps-container",
-                                className="grid grid-2",
-                                children=[
-                                    dcc.Textarea(
-                                        id="rf--step-1",
-                                        placeholder="Enter step 1",
-                                        required=True,
-                                    ),
-                                    dcc.Textarea(
-                                        id="rf--expected-1",
-                                        placeholder="Enter expected result 1",
-                                        required=True,
-                                    ),
-                                ],
-                            ),
+                        ]
+                    ),
+                    html.Div(
+                        children=[
                             html.Button(
-                                "+ Add Step",
-                                id="rf--add-step",
+                                "Delete File",
+                                id="rf--delete-bdd-file-button",
                                 n_clicks=0,
-                                className="add-step-btn",
                             ),
-                            html.Div(
-                                id="rf--scripted-output-message",
-                                className="output-msg",
-                            ),
-                            html.Div(
-                                className="grid grid-2",
-                                children=[
-                                    html.Div(
-                                        children=[
-                                            html.Button(
-                                                "Save new test",
-                                                id="rf--submit-scripted-button",
-                                                n_clicks=0,
-                                                className="submit-btn",
-                                            ),
-                                        ]
-                                    ),
-                                ],
-                            ),
-                        ],
-                        style={"display": "none"},
+                        ]
                     ),
                 ],
             ),
-        ]
+        ],
+        style={"display": "block"},
+    )
+
+
+def register_scripted_test_cases():
+    return html.Div(
+        id="rf--scripted-container",
+        className="section-group",
+        children=[
+            dcc.Input(
+                id="rf--test-name",
+                type="text",
+                placeholder="Enter test case title",
+                required=True,
+            ),
+            dcc.Dropdown(
+                options=TestEffortsMapper.get_list_of_test_levels(),
+                id="rf--test-level",
+                placeholder="Enter test level",
+                searchable=True,
+                className="c_dropdown",
+                value="exploratory",
+            ),
+            html.H3("Enter the Preconditions for this Test Case:"),
+            html.Div(
+                id="rf--preconditions-container",
+                children=[
+                    dcc.Textarea(
+                        id="rf--precondition-1",
+                        placeholder="Enter precondition 1",
+                        required=True,
+                    )
+                ],
+            ),
+            html.Button(
+                "+ Add Precondition",
+                id="rf--add-precondition",
+                n_clicks=0,
+                className="add-precondition-btn",
+            ),
+            html.H3("Enter the Test Case steps and expected results:"),
+            html.Div(
+                id="rf--steps-container",
+                className="grid grid-2",
+                children=[
+                    dcc.Textarea(
+                        id="rf--step-1",
+                        placeholder="Enter step 1",
+                        required=True,
+                    ),
+                    dcc.Textarea(
+                        id="rf--expected-1",
+                        placeholder="Enter expected result 1",
+                        required=True,
+                    ),
+                ],
+            ),
+            html.Button(
+                "+ Add Step",
+                id="rf--add-step",
+                n_clicks=0,
+                className="add-step-btn",
+            ),
+            html.Div(
+                id="rf--scripted-output-message",
+                className="output-msg",
+            ),
+            html.Div(
+                className="grid grid-2",
+                children=[
+                    html.Div(
+                        children=[
+                            html.Button(
+                                "Save new test",
+                                id="rf--submit-scripted-button",
+                                n_clicks=0,
+                                className="submit-btn",
+                            ),
+                        ]
+                    ),
+                ],
+            ),
+        ],
+        style={"display": "none"},
     )
