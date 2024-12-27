@@ -29,6 +29,7 @@ def update_random_id(n_clicks):
     [
         Output("rp--output-message-projects", "children"),
         Output("rp--delete-output-message-projects", "children"),
+        Output("rp--project-id", "value", allow_duplicate=True),
     ],
     [
         Input("rp--save-button", "n_clicks"),
@@ -40,6 +41,7 @@ def update_random_id(n_clicks):
         State("rp--project-name", "value"),
         State("rp--delete-project-id", "value"),
     ],
+    prevent_initial_call='initial_duplicate'
 )
 def save_update_delete_data(
     save_clicks,
@@ -63,7 +65,7 @@ def save_update_delete_data(
                 project_name=project_name
             )
             if not is_valid:
-                return message, None
+                return message, dash.no_update, dash.no_update
 
             try:
                 data = data_mapper_instance.load_from_json_storage()
@@ -77,25 +79,28 @@ def save_update_delete_data(
             data[project_id] = new_data
 
             data_mapper_instance.save_to_json_storage(data)
+            
+            new_id = "idproj_" + DataGenerator.generate_aggregated_uuid(length_threshold=5)
 
-            return "Project saved successfully", None
+            return "Project saved successfully", dash.no_update, new_id
 
         case "rp--update-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
             except FileNotFoundError:
-                return None, "No data found. Nothing to update."
+                return dash.no_update, "No data found. Nothing to update.", dash.no_update
 
             if project_id in data:
                 data[project_id][Constants.ProjectDataJSON.PROJECT_NAME] = project_name
 
                 data_mapper_instance.save_to_json_storage(data)
 
-                return "Project updated successfully", None
+                return "Project updated successfully", dash.no_update, dash.no_update
             else:
                 return (
-                    None,
+                    dash.no_update,
                     f'Data with project ID "{project_id}" not found in JSON. Nothing to update.',
+                    dash.no_update,
                 )
 
         case "rp--delete-button":
@@ -108,19 +113,21 @@ def save_update_delete_data(
                     data_mapper_instance.save_to_json_storage(data)
 
                     return (
-                        None,
+                        dash.no_update,
                         f'Project with test name "{delete_project_id} - {project_name}" deleted successfully',
+                        dash.no_update,
                     )
                 else:
                     return (
-                        None,
+                        dash.no_update,
                         f'Project with test name "{delete_project_id}" not found in JSON',
+                        dash.no_update,
                     )
             except FileNotFoundError:
-                return None, "No data found. Nothing to delete."
+                return dash.no_update, "No data found. Nothing to delete.", dash.no_update
 
         case _:
-            return "Please choose an action", None
+            return "Please choose an action", dash.no_update, dash.no_update
 
 
 app.layout = html_register_project.render_layout()

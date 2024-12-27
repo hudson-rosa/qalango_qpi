@@ -131,7 +131,10 @@ def auto_resize_textarea(content, current_style):
 
 
 @callback(
-    Output("rf--bdd-output-message", "children"),
+    [
+        Output("rf--bdd-output-message", "children"),
+        Output("rf--feature-or-test-id", "value", allow_duplicate=True),
+    ],
     [
         Input("rf--submit-bdd-button", "n_clicks"),
         Input("rf--delete-bdd-file-button", "n_clicks"),
@@ -143,6 +146,7 @@ def auto_resize_textarea(content, current_style):
         State("rf--suite-dropdown", "value"),
         State("rf--project-dropdown", "value"),
     ],
+    prevent_initial_call='initial_duplicate'
 )
 def submit_bdd_data(
     submit_clicks,
@@ -247,10 +251,12 @@ def submit_bdd_data(
             features_mapper_instance.save_content_to_new_file(
                 new_file=feature_file_pathname, new_data=bdd_content
             )
+            
+            new_id = "idfeat_" + DataGenerator.generate_aggregated_uuid()
 
             return (
                 html.Pre(f"BDD Feature saved successfully:\n\n{feature_file_pathname}"),
-                DataGenerator.generate_aggregated_uuid(),
+                new_id,
             )
 
         case "rf--delete-bdd-file-button":
@@ -281,7 +287,10 @@ def submit_bdd_data(
 
 
 @callback(
-    Output("rf--scripted-output-message", "children"),
+    [
+        Output("rf--scripted-output-message", "children"),
+        Output("rf--feature-or-test-id", "value", allow_duplicate=True),
+    ],
     Input("rf--submit-scripted-button", "n_clicks"),
     [
         State("rf--feature-or-test-id", "value"),
@@ -293,6 +302,7 @@ def submit_bdd_data(
         State("rf--suite-dropdown", "value"),
         State("rf--project-dropdown", "value"),
     ],
+    prevent_initial_call='initial_duplicate'
 )
 def submit_scripted_test(
     submit_clicks,
@@ -421,10 +431,12 @@ def submit_scripted_test(
             data[project_id]["scenarios"].append(new_data)
 
             test_cases_mapper_instance.save_to_json_storage(data)
+            
+            new_id = "idtest_" + DataGenerator.generate_aggregated_uuid()
 
             return (
                 html.Pre(f"Test Case saved successfully"),
-                None,
+                new_id,
             )
         case _:
             return "Please fill out the fields before submitting a test case", None

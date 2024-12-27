@@ -31,6 +31,7 @@ def update_random_id(n_clicks):
     [
         Output("rs--output-message-suites", "children"),
         Output("rs--delete-output-message-suites", "children"),
+        Output("rs--suite-id", "value", allow_duplicate=True),
     ],
     [
         Input("rs--save-button", "n_clicks"),
@@ -43,6 +44,7 @@ def update_random_id(n_clicks):
         State("rs--suite-name", "value"),
         State("rs--delete-suite-id", "value"),
     ],
+    prevent_initial_call='initial_duplicate'
 )
 def save_update_delete_data(
     save_clicks,
@@ -68,7 +70,7 @@ def save_update_delete_data(
                 project_ref=project_ref,
             )
             if not is_valid:
-                return message, None
+                return message, dash.no_update, dash.no_update
 
             try:
                 data = data_mapper_instance.load_from_json_storage()
@@ -93,25 +95,28 @@ def save_update_delete_data(
             data[project_id]["suites"].append(new_suite)
 
             data_mapper_instance.save_to_json_storage(data)
+            
+            new_id = "idsuite_" + DataGenerator.generate_aggregated_uuid(length_threshold=5)
 
-            return "Suite saved successfully", None
+            return "Suite saved successfully", dash.no_update, new_id
 
         case "rs--update-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
             except FileNotFoundError:
-                return None, "No data found. Nothing to update."
+                return dash.no_update, "No data found. Nothing to update.", dash.no_update
 
             if suite_id in data:
                 data[suite_id][Constants.SuiteDataJSON.SUITE_NAME] = suite_name
 
                 data_mapper_instance.save_to_json_storage(data)
 
-                return "Suite updated successfully", None
+                return "Suite updated successfully", dash.no_update,dash.no_update,
             else:
                 return (
-                    None,
+                    dash.no_update,
                     f'Data with Suite ID "{suite_id}" not found in JSON. Nothing to update.',
+                    dash.no_update,
                 )
 
         case "rs--delete-button":
@@ -124,19 +129,21 @@ def save_update_delete_data(
                     data_mapper_instance.save_to_json_storage(data)
 
                     return (
-                        None,
+                        dash.no_update,
                         f'Suite with test name "{delete_suite_id} - {suite_name}" deleted successfully',
+                        dash.no_update
                     )
                 else:
                     return (
-                        None,
+                        dash.no_update,
                         f'Suite with test name "{delete_suite_id}" not found in JSON',
+                        dash.no_update
                     )
             except FileNotFoundError:
-                return None, "No data found. Nothing to delete."
+                return dash.no_update, "No data found. Nothing to delete.", dash.no_update
 
         case _:
-            return "Please choose an action", None
+            return "Please choose an action", dash.no_update, dash.no_update
 
 
 app.layout = html_register_suite.render_layout()
