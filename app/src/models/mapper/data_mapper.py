@@ -22,7 +22,7 @@ class DataMapper:
         try:
             with open(self.filename, "r") as file:
                 dataset = json.load(file)
-        except FileNotFoundError:
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
             dataset = []
         return dataset
 

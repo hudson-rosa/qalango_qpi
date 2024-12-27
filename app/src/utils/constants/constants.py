@@ -25,10 +25,12 @@ class Constants:
     class ProjectDataJSON:
         PROJECT_ID = "project_id"
         PROJECT_NAME = "project_name"
+        PROJECT_REF = "project_ref"
 
     class SuiteDataJSON:
         SUITE_ID = "suite_id"
         SUITE_NAME = "suite_name"
+        SUITE_REF = "suite_ref"
 
     class TestEffortsDataJSON:
         PROJECT_NAME = "project_name"

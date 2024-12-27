@@ -1,5 +1,6 @@
 from dash import dcc, html
 
+from src.models.mapper.project_mapper import ProjectMapper
 from src.views.layout import html_component_header_tabs
 from src.utils.constants.constants import Constants
 
@@ -38,6 +39,12 @@ def render_layout():
                                                 className="inline-grid",
                                             ),
                                         ],
+                                    ),
+                                    dcc.Dropdown(
+                                        id="rs--project-dropdown",
+                                        placeholder="Select project name",
+                                        options=ProjectMapper.get_project_options(),
+                                        className="c_dropdown"
                                     ),
                                     dcc.Input(
                                         id="rs--suite-name",

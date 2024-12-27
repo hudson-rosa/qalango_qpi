@@ -1,8 +1,9 @@
 {
   "idfeat_idfeat_39aaaea81e": {
-    "feature_id": "idfeat_idfeat_39aaaea81e",
+    "feature_id": "idfeat_39aaaea81e",
     "feature_name": "User_Login",
-    "project_name": "idproj_e3209",
+    "suite_id": "idsuite_93198",
+    "project_id": "idproj_25c54",
     "qty_of_scenarios": 1,
     "qty_of_integration": 0,
     "qty_of_component": 0,
@@ -15,17 +16,47 @@
     "qty_of_exploratory": 0,
     "qty_of_automated": 0
   },
-  "idtest_idtest_d697d9c889": {
-    "test_id": "idtest_idtest_d697d9c889",
-    "test_name": "Log in with the new user",
-    "preconditions": [{ "precondition": "The user account is registered on the system" }],
-    "steps": [
-      { "step": "Open the login page", "expected": "The login page with the username and password fields is displayed" },
-      { "step": "Enter the valid username and password", "expected": "" },
-      { "step": "Click on the Login button", "expected": "The login is successfull and the user sees the home page" }
-    ],
-    "test_level": "e2e",
-    "suite_name": "idsuite_6d251",
-    "project_name": "idproj_226e0"
+  "idfeat_a1b130e11c": {
+    "feature_id": "idfeat_a1b130e11c",
+    "feature_name": "Saferpay",
+    "suite_id": "idsuite_93198",
+    "project_id": "idproj_226e0",
+    "qty_of_scenarios": 1,
+    "qty_of_integration": 0,
+    "qty_of_component": 0,
+    "qty_of_contract": 0,
+    "qty_of_api": 0,
+    "qty_of_e2e": 1,
+    "qty_of_performance": 0,
+    "qty_of_security": 0,
+    "qty_of_usability": 0,
+    "qty_of_exploratory": 0,
+    "qty_of_automated": 0
+  },
+  "idfeat_9d839e33e3": {
+    "feature_id": "idfeat_9d839e33e3",
+    "feature_name": "XML_Extractor",
+    "suite_id": "idsuite_33703",
+    "project_id": "idproj_f3b25",
+    "qty_of_scenarios": 1,
+    "qty_of_integration": 0,
+    "qty_of_component": 0,
+    "qty_of_contract": 0,
+    "qty_of_api": 0,
+    "qty_of_e2e": 0,
+    "qty_of_performance": 0,
+    "qty_of_security": 0,
+    "qty_of_usability": 0,
+    "qty_of_exploratory": 0,
+    "qty_of_automated": 0
+  },
+  "idtest_5672ada95f": {
+    "test_id": "idtest_5672ada95f",
+    "test_name": "XML Extractor",
+    "preconditions": [{ "precondition": "The Payslip details page is open and the data is shown" }],
+    "steps": [{ "step": "Click on Extract top XML button", "expected": "The data should be downloaded to an XML file in a maximum of 10 seconds" }],
+    "test_level": "performance",
+    "suite_id": "idsuite_33703",
+    "project_id": "idproj_f3b25"
   }
 }

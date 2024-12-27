@@ -61,14 +61,14 @@ def render_layout():
                                 className="grid grid-2",
                                 children=[
                                     dcc.Dropdown(
-                                        id="rf--project-name",
+                                        id="rf--project-dropdown",
                                         options=ProjectMapper.get_project_options(),
                                         placeholder="Select project name",
                                         searchable=True,
                                         className="c_dropdown",
                                     ),
                                     dcc.Dropdown(
-                                        id="rf--suite-name",
+                                        id="rf--suite-dropdown",
                                         options=SuiteMapper.get_suite_options(),
                                         placeholder="Select suite name",
                                         searchable=True,
@@ -103,14 +103,15 @@ def render_layout():
                                     dcc.Textarea(
                                         id="rf--bdd-editor",
                                         style={"height": "400px"},
-                                        value="""# Example - BDD scenario
-    Feature: User Login
+                                        value="""
+# Example
+Feature: User Login
 
-    Scenario: Successful login
-        Given the user is on the login page
-        When they enter valid credentials
-        Then they should be redirected to the dashboard
-                                        """,
+Scenario: Successful login
+    Given the user is on the login page
+    When they enter valid credentials
+    Then they should be redirected to the dashboard
+""",
                                     ),
                                 ],
                                 style={"marginBottom": "20px"},

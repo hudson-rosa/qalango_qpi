@@ -8,10 +8,12 @@ import src.views.layout.html_register_suite as html_register_suite
 from src.utils.data_generator import DataGenerator
 from src.utils.constants.constants import Constants
 from src.utils.validation_utils import ValidationUtils
+from src.models.mapper.project_mapper import ProjectMapper
 
 
 app = dash.Dash(__name__)
 
+project_mapper_instance = ProjectMapper(Constants.FilePaths.PROJECTS_DATA_JSON_PATH)
 json_storage = Constants.FilePaths.SUITES_DATA_JSON_PATH
 data_mapper_instance = DataMapper(filename=json_storage)
 
@@ -36,6 +38,7 @@ def update_random_id(n_clicks):
         Input("rs--delete-button", "n_clicks"),
     ],
     [
+        State("rs--project-dropdown", "value"),
         State("rs--suite-id", "value"),
         State("rs--suite-name", "value"),
         State("rs--delete-suite-id", "value"),
@@ -45,6 +48,7 @@ def save_update_delete_data(
     save_clicks,
     update_clicks,
     delete_clicks,
+    project_ref,
     suite_id,
     suite_name,
     delete_suite_id,
@@ -60,7 +64,8 @@ def save_update_delete_data(
         case "rs--save-button":
             is_valid, message = ValidationUtils.validate_mandatory_fields(
                 suite_id=suite_id,
-                suite_name=suite_name
+                suite_name=suite_name,
+                project_ref=project_ref,
             )
             if not is_valid:
                 return message, None
@@ -70,11 +75,22 @@ def save_update_delete_data(
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
-            new_data = {
+            project_id = str(project_ref).split("(")[1].rstrip(")")
+            project_name = str(project_ref).split("(")[0].strip()
+
+            new_suite = {
                 Constants.SuiteDataJSON.SUITE_ID: suite_id,
                 Constants.SuiteDataJSON.SUITE_NAME: suite_name,
+                Constants.ProjectDataJSON.PROJECT_REF: project_ref
             }
-            data[suite_id] = new_data
+
+            if project_id not in data:
+                data[project_id] = {
+                    Constants.ProjectDataJSON.PROJECT_NAME: project_name,
+                    "suites": [],
+                }
+        
+            data[project_id]["suites"].append(new_suite)
 
             data_mapper_instance.save_to_json_storage(data)
 

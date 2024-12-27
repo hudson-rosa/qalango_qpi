@@ -2,7 +2,8 @@
   "idfeat_idfeat_39aaaea81e": {
     "feature_id": "idfeat_idfeat_39aaaea81e",
     "feature_name": "User_Login",
-    "project_name": "idproj_e3209",
+    "suite_id": "idsuite_93198",
+    "project_id": "idproj_25c54",
     "qty_of_scenarios": 1,
     "qty_of_integration": 0,
     "qty_of_component": 0,
@@ -15,11 +16,12 @@
     "qty_of_exploratory": 0,
     "qty_of_automated": 0
   },
-  "idfeat_idfeat_537ccc689d": {
-    "feature_id": "idfeat_idfeat_537ccc689d",
-    "feature_name": "testing",
-    "project_name": "idproj_25c54",
-    "qty_of_scenarios": 2,
+  "idfeat_a1b130e11c": {
+    "feature_id": "idfeat_a1b130e11c",
+    "feature_name": "Saferpay",
+    "suite_id": "idsuite_93198",
+    "project_id": "idproj_226e0",
+    "qty_of_scenarios": 1,
     "qty_of_integration": 0,
     "qty_of_component": 0,
     "qty_of_contract": 0,
@@ -27,7 +29,24 @@
     "qty_of_e2e": 1,
     "qty_of_performance": 0,
     "qty_of_security": 0,
-    "qty_of_usability": 1,
+    "qty_of_usability": 0,
+    "qty_of_exploratory": 0,
+    "qty_of_automated": 0
+  },
+  "idfeat_9d839e33e3": {
+    "feature_id": "idfeat_9d839e33e3",
+    "feature_name": "XML_Extractor",
+    "suite_id": "idsuite_33703",
+    "project_id": "idproj_f3b25",
+    "qty_of_scenarios": 1,
+    "qty_of_integration": 0,
+    "qty_of_component": 0,
+    "qty_of_contract": 0,
+    "qty_of_api": 0,
+    "qty_of_e2e": 0,
+    "qty_of_performance": 0,
+    "qty_of_security": 0,
+    "qty_of_usability": 0,
     "qty_of_exploratory": 0,
     "qty_of_automated": 0
   }

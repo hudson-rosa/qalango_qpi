@@ -2,6 +2,7 @@ import dash
 import json
 
 from dash import dcc, callback, html, Input, Output, State
+from src.models.mapper.suite_mapper import SuiteMapper
 from src.models.mapper.data_mapper import DataMapper
 
 import src.views.layout.html_register_feature_or_tests as html_register_feature_or_tests
@@ -39,6 +40,16 @@ def update_random_id(bdd_style, scripted_style, n_clicks):
         prefix = "unknown_"
 
     return prefix + DataGenerator.generate_aggregated_uuid()
+
+
+@callback(
+    Output("rf--suite-dropdown", "options"), [Input("rf--project-dropdown", "value")]
+)
+def update_suite_options(selected_project):
+    if not selected_project:
+        return []
+    project_id = str(selected_project).split("(")[1].rstrip(")")
+    return SuiteMapper.get_suite_options(project_id=project_id)
 
 
 @callback(
@@ -129,7 +140,8 @@ def auto_resize_textarea(content, current_style):
         State("rf--feature-or-test-id", "value"),
         State("rf--feature-name", "value"),
         State("rf--bdd-editor", "value"),
-        State("rf--project-name", "value"),
+        State("rf--suite-dropdown", "value"),
+        State("rf--project-dropdown", "value"),
     ],
 )
 def submit_bdd_data(
@@ -138,13 +150,12 @@ def submit_bdd_data(
     feature_id="",
     feature_name="",
     bdd_content="",
-    suite_name="",
-    project_name="",
+    suite_id="",
+    project_id="",
 ):
     ctx = dash.callback_context
-    feature_id_pattern = "idfeat_" + str(feature_id)
     feature_name_underlined = str(feature_name).strip().replace(" ", "_")
-    feature_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{feature_id_pattern}--{feature_name_underlined.lower()}.feature"
+    feature_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{feature_id}--{feature_name_underlined.lower()}.feature"
 
     if not ctx.triggered:
         button_id = None
@@ -157,12 +168,12 @@ def submit_bdd_data(
                 feature_id=feature_id,
                 feature_name=feature_name,
                 bdd_content=bdd_content,
-                suite_name=suite_name,
-                project_name=project_name
+                suite_id=suite_id,
+                project_id=project_id,
             )
             if not is_valid:
                 return message, None
-            
+
             try:
                 data = features_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
@@ -170,12 +181,12 @@ def submit_bdd_data(
 
             bdd_content_lower = str(bdd_content).lower()
             new_data = {
-                Constants.FeaturesDataJSON.FEATURE_ID: feature_id_pattern,
+                Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
-                Constants.SuiteDataJSON.SUITE_NAME: str(suite_name)
+                Constants.SuiteDataJSON.SUITE_ID: str(suite_id)
                 .split("(")[1]
                 .rstrip(")"),
-                Constants.ProjectDataJSON.PROJECT_NAME: str(project_name)
+                Constants.ProjectDataJSON.PROJECT_ID: str(project_id)
                 .split("(")[1]
                 .rstrip(")"),
                 Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: bdd_content_lower.count(
@@ -213,7 +224,7 @@ def submit_bdd_data(
                     f"@{Constants.TestTypesEntity.AUTOMATED}"
                 ),
             }
-            data[feature_id_pattern] = new_data
+            data[feature_id] = new_data
 
             features_mapper_instance.save_to_json_storage(data)
 
@@ -232,8 +243,8 @@ def submit_bdd_data(
 
                 FileHandler.delete_file(feature_file_pathname)
 
-                if feature_id_pattern in data:
-                    del data[feature_id_pattern]
+                if feature_id in data:
+                    del data[feature_id]
 
                     features_mapper_instance.save_to_json_storage(data)
 
@@ -262,8 +273,8 @@ def submit_bdd_data(
         State("rf--preconditions-container", "children"),
         State("rf--steps-container", "children"),
         State("rf--test-level", "value"),
-        State("rf--suite-name", "value"),
-        State("rf--project-name", "value"),
+        State("rf--suite-dropdown", "value"),
+        State("rf--project-dropdown", "value"),
     ],
 )
 def submit_scripted_test(
@@ -273,11 +284,10 @@ def submit_scripted_test(
     preconditions_children="",
     steps_children="",
     test_level="",
-    suite_name="",
-    project_name="",
+    suite_id="",
+    project_id="",
 ):
     ctx = dash.callback_context
-    test_id_pattern = "idtest_" + str(test_id)
     # test_name_underlined = str(test_name).strip().replace(" ", "_")
     # test_case_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{test_id_pattern}--{DataGenerator.truncate_longer_name(test_name_underlined).lower()}.testcase"
 
@@ -294,12 +304,12 @@ def submit_scripted_test(
                 preconditions_children=preconditions_children,
                 steps_children=steps_children,
                 test_level=test_level,
-                suite_name=suite_name,
-                project_name=project_name
+                suite_id=suite_id,
+                project_id=project_id,
             )
             if not is_valid:
                 return message, None
-            
+
             try:
                 data = features_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
@@ -327,27 +337,27 @@ def submit_scripted_test(
                 )
 
             if (
-                not test_id_pattern
+                not test_id
                 or not test_name
                 or any(not s["step"] for s in steps_and_expected_data)
             ):
                 return "All fields (Feature ID, Test Title, and Steps) must be filled."
 
             entered_new_test_data = {
-                Constants.TestEffortsDataJSON.TEST_ID: test_id_pattern,
+                Constants.TestEffortsDataJSON.TEST_ID: test_id,
                 "test_name": test_name,
                 "preconditions": preconditions_data,
                 "steps": steps_and_expected_data,
                 Constants.TestEffortsDataJSON.TEST_LEVEL: test_level,
-                Constants.SuiteDataJSON.SUITE_NAME: str(suite_name)
+                Constants.SuiteDataJSON.SUITE_ID: str(suite_id)
                 .split("(")[1]
                 .rstrip(")"),
-                Constants.ProjectDataJSON.PROJECT_NAME: str(project_name)
+                Constants.ProjectDataJSON.PROJECT_ID: str(project_id)
                 .split("(")[1]
                 .rstrip(")"),
             }
 
-            data[test_id_pattern] = entered_new_test_data
+            data[test_id] = entered_new_test_data
 
             test_cases_mapper_instance.save_to_json_storage(data)
 
