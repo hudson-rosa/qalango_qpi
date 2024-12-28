@@ -10,16 +10,21 @@ from src.utils.data_generator import DataGenerator
 from src.utils.file_handler import FileHandler
 from src.utils.constants.constants import Constants
 from src.utils.validation_utils import ValidationUtils
+from src.utils.string_handler import StringHandler
 
 
 app = dash.Dash(__name__)
 ctx = dash.callback_context
 
-features_json_storage = Constants.FilePaths.FEATURES_DATA_JSON_PATH
-features_mapper_instance = DataMapper(filename=features_json_storage)
+scenarios_json_storage = Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
+scenarios_mapper_instance = DataMapper(filename=scenarios_json_storage)
 
-scripted_tests_json_storage = Constants.FilePaths.SCRIPTED_TESTS_DATA_JSON_PATH
-test_cases_mapper_instance = DataMapper(filename=scripted_tests_json_storage)
+idfeat_prefix = "idbdd_"
+idtest_prefix = "idtest_"
+
+
+def is_matching_test_level(current_test_level, expected=""):
+    return int(current_test_level == expected)
 
 
 @callback(
@@ -33,9 +38,9 @@ test_cases_mapper_instance = DataMapper(filename=scripted_tests_json_storage)
 )
 def update_random_id(bdd_style, scripted_style, n_clicks):
     if bdd_style.get("display") == "block":
-        prefix = "idfeat_"
+        prefix = idfeat_prefix
     elif scripted_style.get("display") == "block":
-        prefix = "idtest_"
+        prefix = idtest_prefix
     else:
         prefix = "unknown_"
 
@@ -48,7 +53,7 @@ def update_random_id(bdd_style, scripted_style, n_clicks):
 def update_suite_options(selected_project):
     if not selected_project:
         return []
-    project_id = str(selected_project).split("(")[1].rstrip(")")
+    project_id = StringHandler.get_id_format(selected_project)
     return SuiteMapper.get_suite_options(project_id=project_id)
 
 
@@ -146,7 +151,7 @@ def auto_resize_textarea(content, current_style):
         State("rf--suite-dropdown", "value"),
         State("rf--project-dropdown", "value"),
     ],
-    prevent_initial_call='initial_duplicate'
+    prevent_initial_call="initial_duplicate",
 )
 def submit_bdd_data(
     submit_clicks,
@@ -158,6 +163,7 @@ def submit_bdd_data(
     project_ref="",
 ):
     ctx = dash.callback_context
+
     feature_name_underlined = str(feature_name).strip().replace(" ", "_")
     feature_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{feature_id}--{feature_name_underlined.lower()}.feature"
 
@@ -179,13 +185,13 @@ def submit_bdd_data(
                 return message, None
 
             try:
-                data = features_mapper_instance.load_from_json_storage()
+                data = scenarios_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
             bdd_content_lower = str(bdd_content).lower()
-            project_id = str(project_ref).split("(")[1].rstrip(")")
-            project_name = str(project_ref).split("(")[0].strip()
+            project_id = StringHandler.get_id_format(project_ref)
+            project_name = StringHandler.get_name_format(project_ref)
             suite_name = str(suite_ref).split("(")[0].strip()
 
             scenarios_count = bdd_content_lower.count(
@@ -246,13 +252,12 @@ def submit_bdd_data(
 
             data[project_id]["scenarios"].append(new_data)
 
-            features_mapper_instance.save_to_json_storage(data)
-
-            features_mapper_instance.save_content_to_new_file(
+            scenarios_mapper_instance.save_to_json_storage(data)
+            scenarios_mapper_instance.save_content_to_new_file(
                 new_file=feature_file_pathname, new_data=bdd_content
             )
-            
-            new_id = "idfeat_" + DataGenerator.generate_aggregated_uuid()
+
+            new_id = idfeat_prefix + DataGenerator.generate_aggregated_uuid()
 
             return (
                 html.Pre(f"BDD Feature saved successfully:\n\n{feature_file_pathname}"),
@@ -261,14 +266,14 @@ def submit_bdd_data(
 
         case "rf--delete-bdd-file-button":
             try:
-                data = features_mapper_instance.load_from_json_storage()
+                data = scenarios_mapper_instance.load_from_json_storage()
 
                 FileHandler.delete_file(feature_file_pathname)
 
                 if feature_id in data:
                     del data[feature_id]
 
-                    features_mapper_instance.save_to_json_storage(data)
+                    scenarios_mapper_instance.save_to_json_storage(data)
 
                     return (
                         None,
@@ -302,7 +307,7 @@ def submit_bdd_data(
         State("rf--suite-dropdown", "value"),
         State("rf--project-dropdown", "value"),
     ],
-    prevent_initial_call='initial_duplicate'
+    prevent_initial_call="initial_duplicate",
 )
 def submit_scripted_test(
     submit_clicks,
@@ -316,7 +321,7 @@ def submit_scripted_test(
     project_ref="",
 ):
     ctx = dash.callback_context
- 
+
     if not ctx.triggered:
         button_id = None
     else:
@@ -337,7 +342,7 @@ def submit_scripted_test(
                 return message, None
 
             try:
-                data = features_mapper_instance.load_from_json_storage()
+                data = scenarios_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
@@ -369,8 +374,8 @@ def submit_scripted_test(
             ):
                 return "All fields (Feature ID, Test Title, and Steps) must be filled."
 
-            project_id = str(project_ref).split("(")[1].rstrip(")")
-            project_name = str(project_ref).split("(")[0].strip()
+            project_id = StringHandler.get_id_format(project_ref)
+            project_name = StringHandler.get_name_format(project_ref)
             suite_name = str(suite_ref).split("(")[0].strip()
 
             new_data = {
@@ -430,9 +435,9 @@ def submit_scripted_test(
 
             data[project_id]["scenarios"].append(new_data)
 
-            test_cases_mapper_instance.save_to_json_storage(data)
-            
-            new_id = "idtest_" + DataGenerator.generate_aggregated_uuid()
+            scenarios_mapper_instance.save_to_json_storage(data)
+
+            new_id = idtest_prefix + DataGenerator.generate_aggregated_uuid()
 
             return (
                 html.Pre(f"Test Case saved successfully"),
@@ -440,10 +445,6 @@ def submit_scripted_test(
             )
         case _:
             return "Please fill out the fields before submitting a test case", None
-
-
-def is_matching_test_level(current_test_level, expected=""):
-    return int(current_test_level == expected)
 
 
 app.layout = html_register_feature_or_tests.render_layout()

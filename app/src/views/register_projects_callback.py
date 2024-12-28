@@ -14,6 +14,7 @@ app = dash.Dash(__name__)
 
 json_storage = Constants.FilePaths.PROJECTS_DATA_JSON_PATH
 data_mapper_instance = DataMapper(filename=json_storage)
+idproj_prefix = "idproj_"
 
 
 @callback(
@@ -22,7 +23,7 @@ data_mapper_instance = DataMapper(filename=json_storage)
     prevent_initial_call=False,
 )
 def update_random_id(n_clicks):
-    return "idproj_" + DataGenerator.generate_aggregated_uuid(length_threshold=5)
+    return idproj_prefix + DataGenerator.generate_aggregated_uuid(length_threshold=5)
 
 
 @callback(
@@ -80,7 +81,7 @@ def save_update_delete_data(
 
             data_mapper_instance.save_to_json_storage(data)
             
-            new_id = "idproj_" + DataGenerator.generate_aggregated_uuid(length_threshold=5)
+            new_id = idproj_prefix + DataGenerator.generate_aggregated_uuid(length_threshold=5)
 
             return "Project saved successfully", dash.no_update, new_id
 

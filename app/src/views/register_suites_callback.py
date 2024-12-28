@@ -9,6 +9,7 @@ from src.utils.data_generator import DataGenerator
 from src.utils.constants.constants import Constants
 from src.utils.validation_utils import ValidationUtils
 from src.models.mapper.project_mapper import ProjectMapper
+from src.utils.string_handler import StringHandler
 
 
 app = dash.Dash(__name__)
@@ -16,6 +17,7 @@ app = dash.Dash(__name__)
 project_mapper_instance = ProjectMapper(Constants.FilePaths.PROJECTS_DATA_JSON_PATH)
 json_storage = Constants.FilePaths.SUITES_DATA_JSON_PATH
 data_mapper_instance = DataMapper(filename=json_storage)
+idsuite_prefix = "idsuite_"
 
 
 @callback(
@@ -24,7 +26,7 @@ data_mapper_instance = DataMapper(filename=json_storage)
     prevent_initial_call=False,
 )
 def update_random_id(n_clicks):
-    return "idsuite_" + DataGenerator.generate_aggregated_uuid(length_threshold=5)
+    return idsuite_prefix + DataGenerator.generate_aggregated_uuid(length_threshold=5)
 
 
 @callback(
@@ -77,8 +79,8 @@ def save_update_delete_data(
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
-            project_id = str(project_ref).split("(")[1].rstrip(")")
-            project_name = str(project_ref).split("(")[0].strip()
+            project_id = StringHandler.get_id_format(project_ref)
+            project_name = StringHandler.get_name_format(project_ref)
 
             new_suite = {
                 Constants.SuiteDataJSON.SUITE_ID: suite_id,
@@ -96,7 +98,7 @@ def save_update_delete_data(
 
             data_mapper_instance.save_to_json_storage(data)
             
-            new_id = "idsuite_" + DataGenerator.generate_aggregated_uuid(length_threshold=5)
+            new_id = idsuite_prefix + DataGenerator.generate_aggregated_uuid(length_threshold=5)
 
             return "Suite saved successfully", dash.no_update, new_id
 

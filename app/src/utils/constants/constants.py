@@ -65,6 +65,7 @@ class Constants:
         QALANGO_LOGO_PNG_PATH = "app/assets/images/Qalango_logo_transp.png"
         FEATURES_DATA_JSON_PATH = "app/data/storage/features_data.json"
         SCRIPTED_TESTS_DATA_JSON_PATH = "app/data/storage/test_cases_data.json"
+        SCENARIOS_DATA_JSON_PATH = "app/data/storage/scenarios_data.json"
         PROJECTS_DATA_JSON_PATH = "app/data/storage/projects_data.json"
         SUITES_DATA_JSON_PATH = "app/data/storage/suites_data.json"
         TEST_EFFORTS_DATA_JSON_PATH = "app/data/storage/test_efforts_data.json"
