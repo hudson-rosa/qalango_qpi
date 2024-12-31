@@ -5,6 +5,7 @@ from src.models.mapper.suite_mapper import SuiteMapper
 from src.models.mapper.test_efforts_mapper import TestEffortsMapper
 from src.views.layout import html_component_header_tabs
 from src.utils.constants.constants import Constants
+from src.utils.data_generator import DataGenerator
 
 
 def render_layout():
@@ -24,13 +25,13 @@ def render_layout():
                         children=[
                             html.Button(
                                 "BDD Scenario format",
-                                id="rf--toggle-bdd",
+                                id="rsc--toggle-bdd",
                                 n_clicks=0,
                                 className="toggle-btn active",
                             ),
                             html.Button(
                                 "Scripted Test format",
-                                id="rf--toggle-scripted",
+                                id="rsc--toggle-tc",
                                 n_clicks=0,
                                 className="toggle-btn",
                             ),
@@ -56,7 +57,7 @@ def generate_new_id():
         className="grid-2",
         children=[
             dcc.Input(
-                id="rf--feature-or-test-id",
+                id="rsc--feature-or-test-id",
                 type="text",
                 placeholder="Feature id",
                 required=True,
@@ -65,7 +66,7 @@ def generate_new_id():
             ),
             html.Button(
                 "Generate new ID",
-                id="rf--generate-id-button",
+                id="rsc--generate-id-button",
                 className="inline-grid",
             ),
         ],
@@ -77,14 +78,14 @@ def define_project_and_suite():
         className="grid grid-2",
         children=[
             dcc.Dropdown(
-                id="rf--project-dropdown",
+                id="rsc--project-dropdown",
                 options=ProjectMapper.get_project_options(),
                 placeholder="Select project name",
                 searchable=True,
                 className="c_dropdown",
             ),
             dcc.Dropdown(
-                id="rf--suite-dropdown",
+                id="rsc--suite-dropdown",
                 options=SuiteMapper.get_suite_options(),
                 placeholder="Select suite name",
                 searchable=True,
@@ -96,7 +97,7 @@ def define_project_and_suite():
 
 def register_bdd_feature_scenarios():
     return html.Div(
-        id="rf--bdd-container",
+        id="rsc--bdd-container",
         children=[
             html.Ul(
                 html.Li(
@@ -104,7 +105,7 @@ def register_bdd_feature_scenarios():
                         className="section-group",
                         children=[
                             dcc.Input(
-                                id="rf--feature-name",
+                                id="rsc--bdd-feature-name",
                                 type="text",
                                 placeholder="Enter feature name",
                                 required=True,
@@ -114,50 +115,27 @@ def register_bdd_feature_scenarios():
                 ),
             ),
             html.Div(
+                className="section-group",
                 children=[
-                    html.H3("Enter your BDD Scenarios"),
-                    html.H4(
-                        "Add the BDD tags before each Scenario keyword to track the test level/approach for coverage purposes."
-                    ),
-                    html.H4(
-                        f"""Test Levels: 
-                            @{Constants.TestLevelsEntity.INTEGRATION}
-                            @{Constants.TestLevelsEntity.COMPONENT}
-                            @{Constants.TestLevelsEntity.CONTRACT}
-                            @{Constants.TestLevelsEntity.API}
-                            @{Constants.TestLevelsEntity.E2E}
-                            @{Constants.TestLevelsEntity.PERFORMANCE}
-                            @{Constants.TestLevelsEntity.SECURITY}
-                            @{Constants.TestLevelsEntity.USABILITY}
-                            @{Constants.TestLevelsEntity.EXPLORATORY}
-                        """,
-                        className="info-highlight",
-                    ),
-                    html.H4(
-                        f"""Test Approaches: 
-                            @{Constants.TestTypesEntity.AUTOMATED}
-                            @{Constants.TestTypesEntity.MANUAL}
-                        """,
-                        className="info-highlight",
-                    ),
+                    html.H3("Enter your Gherkin Feature"),
                     dcc.Textarea(
-                        id="rf--bdd-editor",
-                        style={"height": "400px"},
-                        value="""# Example
-Feature: User Login
-
-@automated @e2e
-Scenario: Successful login
-    Given the user is on the login page
-    When they enter valid credentials
-    Then they should be redirected to the dashboard
-""",
+                        id="rsc--bdd-feature-editor",
+                        style={"height": "200px !important"},
+                        placeholder="E.g., Feature: User Login",
                     ),
                 ],
-                style={"marginBottom": "20px"},
+            ),
+            # =========================
+            define_bdd_scenario_details(scenario_id_suffix=1),
+            # =========================
+            html.Button(
+                "+ Add New Scenario",
+                id="rsc--bdd-add-scenario-button",
+                n_clicks=0,
+                className="add-scenario-btn",
             ),
             html.Div(
-                id="rf--bdd-output-message",
+                id="rsc--bdd-output-message",
                 className="output-msg",
             ),
             html.Div(
@@ -167,7 +145,7 @@ Scenario: Successful login
                         children=[
                             html.Button(
                                 "Save feature",
-                                id="rf--submit-bdd-button",
+                                id="rsc--submit-bdd-button",
                                 n_clicks=0,
                                 className="submit-btn",
                             ),
@@ -177,7 +155,7 @@ Scenario: Successful login
                         children=[
                             html.Button(
                                 "Delete File",
-                                id="rf--delete-bdd-file-button",
+                                id="rsc--delete-bdd-file-button",
                                 n_clicks=0,
                             ),
                         ]
@@ -189,46 +167,122 @@ Scenario: Successful login
     )
 
 
+def define_bdd_scenario_details(scenario_id_suffix=1):
+    return html.Div(
+        id="rsc--bdd-scenarios-container",
+        children=[
+            html.Hr(),
+            html.H3(f"Enter your Gherkin Scenario {scenario_id_suffix}"),
+            html.Div(
+                className="grid grid-2",
+                children=[
+                    html.Div(
+                        children=[
+                            html.H4(
+                                "Choose the test level/approach for coverage purposes."
+                            ),
+                            dcc.Dropdown(
+                                options=TestEffortsMapper.get_list_of_test_levels(),
+                                id=f"rsc--bdd-test-level-dropdown-{scenario_id_suffix}",
+                                placeholder="Enter scenario level",
+                                searchable=True,
+                                className="c_dropdown",
+                                value="exploratory",
+                            ),
+                            html.H4(
+                                "Enter the average test execution duration (HH:mm)"
+                            ),
+                            dcc.Slider(
+                                id={
+                                    "name": "rsc--bdd-total-time-scenario-slider",
+                                    "type": "slider",
+                                    "index": scenario_id_suffix,
+                                },
+                                min=0,
+                                max=181,
+                                marks=DataGenerator.generate_slider_marks(),
+                                step=None,
+                                value=0,
+                                included=False,
+                                tooltip={
+                                    "placement": "bottom",
+                                    "always_visible": True,
+                                },
+                                className="c_slider",
+                            ),
+                            html.H5(
+                                id={
+                                    "name": "rsc--bdd-slider-output",
+                                    "type": "slider-output",
+                                    "index": scenario_id_suffix,
+                                },
+                            ),
+                        ]
+                    ),
+                    html.Div(
+                        children=[
+                            html.H4("Select the test approach for this scenario"),
+                            dcc.RadioItems(
+                                id=f"rsc--bdd-test-approach-radio-{scenario_id_suffix}",
+                                options=[
+                                    {
+                                        "label": "Manual",
+                                        "value": Constants.TestTypesEntity.MANUAL,
+                                    },
+                                    {
+                                        "label": "Automated",
+                                        "value": Constants.TestTypesEntity.AUTOMATED,
+                                    },
+                                ],
+                                className="c_radio",
+                                value=Constants.TestTypesEntity.MANUAL,
+                            ),
+                        ]
+                    ),
+                ],
+            ),
+            html.Div(
+                id={
+                    "type": "rsc--bdd-scenario-editor-container",
+                    "index": scenario_id_suffix,
+                },
+                className="section-group",
+                children=[
+                    dcc.Textarea(
+                        id={"type": "bdd-scenario-editor", "index": scenario_id_suffix},
+                        style={"height": "600px !important"},
+                        placeholder=f"""Scenario: Successful login (Example #{scenario_id_suffix})
+    Given the user is on the login page
+    When they enter valid credentials
+    Then they should be redirected to the dashboard
+    """,
+                    ),
+                ],
+            ),
+        ],
+    )
+
+
 def register_scripted_test_cases():
     return html.Div(
-        id="rf--scripted-container",
+        id="rsc--tc-container",
         className="section-group",
         children=[
             dcc.Input(
-                id="rf--test-name",
+                id="rsc--tc-test-name",
                 type="text",
                 placeholder="Enter test case title",
                 required=True,
             ),
-            dcc.Dropdown(
-                options=TestEffortsMapper.get_list_of_test_levels(),
-                id="rf--test-level",
-                placeholder="Enter test level",
-                searchable=True,
-                className="c_dropdown",
-                value="exploratory",
-            ),
-            dcc.RadioItems(
-                id="rf--test-approach",
-                options=[
-                    {
-                        "label": "Manual",
-                        "value": Constants.TestTypesEntity.MANUAL,
-                    },
-                    {
-                        "label": "Automated",
-                        "value": Constants.TestTypesEntity.AUTOMATED,
-                    },
-                ],
-                className="c_radio",
-                value=Constants.TestTypesEntity.MANUAL,
-            ),
-            html.H3("Enter the Preconditions for this Test Case:"),
+            # =========================
+            define_test_case_details(),
+            # =========================
+            html.H3("Enter the Preconditions for this Test Case"),
             html.Div(
-                id="rf--preconditions-container",
+                id="rsc--tc-preconditions-container",
                 children=[
                     dcc.Textarea(
-                        id="rf--precondition-1",
+                        id="rsc--precondition-1",
                         placeholder="Enter precondition 1",
                         required=True,
                     )
@@ -236,35 +290,37 @@ def register_scripted_test_cases():
             ),
             html.Button(
                 "+ Add Precondition",
-                id="rf--add-precondition",
+                id="rsc--tc-add-precondition",
                 n_clicks=0,
                 className="add-precondition-btn",
             ),
-            html.H3("Enter the Test Case steps and expected results:"),
+            html.H3("Enter the Test Case steps and expected results"),
             html.Div(
-                id="rf--steps-container",
+                id="rsc--tc-steps-container",
                 className="grid grid-2",
                 children=[
                     dcc.Textarea(
-                        id="rf--step-1",
+                        id="rsc--step-1",
                         placeholder="Enter step 1",
                         required=True,
+                        style={"height": "500px !important"},
                     ),
                     dcc.Textarea(
-                        id="rf--expected-1",
+                        id="rsc--expected-1",
                         placeholder="Enter expected result 1",
                         required=True,
+                        style={"height": "500px !important"},
                     ),
                 ],
             ),
             html.Button(
                 "+ Add Step",
-                id="rf--add-step",
+                id="rsc--tc-add-step-button",
                 n_clicks=0,
-                className="add-step-btn",
+                className="add-btn",
             ),
             html.Div(
-                id="rf--scripted-output-message",
+                id="rsc--tc-output-message",
                 className="output-msg",
             ),
             html.Div(
@@ -274,7 +330,7 @@ def register_scripted_test_cases():
                         children=[
                             html.Button(
                                 "Save new test",
-                                id="rf--submit-scripted-button",
+                                id="rsc--submit-tc-button",
                                 n_clicks=0,
                                 className="submit-btn",
                             ),
@@ -284,4 +340,71 @@ def register_scripted_test_cases():
             ),
         ],
         style={"display": "none"},
+    )
+
+
+def define_test_case_details(scenario_id_suffix=1):
+    return html.Div(
+        className="grid grid-2",
+        children=[
+            html.Div(
+                [
+                    html.H4("Choose the test level/approach for coverage purposes."),
+                    dcc.Dropdown(
+                        options=TestEffortsMapper.get_list_of_test_levels(),
+                        id="rsc--tc-test-level-dropdown",
+                        placeholder="Enter test level",
+                        searchable=True,
+                        className="c_dropdown",
+                        value="exploratory",
+                    ),
+                    html.H4("Enter the average test execution duration (HH:mm)"),
+                    dcc.Slider(
+                        id={
+                            "name": "rsc--tc-total-time-slider",
+                            "type": "slider",
+                            "index": scenario_id_suffix,
+                        },
+                        min=0,
+                        max=181,
+                        marks=DataGenerator.generate_slider_marks(),
+                        step=None,
+                        value=0,
+                        included=False,
+                        tooltip={
+                            "placement": "bottom",
+                            "always_visible": True,
+                        },
+                        className="c_slider",
+                    ),
+                    html.H5(
+                        id={
+                            "name": "rsc--tc-slider-output",
+                            "type": "slider-output",
+                            "index": scenario_id_suffix,
+                        }
+                    ),
+                ]
+            ),
+            html.Div(
+                [
+                    html.H4("Selected the test approach"),
+                    dcc.RadioItems(
+                        id="rsc--tc-test-approach-radio",
+                        options=[
+                            {
+                                "label": "Manual",
+                                "value": Constants.TestTypesEntity.MANUAL,
+                            },
+                            {
+                                "label": "Automated",
+                                "value": Constants.TestTypesEntity.AUTOMATED,
+                            },
+                        ],
+                        className="c_radio",
+                        value=Constants.TestTypesEntity.MANUAL,
+                    ),
+                ]
+            ),
+        ],
     )

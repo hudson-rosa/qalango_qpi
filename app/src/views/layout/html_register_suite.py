@@ -26,7 +26,7 @@ def render_layout():
                                         className="grid-2",
                                         children=[
                                             dcc.Input(
-                                                id="rs--suite-id",
+                                                id="rsu--suite-id",
                                                 type="text",
                                                 placeholder="Suite id",
                                                 required=True,
@@ -35,19 +35,19 @@ def render_layout():
                                             ),
                                             html.Button(
                                                 "Generate new ID",
-                                                id="rs--generate-id-button",
+                                                id="rsu--generate-id-button",
                                                 className="inline-grid",
                                             ),
                                         ],
                                     ),
                                     dcc.Dropdown(
-                                        id="rs--project-dropdown",
+                                        id="rsu--project-dropdown",
                                         placeholder="Select project name",
                                         options=ProjectMapper.get_project_options(),
                                         className="c_dropdown"
                                     ),
                                     dcc.Input(
-                                        id="rs--suite-name",
+                                        id="rsu--suite-name",
                                         type="text",
                                         placeholder="Enter suite name",
                                         required=True,
@@ -57,26 +57,26 @@ def render_layout():
                         )
                     ),
                     html.Label("Required fields", className="required-msg"),
-                    html.Div(id="rs--output-message-suites", className="output-msg"),
+                    html.Div(id="rsu--output-message-suites", className="output-msg"),
                     html.Div(
                         className="grid grid-2",
                         children=[
-                            html.Button("Save", id="rs--save-button", n_clicks=0),
-                            html.Button("Update", id="rs--update-button", n_clicks=0),
+                            html.Button("Save", id="rsu--save-button", n_clicks=0),
+                            html.Button("Update", id="rsu--update-button", n_clicks=0),
                             html.Div(
                                 className="section-group",
                                 children=[
                                     html.Div(
-                                        id="rs--delete-output-message-suites",
+                                        id="rsu--delete-output-message-suites",
                                         className="output-msg",
                                     ),
                                     dcc.Input(
-                                        id="rs--delete-suite-id",
+                                        id="rsu--delete-suite-id",
                                         type="text",
                                         placeholder="Enter a suite ID to delete",
                                     ),
                                     html.Button(
-                                        "Delete", id="rs--delete-button", n_clicks=0
+                                        "Delete", id="rsu--delete-button", n_clicks=0
                                     ),
                                 ],
                             ),

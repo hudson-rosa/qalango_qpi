@@ -8,3 +8,12 @@ class StringHandler:
 
     def get_name_format(base_string):
         return str(base_string).split("(")[0].strip()
+
+    def format_time_to_hh_mm(value):
+        hours = value // 60
+        minutes = value % 60
+
+        show_hours = ""
+        if hours > 0:
+            show_hours = f"{hours}h "
+        return f"{show_hours}{minutes:02d}m"

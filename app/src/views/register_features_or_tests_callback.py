@@ -1,9 +1,9 @@
 import dash
 import json
 
-from dash import dcc, callback, html, Input, Output, State
-from src.models.mapper.suite_mapper import SuiteMapper
+from dash import dcc, callback, html, Input, Output, State, MATCH, ALL
 from src.models.mapper.data_mapper import DataMapper
+from src.models.mapper.suite_mapper import SuiteMapper
 
 import src.views.layout.html_register_feature_or_tests as html_register_feature_or_tests
 from src.utils.data_generator import DataGenerator
@@ -15,6 +15,7 @@ from src.utils.string_handler import StringHandler
 
 app = dash.Dash(__name__)
 ctx = dash.callback_context
+slider_marks = DataGenerator.generate_slider_marks()
 
 scenarios_json_storage = Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
 scenarios_mapper_instance = DataMapper(filename=scenarios_json_storage)
@@ -28,18 +29,18 @@ def is_matching_test_level(current_test_level, expected=""):
 
 
 @callback(
-    Output("rf--feature-or-test-id", "value"),
+    Output("rsc--feature-or-test-id", "value"),
     [
-        Input("rf--bdd-container", "style"),
-        Input("rf--scripted-container", "style"),
-        Input("rf--generate-id-button", "n_clicks"),
+        Input("rsc--bdd-container", "style"),
+        Input("rsc--tc-container", "style"),
+        Input("rsc--generate-id-button", "n_clicks"),
     ],
     prevent_initial_call=False,
 )
-def update_random_id(bdd_style, scripted_style, n_clicks):
+def update_random_id(bdd_style, tc_style, n_clicks):
     if bdd_style.get("display") == "block":
         prefix = idfeat_prefix
-    elif scripted_style.get("display") == "block":
+    elif tc_style.get("display") == "block":
         prefix = idtest_prefix
     else:
         prefix = "unknown_"
@@ -48,7 +49,7 @@ def update_random_id(bdd_style, scripted_style, n_clicks):
 
 
 @callback(
-    Output("rf--suite-dropdown", "options"), [Input("rf--project-dropdown", "value")]
+    Output("rsc--suite-dropdown", "options"), [Input("rsc--project-dropdown", "value")]
 )
 def update_suite_options(selected_project):
     if not selected_project:
@@ -59,108 +60,136 @@ def update_suite_options(selected_project):
 
 @callback(
     [
-        Output("rf--bdd-container", "style"),
-        Output("rf--scripted-container", "style"),
-        Output("rf--toggle-bdd", "className"),
-        Output("rf--toggle-scripted", "className"),
+        Output("rsc--bdd-container", "style"),
+        Output("rsc--tc-container", "style"),
+        Output("rsc--toggle-bdd", "className"),
+        Output("rsc--toggle-tc", "className"),
     ],
-    [Input("rf--toggle-bdd", "n_clicks"), Input("rf--toggle-scripted", "n_clicks")],
+    [Input("rsc--toggle-bdd", "n_clicks"), Input("rsc--toggle-tc", "n_clicks")],
 )
-def toggle_form(bdd_clicks, scripted_clicks):
+def toggle_form(bdd_clicks, tc_clicks):
     bdd_toggle_style = {"display": "block"}
-    scripted_toggle_style = {"display": "none"}
+    tc_toggle_style = {"display": "none"}
     bdd_class = "toggle-btn active"
-    scripted_class = "toggle-btn"
+    tc_class = "toggle-btn"
 
-    if ctx.triggered_id == "rf--toggle-scripted":
+    if ctx.triggered_id == "rsc--toggle-tc":
         bdd_toggle_style = {"display": "none"}
-        scripted_toggle_style = {"display": "block"}
+        tc_toggle_style = {"display": "block"}
         bdd_class = "toggle-btn"
-        scripted_class = "toggle-btn active"
+        tc_class = "toggle-btn active"
 
-    return bdd_toggle_style, scripted_toggle_style, bdd_class, scripted_class
+    return bdd_toggle_style, tc_toggle_style, bdd_class, tc_class
 
 
 @callback(
-    Output("rf--preconditions-container", "children"),
-    Input("rf--add-precondition", "n_clicks"),
-    State("rf--preconditions-container", "children"),
+    Output(
+        {"type": "slider-output", "index": MATCH, "name": "rsc--bdd-slider-output"},
+        "children",
+    ),
+    Input(
+        {
+            "type": "slider",
+            "index": MATCH,
+            "name": "rsc--bdd-total-time-scenario-slider",
+        },
+        "value",
+    ),
 )
-def add_test_precondition(n_clicks, existing_preconditions):
-    if n_clicks > 0:
-        precond_block_number = (len(existing_preconditions)) + 1
-
-        new_precondition = dcc.Textarea(
-            id=f"rf--precondition-{precond_block_number}",
-            placeholder=f"Enter precondition {precond_block_number}",
-        )
-        return existing_preconditions + [new_precondition]
-
-    return existing_preconditions
+def update_bdd_slider_output(value):
+    return "This scenario takes " + StringHandler.format_time_to_hh_mm(value)
 
 
 @callback(
-    Output("rf--steps-container", "children"),
-    Input("rf--add-step", "n_clicks"),
-    State("rf--steps-container", "children"),
+    Output(
+        {"type": "slider-output", "index": MATCH, "name": "rsc--tc-slider-output"},
+        "children",
+    ),
+    Input(
+        {"type": "slider", "index": MATCH, "name": "rsc--tc-total-time-slider"}, "value"
+    ),
 )
-def add_test_step(n_clicks, existing_steps):
-    if n_clicks > 0:
-        step_block_number = (len(existing_steps) // 2) + 1
-
-        new_step = dcc.Textarea(
-            id=f"rf--step-{step_block_number}",
-            placeholder=f"Enter step {step_block_number}",
-        )
-        new_expected = dcc.Textarea(
-            id=f"rf--expected-{step_block_number}",
-            placeholder=f"Enter expected result {step_block_number}",
-        )
-        return existing_steps + [new_step, new_expected]
-
-    return existing_steps
+def update_tc_slider_output(value):
+    return "This test takes " + StringHandler.format_time_to_hh_mm(value)
 
 
 @callback(
-    Output("rf--bdd-editor", "style"),
-    Input("rf--bdd-editor", "value"),
-    State("rf--bdd-editor", "style"),
+    Output({"type": "bdd-scenario-editor", "index": MATCH}, "style"),
+    Input({"type": "bdd-scenario-editor", "index": MATCH}, "value"),
+    State({"type": "bdd-scenario-editor", "index": MATCH}, "style"),
 )
 def auto_resize_textarea(content, current_style):
     if content:
         line_count = str(content).count("\n") + 1
-        new_dynamic_height = min(100 + line_count * 20, 800)
+        new_dynamic_height = min(150 + line_count * 20, 800)
         updated_style = {**current_style, "height": f"{new_dynamic_height}px"}
         return updated_style
     return current_style
 
 
 @callback(
+    Output("rsc--bdd-scenarios-container", "children"),  # Update the entire container
+    Input("rsc--bdd-add-scenario-button", "n_clicks"),
+    State("rsc--bdd-scenarios-container", "children"),
+    prevent_initial_call=True,
+)
+def add_all_bdd_scenario_fields(n_clicks, current_children):
+    if current_children is None:
+        current_children = []
+
+    if n_clicks is None:
+        return current_children
+
+    scenario_id_suffix = n_clicks + 1
+
+    new_scenario_block = html_register_feature_or_tests.define_bdd_scenario_details(
+        scenario_id_suffix=scenario_id_suffix
+    )
+
+    return current_children + [new_scenario_block]
+
+
+@callback(
     [
-        Output("rf--bdd-output-message", "children"),
-        Output("rf--feature-or-test-id", "value", allow_duplicate=True),
+        Output("rsc--bdd-output-message", "children"),
+        Output("rsc--feature-or-test-id", "value", allow_duplicate=True),
     ],
     [
-        Input("rf--submit-bdd-button", "n_clicks"),
-        Input("rf--delete-bdd-file-button", "n_clicks"),
+        Input("rsc--submit-bdd-button", "n_clicks"),
+        Input("rsc--delete-bdd-file-button", "n_clicks"),
     ],
     [
-        State("rf--feature-or-test-id", "value"),
-        State("rf--feature-name", "value"),
-        State("rf--bdd-editor", "value"),
-        State("rf--suite-dropdown", "value"),
-        State("rf--project-dropdown", "value"),
+        State("rsc--suite-dropdown", "value"),
+        State("rsc--project-dropdown", "value"),
+        State("rsc--feature-or-test-id", "value"),
+        State("rsc--bdd-feature-name", "value"),
+        State("rsc--bdd-feature-editor", "value"),
+        State({"type": "rsc--bdd-scenario-editor-container", "index": ALL}, "value"),
+        State({"type": "rsc--bdd-test-level-dropdown", "index": ALL}, "value"),
+        State({"type": "rsc--bdd-test-approach-radio", "index": ALL}, "value"),
+        State(
+            {
+                "type": "slider",
+                "name": "rsc--bdd-total-time-scenario-slider",
+                "index": ALL,
+            },
+            "value",
+        ),
     ],
     prevent_initial_call="initial_duplicate",
 )
 def submit_bdd_data(
     submit_clicks,
     delete_file_clicks,
-    feature_id="",
-    feature_name="",
-    bdd_content="",
     suite_ref="",
     project_ref="",
+    feature_id="",
+    feature_name="",
+    bdd_feature_content="",
+    bdd_children_scenarios="",
+    test_level="",
+    test_approach="",
+    test_duration="",
 ):
     ctx = dash.callback_context
 
@@ -173,11 +202,15 @@ def submit_bdd_data(
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
     match button_id:
-        case "rf--submit-bdd-button":
+        case "rsc--submit-bdd-button":
             is_valid, message = ValidationUtils.validate_mandatory_fields(
                 feature_id=feature_id,
                 feature_name=feature_name,
-                bdd_content=bdd_content,
+                bdd_feature_content=bdd_feature_content,
+                bdd_children_scenarios=bdd_children_scenarios,
+                test_level=test_level,
+                test_approach=test_approach,
+                test_duration=test_duration,
                 suite_ref=suite_ref,
                 project_ref=project_ref,
             )
@@ -189,14 +222,25 @@ def submit_bdd_data(
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
-            bdd_content_lower = str(bdd_content).lower()
+            scenarios_data = []
+            for i in range(0, len(bdd_children_scenarios), 2):
+                precond_textarea = bdd_children_scenarios[i]
+                scenario_value = (
+                    precond_textarea.get("props", {}).get("value", "").strip()
+                )
+
+                scenarios_data.append({"scenario": scenario_value})
+
+            bdd_scenarios_content = "\n".join(bdd_children_scenarios)
+
+            bdd_scenario_key_lower = str(bdd_scenarios_content).lower()
             project_id = StringHandler.get_id_format(project_ref)
             project_name = StringHandler.get_name_format(project_ref)
             suite_name = str(suite_ref).split("(")[0].strip()
 
-            scenarios_count = bdd_content_lower.count(
+            scenarios_count = bdd_scenario_key_lower.count(
                 "scenario:"
-            ) + bdd_content_lower.count("scenario outline:")
+            ) + bdd_scenario_key_lower.count("scenario outline:")
 
             new_data = {
                 Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
@@ -204,40 +248,40 @@ def submit_bdd_data(
                 Constants.SuiteDataJSON.SUITE_NAME: suite_name,
                 Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: scenarios_count,
                 "test_levels": {
-                    Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.INTEGRATION}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.COMPONENT}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.CONTRACT}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_API: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_API: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.API}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.E2E}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.PERFORMANCE}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.SECURITY}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.USABILITY}"
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_scenarios_content.count(
                         f"@{Constants.TestLevelsEntity.EXPLORATORY}"
                     ),
                 },
                 "test_approaches": {
-                    Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_content_lower.count(
+                    Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_scenarios_content.count(
                         f"@{Constants.TestTypesEntity.AUTOMATED}"
                     ),
                     Constants.FeaturesDataJSON.QTY_OF_MANUAL: scenarios_count
-                    - bdd_content_lower.count(
+                    - bdd_scenarios_content.count(
                         f"@{Constants.TestTypesEntity.AUTOMATED}"
                     ),
                 },
@@ -254,7 +298,8 @@ def submit_bdd_data(
 
             scenarios_mapper_instance.save_to_json_storage(data)
             scenarios_mapper_instance.save_content_to_new_file(
-                new_file=feature_file_pathname, new_data=bdd_content
+                new_file=feature_file_pathname,
+                new_data=bdd_feature_content + bdd_scenarios_content,
             )
 
             new_id = idfeat_prefix + DataGenerator.generate_aggregated_uuid()
@@ -264,7 +309,7 @@ def submit_bdd_data(
                 new_id,
             )
 
-        case "rf--delete-bdd-file-button":
+        case "rsc--delete-bdd-file-button":
             try:
                 data = scenarios_mapper_instance.load_from_json_storage()
 
@@ -292,20 +337,60 @@ def submit_bdd_data(
 
 
 @callback(
+    Output("rsc--tc-preconditions-container", "children"),
+    Input("rsc--tc-add-precondition", "n_clicks"),
+    State("rsc--tc-preconditions-container", "children"),
+)
+def add_test_precondition(n_clicks, existing_preconditions):
+    if n_clicks > 0:
+        precond_block_number = (len(existing_preconditions)) + 1
+
+        new_precondition = dcc.Textarea(
+            id=f"rsc--precondition-{precond_block_number}",
+            placeholder=f"Enter precondition {precond_block_number}",
+        )
+        return existing_preconditions + [new_precondition]
+
+    return existing_preconditions
+
+
+@callback(
+    Output("rsc--tc-steps-container", "children"),
+    Input("rsc--tc-add-step-button", "n_clicks"),
+    State("rsc--tc-steps-container", "children"),
+)
+def add_test_step(n_clicks, existing_steps):
+    if n_clicks > 0:
+        step_block_number = (len(existing_steps) // 2) + 1
+
+        new_step = dcc.Textarea(
+            id=f"rsc--step-{step_block_number}",
+            placeholder=f"Enter step {step_block_number}",
+        )
+        new_expected = dcc.Textarea(
+            id=f"rsc--expected-{step_block_number}",
+            placeholder=f"Enter expected result {step_block_number}",
+        )
+        return existing_steps + [new_step, new_expected]
+
+    return existing_steps
+
+
+@callback(
     [
-        Output("rf--scripted-output-message", "children"),
-        Output("rf--feature-or-test-id", "value", allow_duplicate=True),
+        Output("rsc--tc-output-message", "children"),
+        Output("rsc--feature-or-test-id", "value", allow_duplicate=True),
     ],
-    Input("rf--submit-scripted-button", "n_clicks"),
+    Input("rsc--submit-tc-button", "n_clicks"),
     [
-        State("rf--feature-or-test-id", "value"),
-        State("rf--test-name", "value"),
-        State("rf--preconditions-container", "children"),
-        State("rf--steps-container", "children"),
-        State("rf--test-level", "value"),
-        State("rf--test-approach", "value"),
-        State("rf--suite-dropdown", "value"),
-        State("rf--project-dropdown", "value"),
+        State("rsc--feature-or-test-id", "value"),
+        State("rsc--tc-test-name", "value"),
+        State("rsc--tc-preconditions-container", "children"),
+        State("rsc--tc-steps-container", "children"),
+        State("rsc--tc-test-level-dropdown", "value"),
+        State("rsc--tc-test-approach-radio", "value"),
+        State("rsc--suite-dropdown", "value"),
+        State("rsc--project-dropdown", "value"),
     ],
     prevent_initial_call="initial_duplicate",
 )
@@ -314,7 +399,7 @@ def submit_scripted_test(
     test_id="",
     test_name="",
     preconditions_children="",
-    steps_children="",
+    children_steps="",
     test_level="",
     test_approach="",
     suite_ref="",
@@ -328,12 +413,12 @@ def submit_scripted_test(
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
     match button_id:
-        case "rf--submit-scripted-button":
+        case "rsc--submit-tc-button":
             is_valid, message = ValidationUtils.validate_mandatory_fields(
                 feature_id=test_id,
                 test_name=test_name,
                 preconditions_children=preconditions_children,
-                steps_children=steps_children,
+                children_steps=children_steps,
                 test_level=test_level,
                 suite_ref=suite_ref,
                 project_ref=project_ref,
@@ -354,9 +439,9 @@ def submit_scripted_test(
                 preconditions_data.append({"precondition": step_value})
 
             steps_and_expected_data = []
-            for i in range(0, len(steps_children), 2):
-                step_textarea = steps_children[i]
-                expected_textarea = steps_children[i + 1]
+            for i in range(0, len(children_steps), 2):
+                step_textarea = children_steps[i]
+                expected_textarea = children_steps[i + 1]
 
                 step_value = step_textarea.get("props", {}).get("value", "").strip()
                 expected_value = (

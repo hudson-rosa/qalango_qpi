@@ -18,8 +18,8 @@ idproj_prefix = "idproj_"
 
 
 @callback(
-    Output("rp--project-id", "value"),
-    Input("rp--generate-id-button", "n_clicks"),
+    Output("rpj--project-id", "value"),
+    Input("rpj--generate-id-button", "n_clicks"),
     prevent_initial_call=False,
 )
 def update_random_id(n_clicks):
@@ -28,19 +28,19 @@ def update_random_id(n_clicks):
 
 @callback(
     [
-        Output("rp--output-message-projects", "children"),
-        Output("rp--delete-output-message-projects", "children"),
-        Output("rp--project-id", "value", allow_duplicate=True),
+        Output("rpj--output-message-projects", "children"),
+        Output("rpj--delete-output-message-projects", "children"),
+        Output("rpj--project-id", "value", allow_duplicate=True),
     ],
     [
-        Input("rp--save-button", "n_clicks"),
-        Input("rp--update-button", "n_clicks"),
-        Input("rp--delete-button", "n_clicks"),
+        Input("rpj--save-button", "n_clicks"),
+        Input("rpj--update-button", "n_clicks"),
+        Input("rpj--delete-button", "n_clicks"),
     ],
     [
-        State("rp--project-id", "value"),
-        State("rp--project-name", "value"),
-        State("rp--delete-project-id", "value"),
+        State("rpj--project-id", "value"),
+        State("rpj--project-name", "value"),
+        State("rpj--delete-project-id", "value"),
     ],
     prevent_initial_call='initial_duplicate'
 )
@@ -60,7 +60,7 @@ def save_update_delete_data(
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
     match button_id:
-        case "rp--save-button":
+        case "rpj--save-button":
             is_valid, message = ValidationUtils.validate_mandatory_fields(
                 project_id=project_id,
                 project_name=project_name
@@ -85,7 +85,7 @@ def save_update_delete_data(
 
             return "Project saved successfully", dash.no_update, new_id
 
-        case "rp--update-button":
+        case "rpj--update-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
             except FileNotFoundError:
@@ -104,7 +104,7 @@ def save_update_delete_data(
                     dash.no_update,
                 )
 
-        case "rp--delete-button":
+        case "rpj--delete-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
 

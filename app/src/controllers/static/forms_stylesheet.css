@@ -99,10 +99,11 @@ body {
 .form-content h4 {
   margin-bottom: 1rem;
   padding-left: 15px;
-  padding-top: 5px;
+  padding-top: 10px;
 }
 
 .form-content h5 {
+  color: var(--lightGreen);
   margin-bottom: 1rem;
   padding-left: 15px;
   padding-top: 5px;
@@ -113,10 +114,10 @@ body {
   padding-left: 45px;
 }
 
-.form-content li,
-.form-content .grid>*:not(:last-child) {
+/* .form-content li, */
+/* .form-content .grid>*:not(:last-child) {
   margin-bottom: 1.5rem;
-}
+} */
 
 .form-content select,
 .form-content input,
@@ -130,6 +131,7 @@ body {
   background: var(--bgFormEls);
   transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
     transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+  margin-bottom: 20px;
 }
 
 .form-content textarea {
@@ -139,7 +141,7 @@ body {
 .form-content ::placeholder {
   color: inherit;
   /*Fix opacity issue on Firefox*/
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .form-content select:focus,
@@ -182,49 +184,49 @@ body {
 
 /* INPUT NUMBER
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  .c_number_spinner {
-    width: 100%;
-    line-height: 1.5;
-    padding: 15px 30px;
-    border: 1px solid var(--borderFormEls);
-    color: var(--lightBlue);
-    background: var(--bgFormEls);
-    transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
-                transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
-    border-radius: 5px;
-  }
-  
-  .c_number_spinner:focus {
-    background: var(--bgFormElsFocus);
-    transform: scale(1.02);
-  }
-  
-  .c_number_spinner::-webkit-inner-spin-button,
-  .c_number_spinner::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-right: -10px;
-    background: var(--spinnerButtonBg);
-    color: var(--spinnerButtonColor); 
-    width: 30px;
-    height: 50px;
-    cursor: pointer;
-  }
-  
-  .c_number_spinner::-webkit-inner-spin-button:hover,
-  .c_number_spinner::-webkit-outer-spin-button:hover {
-    background: var(--spinnerButtonHoverBg);
-    color: var(--lightBlue); 
-  }
-  
-  .c_number_spinner::-moz-focus-inner {
-    border: 0;
-  }
-  
-  .c_number_spinner::placeholder {
-    color: var(--lightBlue);
-    opacity: 1;
-  }
+.c_number_spinner {
+  width: 100%;
+  line-height: 1.5;
+  padding: 15px 30px;
+  border: 1px solid var(--borderFormEls);
+  color: var(--lightBlue);
+  background: var(--bgFormEls);
+  transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+    transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+  border-radius: 5px;
+}
+
+.c_number_spinner:focus {
+  background: var(--bgFormElsFocus);
+  transform: scale(1.02);
+}
+
+.c_number_spinner::-webkit-inner-spin-button,
+.c_number_spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-right: -10px;
+  background: var(--spinnerButtonBg);
+  color: var(--spinnerButtonColor);
+  width: 30px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.c_number_spinner::-webkit-inner-spin-button:hover,
+.c_number_spinner::-webkit-outer-spin-button:hover {
+  background: var(--spinnerButtonHoverBg);
+  color: var(--lightBlue);
+}
+
+.c_number_spinner::-moz-focus-inner {
+  border: 0;
+}
+
+.c_number_spinner::placeholder {
+  color: var(--lightBlue);
+  opacity: o.5;
+}
 
 /* FORM BUTTONS
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -314,7 +316,7 @@ body {
 .c_dropdown .Select-control {
   width: 100%;
   line-height: 1.5;
-  padding: 15px 30px;
+  padding: 15px;
   border: 1px solid var(--borderFormEls);
   color: var(--lightBlue);
   background: var(--bgFormEls);
@@ -332,7 +334,7 @@ body {
 
 .c_dropdown .Select-placeholder {
   color: var(--lightBlue);
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .c_dropdown .Select-menu-outer {
@@ -344,7 +346,7 @@ body {
 .c_dropdown .Select-option {
   background: var(--bgFormEls);
   color: var(--lightBlue);
-  padding: 10px;
+  padding: 15px;
 }
 
 .c_dropdown .Select-option:hover {
@@ -364,6 +366,8 @@ body {
 
 .c_dropdown .Select-value {
   color: var(--lightBlue);
+  padding-top: 22px;
+  margin-left: 20px
 }
 
 /* New rule to set the selected value label text color to white */
@@ -391,6 +395,7 @@ body {
   opacity: 0;
   visibility: hidden;
   width: 100%;
+  margin-top: 20px;
 }
 
 /* CUSTOM RADIO BUTTON
@@ -398,6 +403,7 @@ body {
 .c_radio {
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
   gap: 10px;
 }
 
@@ -417,6 +423,7 @@ body {
   display: inline-block;
   width: 20px;
   height: 20px;
+  margin-top: 20px;
   margin-right: 10px;
   border-radius: 50%;
   background-color: var(--red) !important;
@@ -428,8 +435,13 @@ body {
 
 /* CUSTOM SLIDER
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.c_slider {
+  margin-bottom: 20px
+}
+
 .rc-slider-track {
-  background-color: #853232; /* Color of the track */
+  background-color: #853232;
+  /* Color of the track */
 }
 
 .rc-slider-dot {
@@ -450,14 +462,19 @@ body {
 
 /* Handle */
 .rc-slider-handle {
-  border-color: var(--white); /* Border color of the handle */
-  background-color: var(--blue); /* Background color of the handle */
+  border-color: var(--white);
+  /* Border color of the handle */
+  background-color: var(--blue);
+  /* Background color of the handle */
 }
 
 /* Active Handle */
-.rc-slider-handle:focus, .rc-slider-handle:hover {
-  border-color: #007bff; /* Border color of the handle on hover or focus */
-  box-shadow: 0 0 5px var(--white); /* Box shadow for the handle on hover or focus */
+.rc-slider-handle:focus,
+.rc-slider-handle:hover {
+  border-color: #007bff;
+  /* Border color of the handle on hover or focus */
+  box-shadow: 0 0 5px var(--white);
+  /* Box shadow for the handle on hover or focus */
 }
 
 
@@ -499,7 +516,7 @@ footer span {
   font-weight: bold;
 }
 
-.add-step-btn {
+.add-btn {
   margin-top: 10px;
   cursor: pointer;
 }
@@ -516,11 +533,12 @@ footer span {
   }
 
   .form-content .section-group {
-    margin-top: 40px;
+    margin-top: 20px;
   }
 
-  .section-group input, .section-group .c_dropdown {
-    margin-bottom: 20px;
+  .section-group input,
+  .section-group .c_dropdown {
+    margin-top: 20px;
   }
 
   .form-content .inline-grid {
@@ -537,9 +555,9 @@ footer span {
     align-items: center;
   }
 
-  .form-content .grid>*:not(:last-child) {
+  /* .form-content .grid>*:not(:last-child) {
     margin-bottom: 0;
-  }
+  } */
 
   .form-content .required-msg {
     display: block;

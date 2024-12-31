@@ -21,8 +21,8 @@ idsuite_prefix = "idsuite_"
 
 
 @callback(
-    Output("rs--suite-id", "value"),
-    Input("rs--generate-id-button", "n_clicks"),
+    Output("rsu--suite-id", "value"),
+    Input("rsu--generate-id-button", "n_clicks"),
     prevent_initial_call=False,
 )
 def update_random_id(n_clicks):
@@ -31,20 +31,20 @@ def update_random_id(n_clicks):
 
 @callback(
     [
-        Output("rs--output-message-suites", "children"),
-        Output("rs--delete-output-message-suites", "children"),
-        Output("rs--suite-id", "value", allow_duplicate=True),
+        Output("rsu--output-message-suites", "children"),
+        Output("rsu--delete-output-message-suites", "children"),
+        Output("rsu--suite-id", "value", allow_duplicate=True),
     ],
     [
-        Input("rs--save-button", "n_clicks"),
-        Input("rs--update-button", "n_clicks"),
-        Input("rs--delete-button", "n_clicks"),
+        Input("rsu--save-button", "n_clicks"),
+        Input("rsu--update-button", "n_clicks"),
+        Input("rsu--delete-button", "n_clicks"),
     ],
     [
-        State("rs--project-dropdown", "value"),
-        State("rs--suite-id", "value"),
-        State("rs--suite-name", "value"),
-        State("rs--delete-suite-id", "value"),
+        State("rsu--project-dropdown", "value"),
+        State("rsu--suite-id", "value"),
+        State("rsu--suite-name", "value"),
+        State("rsu--delete-suite-id", "value"),
     ],
     prevent_initial_call='initial_duplicate'
 )
@@ -65,7 +65,7 @@ def save_update_delete_data(
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
     match button_id:
-        case "rs--save-button":
+        case "rsu--save-button":
             is_valid, message = ValidationUtils.validate_mandatory_fields(
                 suite_id=suite_id,
                 suite_name=suite_name,
@@ -102,7 +102,7 @@ def save_update_delete_data(
 
             return "Suite saved successfully", dash.no_update, new_id
 
-        case "rs--update-button":
+        case "rsu--update-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
             except FileNotFoundError:
@@ -121,7 +121,7 @@ def save_update_delete_data(
                     dash.no_update,
                 )
 
-        case "rs--delete-button":
+        case "rsu--delete-button":
             try:
                 data = data_mapper_instance.load_from_json_storage()
 
