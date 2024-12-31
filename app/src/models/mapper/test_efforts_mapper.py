@@ -17,16 +17,16 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
-            test_name = value.get(Constants.TestEffortsDataJSON.TEST_NAME)
-            total_time = value.get(Constants.TestEffortsDataJSON.TOTAL_TIME)
+            test_name = value.get(Constants.ScenariosDataJSON.TEST_NAME)
+            total_time = value.get(Constants.ScenariosDataJSON.TOTAL_TIME)
 
             if test_name is not None and total_time is not None:
                 test_names.append(test_name)
                 total_times.append(total_time)
 
         return {
-            Constants.TestEffortsDataJSON.TEST_NAME: test_names,
-            Constants.TestEffortsDataJSON.TOTAL_TIME: total_times,
+            Constants.ScenariosDataJSON.TEST_NAME: test_names,
+            Constants.ScenariosDataJSON.TOTAL_TIME: total_times,
         }
 
     def filter_test_level_and_approaches(
@@ -37,8 +37,8 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
-            test_level = value.get(Constants.TestEffortsDataJSON.TEST_LEVEL)
-            test_approach = value.get(Constants.TestEffortsDataJSON.TEST_APPROACH)
+            test_level = value.get(Constants.ScenariosDataJSON.TEST_LEVEL)
+            test_approach = value.get(Constants.ScenariosDataJSON.TEST_APPROACH)
 
             level_approach_counts[(test_level, test_approach)] += 1
 
@@ -46,8 +46,8 @@ class TestEffortsMapper(DataMapper):
 
         data = [
             {
-                Constants.TestEffortsDataJSON.TEST_LEVEL: level,
-                Constants.TestEffortsDataJSON.TEST_APPROACH: approach,
+                Constants.ScenariosDataJSON.TEST_LEVEL: level,
+                Constants.ScenariosDataJSON.TEST_APPROACH: approach,
                 "count": count,
             }
             for (level, approach), count in level_approach_counts.items()
@@ -65,8 +65,8 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
-            test_level = value.get(Constants.TestEffortsDataJSON.TEST_LEVEL)
-            test_approach = value.get(Constants.TestEffortsDataJSON.TEST_APPROACH)
+            test_level = value.get(Constants.ScenariosDataJSON.TEST_LEVEL)
+            test_approach = value.get(Constants.ScenariosDataJSON.TEST_APPROACH)
 
             if value.get(filter_by_key) == filter_by_value:
                 level_approach_counts[(test_level, test_approach)] += 1
@@ -75,8 +75,8 @@ class TestEffortsMapper(DataMapper):
 
         data = [
             {
-                Constants.TestEffortsDataJSON.TEST_LEVEL: level,
-                Constants.TestEffortsDataJSON.TEST_APPROACH: approach,
+                Constants.ScenariosDataJSON.TEST_LEVEL: level,
+                Constants.ScenariosDataJSON.TEST_APPROACH: approach,
                 "count": count,
                 "level": TestLevel().get_option(
                     property_to_pick="tier", from_level=level
@@ -96,8 +96,8 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
-            suite_name = value.get(Constants.TestEffortsDataJSON.SUITE_NAME)
-            total_time = value.get(Constants.TestEffortsDataJSON.TOTAL_TIME)
+            suite_name = value.get(Constants.ScenariosDataJSON.SUITE_NAME)
+            total_time = value.get(Constants.ScenariosDataJSON.TOTAL_TIME)
 
             suite_counts[(suite_name)] += 1
 
@@ -105,7 +105,7 @@ class TestEffortsMapper(DataMapper):
 
         data = [
             {
-                Constants.TestEffortsDataJSON.TOTAL_TIME: total_time,
+                Constants.ScenariosDataJSON.TOTAL_TIME: total_time,
                 "number_of_test_suites": suite,
                 "count": count,
             }

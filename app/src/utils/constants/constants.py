@@ -33,9 +33,11 @@ class Constants:
         SUITE_NAME = "suite_name"
         SUITE_REF = "suite_ref"
 
-    class TestEffortsDataJSON:
-        PROJECT_NAME = "project_name"
+    class ScenariosDataJSON:
         PROJECT_ID = "project_id"
+        PROJECT_NAME = "project_name"
+        SCENARIO_ID = "scenario_id"
+        SCENARIO_NAME = "scenario_name"
         TEST_APPROACH = "test_approach"
         TEST_ID = "test_id"
         TEST_NAME = "test_name"

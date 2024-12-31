@@ -58,16 +58,18 @@ def save_update_delete_data(
         button_id = None
     else:
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
+        
 
     match button_id:
         case "rpj--save-button":
-            is_valid, message = ValidationUtils.validate_mandatory_fields(
-                project_id=project_id,
-                project_name=project_name
-            )
-            if not is_valid:
-                return message, dash.no_update, dash.no_update
-
+            # Validation Rules as tuples
+            # validation_rules = [
+            #     (not project_name, "- Project Name is required.")
+            # ]
+            # error_message = ValidationUtils.validate_mandatory_field_rules(validation_rules)
+            # if error_message:
+            #     return error_message, dash.no_update, dash.no_update
+            
             try:
                 data = data_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):

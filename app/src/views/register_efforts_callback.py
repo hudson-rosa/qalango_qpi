@@ -83,12 +83,12 @@ def save_update_delete_data(
                 data = {}
 
             new_data = {
-                Constants.TestEffortsDataJSON.TEST_NAME: test_name,
-                Constants.TestEffortsDataJSON.SUITE_NAME: suite_name,
-                Constants.TestEffortsDataJSON.PROJECT_NAME: str(project_name).split("(")[1].rstrip(")"),
-                Constants.TestEffortsDataJSON.TOTAL_TIME: total_time,
-                Constants.TestEffortsDataJSON.TEST_LEVEL: test_level,
-                Constants.TestEffortsDataJSON.TEST_APPROACH: test_approach,
+                Constants.ScenariosDataJSON.TEST_NAME: test_name,
+                Constants.ScenariosDataJSON.SUITE_NAME: suite_name,
+                Constants.ProjectDataJSON.PROJECT_NAME: str(project_name).split("(")[1].rstrip(")"),
+                Constants.ScenariosDataJSON.TOTAL_TIME: total_time,
+                Constants.ScenariosDataJSON.TEST_LEVEL: test_level,
+                Constants.ScenariosDataJSON.TEST_APPROACH: test_approach,
             }
             data[test_name] = new_data
 
@@ -104,11 +104,11 @@ def save_update_delete_data(
                 return None, "No data found. Nothing to update."
 
             if test_name in data:
-                data[test_name][Constants.TestEffortsDataJSON.SUITE_NAME] = suite_name
-                data[test_name][Constants.TestEffortsDataJSON.PROJECT_NAME] = project_name
-                data[test_name][Constants.TestEffortsDataJSON.TOTAL_TIME] = total_time
-                data[test_name][Constants.TestEffortsDataJSON.TEST_LEVEL] = test_level
-                data[test_name][Constants.TestEffortsDataJSON.TEST_APPROACH] = test_approach
+                data[test_name][Constants.ScenariosDataJSON.SUITE_NAME] = suite_name
+                data[test_name][Constants.ScenariosDataJSON.PROJECT_NAME] = project_name
+                data[test_name][Constants.ScenariosDataJSON.TOTAL_TIME] = total_time
+                data[test_name][Constants.ScenariosDataJSON.TEST_LEVEL] = test_level
+                data[test_name][Constants.ScenariosDataJSON.TEST_APPROACH] = test_approach
 
                 test_efforts_data_mapper_instance.save_to_json_storage(new_data=data)
 

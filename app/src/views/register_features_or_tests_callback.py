@@ -1,6 +1,7 @@
 import dash
 import json
 
+from collections import Counter
 from dash import dcc, callback, html, Input, Output, State, MATCH, ALL
 from src.models.mapper.data_mapper import DataMapper
 from src.models.mapper.suite_mapper import SuiteMapper
@@ -101,22 +102,9 @@ def update_bdd_slider_output(value):
 
 
 @callback(
-    Output(
-        {"type": "slider-output", "index": MATCH, "name": "rsc--tc-slider-output"},
-        "children",
-    ),
-    Input(
-        {"type": "slider", "index": MATCH, "name": "rsc--tc-total-time-slider"}, "value"
-    ),
-)
-def update_tc_slider_output(value):
-    return "This test takes " + StringHandler.format_time_to_hh_mm(value)
-
-
-@callback(
-    Output({"type": "bdd-scenario-editor", "index": MATCH}, "style"),
-    Input({"type": "bdd-scenario-editor", "index": MATCH}, "value"),
-    State({"type": "bdd-scenario-editor", "index": MATCH}, "style"),
+    Output({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "style"),
+    Input({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "value"),
+    State({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "style"),
 )
 def auto_resize_textarea(content, current_style):
     if content:
@@ -128,7 +116,7 @@ def auto_resize_textarea(content, current_style):
 
 
 @callback(
-    Output("rsc--bdd-scenarios-container", "children"),  # Update the entire container
+    Output("rsc--bdd-scenarios-container", "children"),
     Input("rsc--bdd-add-scenario-button", "n_clicks"),
     State("rsc--bdd-scenarios-container", "children"),
     prevent_initial_call=True,
@@ -164,7 +152,7 @@ def add_all_bdd_scenario_fields(n_clicks, current_children):
         State("rsc--feature-or-test-id", "value"),
         State("rsc--bdd-feature-name", "value"),
         State("rsc--bdd-feature-editor", "value"),
-        State({"type": "rsc--bdd-scenario-editor-container", "index": ALL}, "value"),
+        State({"type": "rsc--bdd-scenario-editor", "index": ALL}, "value"),
         State({"type": "rsc--bdd-test-level-dropdown", "index": ALL}, "value"),
         State({"type": "rsc--bdd-test-approach-radio", "index": ALL}, "value"),
         State(
@@ -181,125 +169,169 @@ def add_all_bdd_scenario_fields(n_clicks, current_children):
 def submit_bdd_data(
     submit_clicks,
     delete_file_clicks,
-    suite_ref="",
-    project_ref="",
-    feature_id="",
-    feature_name="",
-    bdd_feature_content="",
-    bdd_children_scenarios="",
-    test_level="",
-    test_approach="",
-    test_duration="",
+    suite_ref,
+    project_ref,
+    feature_id,
+    feature_name,
+    bdd_feature_content,
+    bdd_scenarios,
+    test_levels,
+    test_approaches,
+    test_durations,
 ):
     ctx = dash.callback_context
 
-    feature_name_underlined = str(feature_name).strip().replace(" ", "_")
-    feature_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{feature_id}--{feature_name_underlined.lower()}.feature"
-
+    # Identify the triggering input
     if not ctx.triggered:
         button_id = None
     else:
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
+    # Validation Rules as tuples
+    validation_rules = [
+        (not project_ref, "- Project reference is required."),
+        (not suite_ref, "- Suite reference is required."),
+        (not feature_name, "- Feature Name is required."),
+        (not bdd_feature_content, "- Gherkin Feature content is required."),
+        (
+            not bdd_scenarios or not all(bdd_scenarios),
+            "- All scenarios must have Gherkin content.",
+        ),
+        (
+            not test_levels or len(test_levels) != len(bdd_scenarios),
+            "- Each scenario must have a test level.",
+        ),
+        (
+            not test_approaches or len(test_approaches) != len(bdd_scenarios),
+            "- Each scenario must have a test approach.",
+        ),
+        (
+            not test_durations or len(test_durations) != len(bdd_scenarios),
+            "- Each scenario must have a test duration.",
+        ),
+    ]
+    error_message = ValidationUtils.validate_mandatory_field_rules(validation_rules)
+    if error_message:
+        return error_message, None
+
+    feature_name_underlined = str(feature_name).replace(" ", "_").strip()
+    feature_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{feature_id}--{feature_name_underlined.lower()}.feature"
+
     match button_id:
         case "rsc--submit-bdd-button":
-            is_valid, message = ValidationUtils.validate_mandatory_fields(
-                feature_id=feature_id,
-                feature_name=feature_name,
-                bdd_feature_content=bdd_feature_content,
-                bdd_children_scenarios=bdd_children_scenarios,
-                test_level=test_level,
-                test_approach=test_approach,
-                test_duration=test_duration,
-                suite_ref=suite_ref,
-                project_ref=project_ref,
-            )
-            if not is_valid:
-                return message, None
+
+            project_id = StringHandler.get_id_format(project_ref)
+            suite_name = str(suite_ref).split("(")[0].strip()
+
+            scenarios_data = []
+            bdd_content_lines = [bdd_feature_content]
+
+            # prepare scenarios data
+            for index, scenario_content in enumerate(bdd_scenarios):
+                base_feature_id = str(feature_id).replace(idfeat_prefix, "idscn_")
+                scenario_id_tag = f"@{base_feature_id}-{index+1}"
+
+                scenario_data = {
+                    "scenario_id": scenario_id_tag,
+                    "scenario_name": scenario_content.split("\n", 1)[0]
+                    .replace("Scenario:", "")
+                    .replace("Scenario Outline:", "")
+                    .strip(),
+                    "test_level": test_levels[index],
+                    "test_approach": test_approaches[index],
+                    "test_duration": test_durations[index],
+                }
+                scenarios_data.append(scenario_data)
+
+                # prepare data for .feature file
+                cov_test_level_tag = (
+                    f"@cov-{test_levels[index]}" if test_levels[index] else ""
+                )
+                cov_test_approach_tag = (
+                    f"@cov-{test_approaches[index]}" if test_approaches[index] else ""
+                )
+                time_taken_tag = (
+                    f"@time-{test_durations[index]}m" if test_durations[index] else ""
+                )
+                join_scenario_tags = f"{scenario_id_tag} {cov_test_level_tag} {cov_test_approach_tag} {time_taken_tag}".strip()
+                bdd_content_lines.append(
+                    f"\n\n{join_scenario_tags}\n{scenario_content.strip()}"
+                )
+
+            aggregated_bdd_feature_content = "\n".join(bdd_content_lines)
+            all_scenarios = aggregated_bdd_feature_content.lower()
 
             try:
                 data = scenarios_mapper_instance.load_from_json_storage()
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
-            scenarios_data = []
-            for i in range(0, len(bdd_children_scenarios), 2):
-                precond_textarea = bdd_children_scenarios[i]
-                scenario_value = (
-                    precond_textarea.get("props", {}).get("value", "").strip()
-                )
-
-                scenarios_data.append({"scenario": scenario_value})
-
-            bdd_scenarios_content = "\n".join(bdd_children_scenarios)
-
-            bdd_scenario_key_lower = str(bdd_scenarios_content).lower()
-            project_id = StringHandler.get_id_format(project_ref)
-            project_name = StringHandler.get_name_format(project_ref)
-            suite_name = str(suite_ref).split("(")[0].strip()
-
-            scenarios_count = bdd_scenario_key_lower.count(
-                "scenario:"
-            ) + bdd_scenario_key_lower.count("scenario outline:")
-
+            # prepare feature summary data
+            test_levels_count = Counter(test_levels)
+            test_approaches_count = Counter(test_approaches)
             new_data = {
                 Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
                 Constants.SuiteDataJSON.SUITE_NAME: suite_name,
-                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: scenarios_count,
+                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: all_scenarios.count(
+                    "scenario:"
+                )
+                + all_scenarios.count("scenario outline:"),
                 "test_levels": {
-                    Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.INTEGRATION}"
+                    Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: test_levels_count.get(
+                        Constants.TestLevelsEntity.INTEGRATION, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_COMPONENT: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.COMPONENT}"
+                    Constants.FeaturesDataJSON.QTY_OF_COMPONENT: test_levels_count.get(
+                        Constants.TestLevelsEntity.COMPONENT, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_CONTRACT: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.CONTRACT}"
+                    Constants.FeaturesDataJSON.QTY_OF_CONTRACT: test_levels_count.get(
+                        Constants.TestLevelsEntity.CONTRACT, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_API: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.API}"
+                    Constants.FeaturesDataJSON.QTY_OF_API: test_levels_count.get(
+                        Constants.TestLevelsEntity.API, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_E2E: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.E2E}"
+                    Constants.FeaturesDataJSON.QTY_OF_E2E: test_levels_count.get(
+                        Constants.TestLevelsEntity.E2E, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.PERFORMANCE}"
+                    Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE: test_levels_count.get(
+                        Constants.TestLevelsEntity.PERFORMANCE, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_SECURITY: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.SECURITY}"
+                    Constants.FeaturesDataJSON.QTY_OF_SECURITY: test_levels_count.get(
+                        Constants.TestLevelsEntity.SECURITY, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_USABILITY: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.USABILITY}"
+                    Constants.FeaturesDataJSON.QTY_OF_USABILITY: test_levels_count.get(
+                        Constants.TestLevelsEntity.USABILITY, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: bdd_scenarios_content.count(
-                        f"@{Constants.TestLevelsEntity.EXPLORATORY}"
+                    Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY: test_levels_count.get(
+                        Constants.TestLevelsEntity.EXPLORATORY, 0
                     ),
                 },
                 "test_approaches": {
-                    Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: bdd_scenarios_content.count(
-                        f"@{Constants.TestTypesEntity.AUTOMATED}"
+                    Constants.FeaturesDataJSON.QTY_OF_AUTOMATED: test_approaches_count.get(
+                        Constants.TestTypesEntity.AUTOMATED, 0
                     ),
-                    Constants.FeaturesDataJSON.QTY_OF_MANUAL: scenarios_count
-                    - bdd_scenarios_content.count(
-                        f"@{Constants.TestTypesEntity.AUTOMATED}"
+                    Constants.FeaturesDataJSON.QTY_OF_MANUAL: test_approaches_count.get(
+                        Constants.TestTypesEntity.MANUAL, 0
                     ),
                 },
+                "scenarios": scenarios_data,
             }
 
+            # Update the project data
             if project_id not in data:
                 data[project_id] = {
-                    Constants.ProjectDataJSON.PROJECT_NAME: project_name,
+                    Constants.ProjectDataJSON.PROJECT_NAME: project_ref,
                     Constants.SuiteDataJSON.SUITE_REF: suite_ref,
-                    "scenarios": [],
+                    "feature_specs": [],
                 }
 
-            data[project_id]["scenarios"].append(new_data)
+            data[project_id]["feature_specs"].append(new_data)
 
+            # Save to files
             scenarios_mapper_instance.save_to_json_storage(data)
             scenarios_mapper_instance.save_content_to_new_file(
                 new_file=feature_file_pathname,
-                new_data=bdd_feature_content + bdd_scenarios_content,
+                new_data=aggregated_bdd_feature_content,
             )
 
             new_id = idfeat_prefix + DataGenerator.generate_aggregated_uuid()
@@ -312,17 +344,16 @@ def submit_bdd_data(
         case "rsc--delete-bdd-file-button":
             try:
                 data = scenarios_mapper_instance.load_from_json_storage()
-
                 FileHandler.delete_file(feature_file_pathname)
 
                 if feature_id in data:
                     del data[feature_id]
-
                     scenarios_mapper_instance.save_to_json_storage(data)
-
                     return (
+                        html.Pre(
+                            f"Feature file deleted successfully:\n\n{feature_file_pathname}"
+                        ),
                         None,
-                        f"Feature file deleted successfully",
                     )
                 else:
                     return (
@@ -330,10 +361,21 @@ def submit_bdd_data(
                         f"Feature file was not found",
                     )
             except FileNotFoundError:
-                return None, "Deletion not possible. The JSON file was not found."
+                return (
+                    html.Pre("Feature file not found. Deletion of JSON file failed."),
+                    None,
+                )
 
         case _:
             return "Please fill out the fields before submitting a feature file", None
+
+
+@callback(
+    Output("rsc--tc-slider-output", "children"),
+    Input("rsc--tc-total-time-slider", "value"),
+)
+def update_tc_slider_output(value):
+    return "This test takes " + StringHandler.format_time_to_hh_mm(value)
 
 
 @callback(
@@ -383,27 +425,29 @@ def add_test_step(n_clicks, existing_steps):
     ],
     Input("rsc--submit-tc-button", "n_clicks"),
     [
+        State("rsc--suite-dropdown", "value"),
+        State("rsc--project-dropdown", "value"),
         State("rsc--feature-or-test-id", "value"),
         State("rsc--tc-test-name", "value"),
         State("rsc--tc-preconditions-container", "children"),
         State("rsc--tc-steps-container", "children"),
         State("rsc--tc-test-level-dropdown", "value"),
         State("rsc--tc-test-approach-radio", "value"),
-        State("rsc--suite-dropdown", "value"),
-        State("rsc--project-dropdown", "value"),
+        State("rsc--tc-total-time-slider", "value"),
     ],
     prevent_initial_call="initial_duplicate",
 )
 def submit_scripted_test(
     submit_clicks,
-    test_id="",
-    test_name="",
-    preconditions_children="",
-    children_steps="",
-    test_level="",
-    test_approach="",
-    suite_ref="",
-    project_ref="",
+    suite_ref,
+    project_ref,
+    test_id,
+    test_name,
+    preconditions_children,
+    children_steps,
+    test_level,
+    test_approach,
+    test_duration,
 ):
     ctx = dash.callback_context
 
@@ -412,25 +456,28 @@ def submit_scripted_test(
     else:
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
+    # Validation Rules as tuples
+    validation_rules = [
+        (not project_ref, "- Project reference is required."),
+        (not suite_ref, "- Suite reference is required."),
+        (not test_name, "- Test Name is required."),
+        (not test_level, "- Test Level is required."),
+        (
+            not preconditions_children or len(preconditions_children) == 0,
+            "- All Preconditions must have a content.",
+        ),
+        (
+            not children_steps or len(children_steps) == 0,
+            "- Each Test Case Step must have a content.",
+        ),
+    ]
+    error_message = ValidationUtils.validate_mandatory_field_rules(validation_rules)
+    if error_message:
+        return error_message, None
+
     match button_id:
         case "rsc--submit-tc-button":
-            is_valid, message = ValidationUtils.validate_mandatory_fields(
-                feature_id=test_id,
-                test_name=test_name,
-                preconditions_children=preconditions_children,
-                children_steps=children_steps,
-                test_level=test_level,
-                suite_ref=suite_ref,
-                project_ref=project_ref,
-            )
-            if not is_valid:
-                return message, None
-
-            try:
-                data = scenarios_mapper_instance.load_from_json_storage()
-            except (FileNotFoundError, json.decoder.JSONDecodeError):
-                data = {}
-
+            # prepare test case data
             preconditions_data = []
             for i in range(0, len(preconditions_children), 2):
                 precond_textarea = preconditions_children[i]
@@ -463,15 +510,29 @@ def submit_scripted_test(
             project_name = StringHandler.get_name_format(project_ref)
             suite_name = str(suite_ref).split("(")[0].strip()
 
-            new_data = {
-                Constants.TestEffortsDataJSON.TEST_ID: test_id,
-                Constants.TestEffortsDataJSON.TEST_NAME: test_name,
-                Constants.SuiteDataJSON.SUITE_NAME: suite_name,
-                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: 1,
-                "test_script": {
+            scenario_data = {
+                "test_content": {
+                    Constants.ScenariosDataJSON.SCENARIO_ID: test_id,
+                    Constants.ScenariosDataJSON.SCENARIO_NAME: test_name,
+                    "test_level": test_level,
+                    "test_approach": test_approach,
+                    "test_duration": test_duration,
                     "preconditions": preconditions_data,
                     "steps": steps_and_expected_data,
-                },
+                }
+            }
+
+            try:
+                data = scenarios_mapper_instance.load_from_json_storage()
+            except (FileNotFoundError, json.decoder.JSONDecodeError):
+                data = {}
+
+            # prepare feature summary data
+            new_data = {
+                Constants.ScenariosDataJSON.TEST_ID: test_id,
+                Constants.ScenariosDataJSON.TEST_NAME: test_name,
+                Constants.SuiteDataJSON.SUITE_NAME: suite_name,
+                Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: 1,
                 "test_levels": {
                     Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: is_matching_test_level(
                         test_level, Constants.TestLevelsEntity.INTEGRATION
@@ -509,16 +570,17 @@ def submit_scripted_test(
                         test_approach, Constants.TestTypesEntity.MANUAL
                     ),
                 },
+                "scenarios": scenario_data,
             }
 
             if project_id not in data:
                 data[project_id] = {
                     Constants.ProjectDataJSON.PROJECT_NAME: project_name,
                     Constants.SuiteDataJSON.SUITE_REF: suite_ref,
-                    "scenarios": [],
+                    "feature_specs": [],
                 }
 
-            data[project_id]["scenarios"].append(new_data)
+            data[project_id]["feature_specs"].append(new_data)
 
             scenarios_mapper_instance.save_to_json_storage(data)
 

@@ -57,12 +57,21 @@ def save_update_delete_data(
     suite_name,
     delete_suite_id,
 ):
-
     ctx = dash.callback_context
+    
     if not ctx.triggered:
         button_id = None
     else:
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
+        
+    # Validation Rules as tuples
+    # validation_rules = [
+    #     (not project_ref, "- Project reference is required."),
+    #     (not suite_name, "- Suite Name is required.")
+    # ]
+    # error_message = ValidationUtils.validate_mandatory_field_rules(validation_rules)
+    # if error_message:
+    #     return error_message, None, None
 
     match button_id:
         case "rsu--save-button":

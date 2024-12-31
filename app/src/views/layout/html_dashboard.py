@@ -36,14 +36,14 @@ def update_figures():
         (
             "data_frame_group_a",
             TestEffortsMapper.filter_test_level_and_approaches_by(
-                filter_by_key=Constants.TestEffortsDataJSON.TEST_APPROACH,
+                filter_by_key=Constants.ScenariosDataJSON.TEST_APPROACH,
                 filter_by_value=Constants.TestTypesEntity.AUTOMATED,
             ),
         ),
         (
             "data_frame_group_b",
             TestEffortsMapper.filter_test_level_and_approaches_by(
-                filter_by_key=Constants.TestEffortsDataJSON.TEST_APPROACH,
+                filter_by_key=Constants.ScenariosDataJSON.TEST_APPROACH,
                 filter_by_value=Constants.TestTypesEntity.MANUAL,
             ),
         ),
@@ -69,7 +69,7 @@ def render_layout():
         id="pie-chart",
         figure=pie_fig_1.create(
             slice_values="count",
-            names=Constants.TestEffortsDataJSON.TEST_APPROACH,
+            names=Constants.ScenariosDataJSON.TEST_APPROACH,
             title="Test Coverage: Automated Vs. Manual",
             slice_colors=["seagreen", "orange"],
         ),
@@ -88,9 +88,9 @@ def render_layout():
         id="pyramid-chart",
         figure=pyramid_fig.create(
             x_group_a_axis="count",
-            y_group_a_axis=Constants.TestEffortsDataJSON.TEST_LEVEL,
+            y_group_a_axis=Constants.ScenariosDataJSON.TEST_LEVEL,
             x_group_b_axis="count",
-            y_group_b_axis=Constants.TestEffortsDataJSON.TEST_LEVEL,
+            y_group_b_axis=Constants.ScenariosDataJSON.TEST_LEVEL,
             title_x="Total tests",
             title_y="Test level",
             legend_group_a_axis="Automated",
@@ -102,8 +102,8 @@ def render_layout():
     plot_line_chart_effort = dcc.Graph(
         id="line-chart",
         figure=line_fig.create(
-            x_axis=Constants.TestEffortsDataJSON.TEST_NAME,
-            y_axis=Constants.TestEffortsDataJSON.TOTAL_TIME,
+            x_axis=Constants.ScenariosDataJSON.TEST_NAME,
+            y_axis=Constants.ScenariosDataJSON.TOTAL_TIME,
             title="Test Effort Distribution (in seconds)",
         ),
     )

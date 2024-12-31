@@ -1,1 +1,115 @@
-{}
+{
+  "idproj_f3b25": {
+    "project_name": "Batatinha Frita (idproj_f3b25)",
+    "suite_ref": "Extractor (idsuite_33703)",
+    "feature_specs": [
+      {
+        "feature_id": "idbdd_010b8c9622",
+        "feature_name": "Extractor_XML_Processing",
+        "suite_name": "Extractor",
+        "qty_of_scenarios": 3,
+        "test_levels": {
+          "qty_of_integration": 0,
+          "qty_of_component": 0,
+          "qty_of_contract": 0,
+          "qty_of_api": 0,
+          "qty_of_e2e": 2,
+          "qty_of_performance": 0,
+          "qty_of_security": 0,
+          "qty_of_usability": 1,
+          "qty_of_exploratory": 0
+        },
+        "test_approaches": { "qty_of_automated": 1, "qty_of_manual": 2 },
+        "scenarios": [
+          { "scenario_id": "@idscn_010b8c9622-1", "scenario_name": "Extract data from XML file", "test_level": "e2e", "test_approach": "automated", "test_duration": 1 },
+          { "scenario_id": "@idscn_010b8c9622-2", "scenario_name": "@smoke-test", "test_level": "usability", "test_approach": "manual", "test_duration": 3 },
+          {
+            "scenario_id": "@idscn_010b8c9622-3",
+            "scenario_name": "Extract data from XML file based on provided configuration",
+            "test_level": "e2e",
+            "test_approach": "manual",
+            "test_duration": 75
+          }
+        ]
+      },
+      {
+        "test_id": "idtest_3882c4caeb",
+        "test_name": "Extract Data from XML File Based on Provided Configuration",
+        "suite_name": "Extractor",
+        "qty_of_scenarios": 1,
+        "test_levels": {
+          "qty_of_integration": 0,
+          "qty_of_component": 0,
+          "qty_of_contract": 0,
+          "qty_of_api": 0,
+          "qty_of_e2e": 1,
+          "qty_of_performance": 0,
+          "qty_of_security": 0,
+          "qty_of_usability": 0,
+          "qty_of_exploratory": 0
+        },
+        "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
+        "scenarios": {
+          "test_content": {
+            "scenario_id": "idtest_3882c4caeb",
+            "scenario_name": "Extract Data from XML File Based on Provided Configuration",
+            "test_level": "e2e",
+            "test_approach": "manual",
+            "test_duration": 30,
+            "preconditions": [
+              { "precondition": "The XML extractor tool is installed and functional." },
+              { "precondition": "Test Data:\nfield1 [NAME, ADDRESS, ORDER_ID]\t\nfield2 [EMAIL, CITY, PRODUCT_ID]\nfield3 [PHONE, ZIP_CODE, QUANTITY]" }
+            ],
+            "steps": [
+              {
+                "step": "Ensure that an XML file containing the following fields is available for extraction:\nField 1: <field1>\nField 2: <field2>\nField 3: <field3>",
+                "expected": ""
+              },
+              { "step": "Use the XML extractor tool to parse the XML file.", "expected": "" },
+              {
+                "step": "Verify that the extracted data contains the following fields:\nField 1: <field1>\nField 2: <field2>\nField 3: <field3>",
+                "expected": "The XML extractor should successfully parse the file.\nThe extraction process should be completed without errors."
+              },
+              {
+                "step": "Ensure that the XML extractor processes the data without errors.",
+                "expected": "The extracted data should contain the fields specified in the table (<field1>, <field2>, <field3>)."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "test_id": "idtest_f353999e52",
+        "test_name": "Extract Empty Data from XML File",
+        "suite_name": "Extractor",
+        "qty_of_scenarios": 1,
+        "test_levels": {
+          "qty_of_integration": 0,
+          "qty_of_component": 0,
+          "qty_of_contract": 0,
+          "qty_of_api": 0,
+          "qty_of_e2e": 0,
+          "qty_of_performance": 0,
+          "qty_of_security": 0,
+          "qty_of_usability": 1,
+          "qty_of_exploratory": 0
+        },
+        "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
+        "scenarios": {
+          "test_content": {
+            "scenario_id": "idtest_f353999e52",
+            "scenario_name": "Extract Empty Data from XML File",
+            "test_level": "usability",
+            "test_approach": "manual",
+            "test_duration": 20,
+            "preconditions": [{ "precondition": "The XML extractor tool is installed and functional." }],
+            "steps": [
+              { "step": "Use the XML extractor tool to parse the XML file", "expected": "" },
+              { "step": "Verify that the extracted data is empty", "expected": "The XML extractor shows an error and the extraction is incomplete" }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

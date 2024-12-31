@@ -183,7 +183,10 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                             ),
                             dcc.Dropdown(
                                 options=TestEffortsMapper.get_list_of_test_levels(),
-                                id=f"rsc--bdd-test-level-dropdown-{scenario_id_suffix}",
+                                id={
+                                    "type": "rsc--bdd-test-level-dropdown",
+                                    "index": scenario_id_suffix,
+                                },
                                 placeholder="Enter scenario level",
                                 searchable=True,
                                 className="c_dropdown",
@@ -223,7 +226,10 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                         children=[
                             html.H4("Select the test approach for this scenario"),
                             dcc.RadioItems(
-                                id=f"rsc--bdd-test-approach-radio-{scenario_id_suffix}",
+                                id={
+                                    "type": "rsc--bdd-test-approach-radio",
+                                    "index": scenario_id_suffix,
+                                },
                                 options=[
                                     {
                                         "label": "Manual",
@@ -249,7 +255,10 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                 className="section-group",
                 children=[
                     dcc.Textarea(
-                        id={"type": "bdd-scenario-editor", "index": scenario_id_suffix},
+                        id={
+                            "type": "rsc--bdd-scenario-editor",
+                            "index": scenario_id_suffix,
+                        },
                         style={"height": "600px !important"},
                         placeholder=f"""Scenario: Successful login (Example #{scenario_id_suffix})
     Given the user is on the login page
@@ -271,7 +280,7 @@ def register_scripted_test_cases():
             dcc.Input(
                 id="rsc--tc-test-name",
                 type="text",
-                placeholder="Enter test case title",
+                placeholder="Enter test case title or objective",
                 required=True,
             ),
             # =========================
@@ -360,11 +369,7 @@ def define_test_case_details(scenario_id_suffix=1):
                     ),
                     html.H4("Enter the average test execution duration (HH:mm)"),
                     dcc.Slider(
-                        id={
-                            "name": "rsc--tc-total-time-slider",
-                            "type": "slider",
-                            "index": scenario_id_suffix,
-                        },
+                        id="rsc--tc-total-time-slider",
                         min=0,
                         max=181,
                         marks=DataGenerator.generate_slider_marks(),
@@ -377,13 +382,7 @@ def define_test_case_details(scenario_id_suffix=1):
                         },
                         className="c_slider",
                     ),
-                    html.H5(
-                        id={
-                            "name": "rsc--tc-slider-output",
-                            "type": "slider-output",
-                            "index": scenario_id_suffix,
-                        }
-                    ),
+                    html.H5(id="rsc--tc-slider-output"),
                 ]
             ),
             html.Div(
