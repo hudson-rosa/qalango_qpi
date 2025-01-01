@@ -180,12 +180,11 @@ def submit_bdd_data(
     test_durations,
 ):
     ctx = dash.callback_context
+    button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
 
-    # Identify the triggering input
-    if not ctx.triggered:
-        button_id = None
-    else:
-        button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
+    # Refresh Scenario ID if not loaded
+    if feature_id is None:
+        feature_id = idfeat_prefix + DataGenerator.generate_aggregated_uuid()
 
     # Validation Rules as tuples
     validation_rules = [
@@ -219,7 +218,7 @@ def submit_bdd_data(
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
                     f"BDD Feature file '{feature_file_pathname}' is saved",
-                    validation_rules
+                    validation_rules,
                 )
             )
             if not is_valid:
@@ -341,10 +340,7 @@ def submit_bdd_data(
 
             new_id = idfeat_prefix + DataGenerator.generate_aggregated_uuid()
 
-            return (
-                validation_message,
-                new_id
-            )
+            return (validation_message, new_id)
 
         case "rsc--delete-bdd-file-button":
             is_valid, validation_message = (
@@ -402,6 +398,7 @@ def add_test_precondition(n_clicks, existing_preconditions):
         new_precondition = dcc.Textarea(
             id=f"rsc--precondition-{precond_block_number}",
             placeholder=f"Enter precondition {precond_block_number}",
+            required=True,
         )
         return existing_preconditions + [new_precondition]
 
@@ -420,10 +417,12 @@ def add_test_step(n_clicks, existing_steps):
         new_step = dcc.Textarea(
             id=f"rsc--step-{step_block_number}",
             placeholder=f"Enter step {step_block_number}",
+            required=True,
         )
         new_expected = dcc.Textarea(
             id=f"rsc--expected-{step_block_number}",
             placeholder=f"Enter expected result {step_block_number}",
+            required=False,
         )
         return existing_steps + [new_step, new_expected]
 
@@ -462,11 +461,11 @@ def submit_scripted_test(
     test_duration,
 ):
     ctx = dash.callback_context
+    button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
 
-    if not ctx.triggered:
-        button_id = None
-    else:
-        button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
+    # Refresh Test Case ID if not loaded
+    if test_id is None:
+        test_id = idtest_prefix + DataGenerator.generate_aggregated_uuid()
 
     # Validation Rules as tuples
     validation_rules = [
@@ -474,14 +473,6 @@ def submit_scripted_test(
         (not suite_ref, "Suite reference is required."),
         (not test_name, "Test Name is required."),
         (not test_level, "Test Level is required."),
-        (
-            not preconditions_children or len(preconditions_children) == 0,
-            "All Preconditions must have a content.",
-        ),
-        (
-            not children_steps or len(children_steps) == 0,
-            "Each Test Case Step must have a content.",
-        ),
     ]
 
     match button_id:
@@ -516,12 +507,23 @@ def submit_scripted_test(
                     {"step": step_value, "expected": expected_value}
                 )
 
-            if (
-                not test_id
-                or not test_name
-                or any(not s["step"] for s in steps_and_expected_data)
-            ):
-                return "All fields (Feature ID, Test Title, and Steps) must be filled."
+            # Preconditions and Step fields validation
+            steps_validation_rules = [
+                (
+                    any(not p["precondition"] for p in preconditions_data),
+                    "All the added Preconditions need to be filled in.",
+                ),
+                (
+                    any(not s["step"] for s in steps_and_expected_data),
+                    "All the added Steps need to be filled in.",
+                ),
+            ]
+
+            is_valid, steps_message = ValidationUtils.validate_mandatory_field_rules(
+                "Test Case Steps are saved", steps_validation_rules
+            )
+            if not is_valid:
+                return steps_message, None
 
             project_id = StringHandler.get_id_format(project_ref)
             project_name = StringHandler.get_name_format(project_ref)
@@ -603,10 +605,7 @@ def submit_scripted_test(
 
             new_id = idtest_prefix + DataGenerator.generate_aggregated_uuid()
 
-            return (
-                validation_message,
-                new_id
-            )
+            return (validation_message, new_id)
         case _:
             return "Please, fill the fields before choosing an action", None
 

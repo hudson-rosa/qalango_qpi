@@ -53,10 +53,11 @@ def save_update_delete_data(
     delete_project_id,
 ):
     ctx = dash.callback_context
-    if not ctx.triggered:
-        button_id = None
-    else:
-        button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
+    button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
+    
+    # Refresh Project ID if not loaded
+    if project_id is None:
+        project_id = idproj_prefix + DataGenerator.generate_aggregated_uuid()
 
     # Validation Rules as tuples
     validation_rules = [(not project_name, "Project Name is required.")]

@@ -58,11 +58,11 @@ def save_update_delete_data(
     delete_suite_id,
 ):
     ctx = dash.callback_context
-
-    if not ctx.triggered:
-        button_id = None
-    else:
-        button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
+    button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
+    
+    # Refresh Suite ID if not loaded
+    if suite_id is None:
+        suite_id = idsuite_prefix + DataGenerator.generate_aggregated_uuid()
 
     validation_rules = [
         (not project_ref, "Project reference is required."),

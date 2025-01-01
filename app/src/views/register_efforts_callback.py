@@ -56,15 +56,11 @@ def save_update_delete_data(
     test_level,
     test_approach,
 ):
-
     ctx = dash.callback_context
-    if not ctx.triggered:
-        button_id = None
-    else:
-        button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
+    button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
 
     match button_id:
-        case "rte--save-button":            
+        case "rte--save-button":
             try:
                 data = test_efforts_data_mapper_instance.load_from_json_storage()
 
@@ -74,7 +70,9 @@ def save_update_delete_data(
             new_data = {
                 Constants.ScenariosDataJSON.TEST_NAME: test_name,
                 Constants.ScenariosDataJSON.SUITE_NAME: suite_name,
-                Constants.ProjectDataJSON.PROJECT_NAME: str(project_name).split("(")[1].rstrip(")"),
+                Constants.ProjectDataJSON.PROJECT_NAME: str(project_name)
+                .split("(")[1]
+                .rstrip(")"),
                 Constants.ScenariosDataJSON.TOTAL_TIME: total_time,
                 Constants.ScenariosDataJSON.TEST_LEVEL: test_level,
                 Constants.ScenariosDataJSON.TEST_APPROACH: test_approach,
@@ -97,7 +95,9 @@ def save_update_delete_data(
                 data[test_name][Constants.ScenariosDataJSON.PROJECT_NAME] = project_name
                 data[test_name][Constants.ScenariosDataJSON.TOTAL_TIME] = total_time
                 data[test_name][Constants.ScenariosDataJSON.TEST_LEVEL] = test_level
-                data[test_name][Constants.ScenariosDataJSON.TEST_APPROACH] = test_approach
+                data[test_name][
+                    Constants.ScenariosDataJSON.TEST_APPROACH
+                ] = test_approach
 
                 test_efforts_data_mapper_instance.save_to_json_storage(new_data=data)
 
