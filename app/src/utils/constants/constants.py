@@ -82,3 +82,109 @@ class Constants:
         PROJECTS = "projects"
         SUITES = "suites"
         TEST_EFFORTS = "test_efforts"
+
+    class Messages:
+        ALL_ADDED_PRECONDITIONS_NEED_TO_BE_FILLED_IN = (
+            "All the added Preconditions need to be filled in."
+        )
+        ALL_ADDED_STEPS_NEED_TO_BE_FILLED_IN = (
+            "All the added Steps need to be filled in."
+        )
+        ALL_SCENARIOS_MUST_HAVE_GHERKIN_CONTENT = (
+            "All scenarios must have Gherkin content."
+        )
+        BDD_FEATURE_FILE_PATHNAME_IS_DELETED = (
+            "BDD Feature file '{feature_file_pathname}' is deleted"
+        )
+        BDD_FEATURE_FILE_PATHNAME_IS_SAVED = (
+            "BDD Feature file '{feature_file_pathname}' is saved"
+        )
+        DATA_WITH_PROJECT_ID_NOT_FOUND_IN_JSON_NOTHING_TO_UPDATE = (
+            'Data with project ID "{project_id}" not found in JSON. Nothing to update.'
+        )
+        DATA_WITH_SUITE_ID_NOT_FOUND_IN_JSON_NOTHING_TO_UPDATE = (
+            'Data with Suite ID "{suite_id}" not found in JSON. Nothing to update.'
+        )
+        EACH_SCENARIO_MUST_HAVE_A_TEST_LEVEL = "Each scenario must have a test level."
+        EACH_SCENARIO_MUST_HAVE_A_TEST_APPROACH = (
+            "Each scenario must have a test approach."
+        )
+        EACH_SCENARIO_MUST_HAVE_A_TEST_DURATION = (
+            "Each scenario must have a test duration."
+        )
+        FEATURE_NAME_IS_REQUIRED = "Feature Name is required."
+        FEATURE_FILE_WAS_NOT_FOUND = "Feature file was not found"
+        DELETION_FAILED_FEATURE_FILE_NOT_FOUND = (
+            "Deletion of JSON file failed. Feature file not found."
+        )
+        GHERKIN_FEATURE_CONTENT_IS_REQUIRED = "Gherkin Feature content is required."
+        NO_DATA_FOUND_NOTHING_TO_DELETE = "No data found. Nothing to delete."
+        NO_DATA_FOUND_NOTHING_TO_UPDATE = "No data found. Nothing to update."
+        PLEASE_FILL_IN_THE_FIELDS_BEFORE_CHOOSING_AN_ACTION = (
+            "Please, fill in the fields before choosing an action"
+        )
+        PROJECT_NAME_IS_REQUIRED = "Project Name is required."
+        PROJECT_PROJECT_ID_IS_CREATED = "Project '{project_id}' is created"
+        PROJECT_PROJECT_ID_IS_UPDATED = "Project '{project_id}' is updated"
+        PROJECT_PROJECT_ID_IS_DELETED = "Project '{project_id}' is deleted"
+        PROJECT_REFERENCE_IS_REQUIRED = "Project reference is required."
+        SUITE_NAME_IS_REQUIRED = "Suite Name is required."
+        SUITE_REFERENCE_IS_REQUIRED = "Suite reference is required."
+        SUITE_SUITE_ID_IS_CREATED = "Suite '{suite_id}' is created"
+        SUITE_SUITE_ID_IS_UPDATED = "Suite '{suite_id}' is updated"
+        SUITE_SUITE_ID_IS_DELETED = "Suite '{suite_id}' is deleted"
+        TEST_CASE_SCENARIO_IS_SAVED = "Test Case scenario '{test_id}' is saved"
+        TEST_CASE_STEPS_ARE_SAVED = "Test Case Steps are saved"
+        TEST_LEVEL_IS_REQUIRED = "Test Level is required."
+        TEST_NAME_IS_REQUIRED = "Test Name is required."
+        THIS_TEST_TAKES = "This test takes"
+
+    class FieldText:
+        ADD_NEW_SCENARIO = "+ Add New Scenario"
+        ADD_PRECONDITION = "+ Add Precondition"
+        ADD_STEP = "+ Add Step"
+        BDD_SCENARIO_FORMAT = "BDD Scenario format"
+        CHOOSE_TEST_LEVEL_APPROACH_FOR_COVERAGE = (
+            "Choose the test level/approach for coverage purposes."
+        )
+        DELETE = "Delete"
+        DELETE_FILE = "Delete File"
+        ENTER_AVERAGE_TEST_EXECUTION_DURATION = (
+            "Enter the average test execution duration (HH:mm)"
+        )
+        ENTER_EXPECTED_RESULT = "Enter Expected Result"
+        ENTER_FEATURE_NAME = "Enter Feature name"
+        ENTER_PROJECT_ID_TO_DELETE = "Enter a project ID to delete"
+        ENTER_PROJECT_NAME = "Enter Project name"
+        ENTER_SCENARIO_LEVEL = "Enter scenario level"
+        ENTER_STEP = "Enter Step"
+        ENTER_SUITE_ID_TO_DELETE = "Enter a Suite ID to delete"
+        ENTER_SUITE_NAME = "Enter Suite name"
+        ENTER_TEST_LEVEL = "Enter test level"
+        ENTER_YOUR_GHERKIN_FEATURE = "Enter your Gherkin Feature"
+        ENTER_YOUR_GHERKIN_SCENARIO = "Enter your Gherkin Scenario"
+        ENTER_PRECONDITION = "Enter Precondition"
+        ENTER_PRECONDITIONS_FOR_THIS_TEST_CASE = (
+            "Enter the Preconditions for this Test Case"
+        )
+        ENTER_TEST_CASE_TITLE_OR_OBJECTIVE = "Enter test case title or objective"
+        ENTER_TEST_CASE_STEPS_AND_EXPECTED_RESULTS = (
+            "Enter the Test Case steps and expected results"
+        )
+        EG_FEATURE_USER_LOGIN = "E.g., Feature: User Login"
+        FEATURE_ID = "Feature ID"
+        GENERATE_NEW_ID = "Generate new ID"
+        PROJECT_ID = "Project ID"
+        REQUIRED_FIELDS = "Required fields"
+        SAVE = "Save"
+        SAVE_FEATURE = "Save Feature"
+        SAVE_NEW_TEST_CASE = "Save new Test Case"
+        SCRIPTED_TEST_FORMAT = "Scripted Test format"
+        SELECT_PROJECT_NAME = "Select Project name"
+        SELECT_SUITE_NAME = "Select Suite name"
+        SELECT_TEST_APPROACH = "Selected the test approach"
+        SELECT_TEST_APPROACH_FOR_THIS_SCENARIO = (
+            "Select the test approach for this scenario"
+        )
+        SUITE_ID = "Suite ID"
+        UPDATE = "Update"

@@ -28,13 +28,13 @@ def render_layout():
                                             dcc.Input(
                                                 id="rsu--suite-id",
                                                 type="text",
-                                                placeholder="Suite id",
+                                                placeholder=Constants.FieldText.SUITE_ID,
                                                 required=True,
                                                 readOnly=True,
                                                 className="inline-grid",
                                             ),
                                             html.Button(
-                                                "Generate new ID",
+                                                Constants.FieldText.GENERATE_NEW_ID,
                                                 id="rsu--generate-id-button",
                                                 className="inline-grid",
                                             ),
@@ -42,27 +42,37 @@ def render_layout():
                                     ),
                                     dcc.Dropdown(
                                         id="rsu--project-dropdown",
-                                        placeholder="Select project name",
+                                        placeholder=Constants.FieldText.SELECT_PROJECT_NAME,
                                         options=ProjectMapper.get_project_options(),
-                                        className=" c_dropdown required"
+                                        className=" c_dropdown required",
                                     ),
                                     dcc.Input(
                                         id="rsu--suite-name",
                                         type="text",
-                                        placeholder="Enter suite name",
+                                        placeholder=Constants.FieldText.ENTER_SUITE_NAME,
                                         required=True,
                                     ),
                                 ],
                             )
                         )
                     ),
-                    html.Label("Required fields", className="required-msg"),
+                    html.Label(
+                        Constants.FieldText.REQUIRED_FIELDS, className="required-msg"
+                    ),
                     html.Div(id="rsu--output-message-suites", className="output-msg"),
                     html.Div(
                         className="grid grid-2",
                         children=[
-                            html.Button("Save", id="rsu--save-button", n_clicks=0),
-                            html.Button("Update", id="rsu--update-button", n_clicks=0),
+                            html.Button(
+                                Constants.FieldText.SAVE,
+                                id="rsu--save-button",
+                                n_clicks=0,
+                            ),
+                            html.Button(
+                                Constants.FieldText.UPDATE,
+                                id="rsu--update-button",
+                                n_clicks=0,
+                            ),
                             html.Div(
                                 className="section-group",
                                 children=[
@@ -73,10 +83,12 @@ def render_layout():
                                     dcc.Input(
                                         id="rsu--delete-suite-id",
                                         type="text",
-                                        placeholder="Enter a suite ID to delete",
+                                        placeholder=Constants.FieldText.ENTER_SUITE_ID_TO_DELETE,
                                     ),
                                     html.Button(
-                                        "Delete", id="rsu--delete-button", n_clicks=0
+                                        Constants.FieldText.DELETE,
+                                        id="rsu--delete-button",
+                                        n_clicks=0,
                                     ),
                                 ],
                             ),

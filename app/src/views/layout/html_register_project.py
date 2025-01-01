@@ -27,13 +27,13 @@ def render_layout():
                                             dcc.Input(
                                                 id="rpj--project-id",
                                                 type="text",
-                                                placeholder="Project id",
+                                                placeholder=Constants.FieldText.PROJECT_ID,
                                                 required=True,
                                                 readOnly=True,
                                                 className="inline-grid",
                                             ),
                                             html.Button(
-                                                "Generate new ID",
+                                                Constants.FieldText.GENERATE_NEW_ID,
                                                 id="rpj--generate-id-button",
                                                 className="inline-grid",
                                             ),
@@ -42,20 +42,30 @@ def render_layout():
                                     dcc.Input(
                                         id="rpj--project-name",
                                         type="text",
-                                        placeholder="Enter project name",
+                                        placeholder=Constants.FieldText.ENTER_PROJECT_NAME,
                                         required=True,
                                     ),
                                 ],
                             )
                         )
                     ),
-                    html.Label("Required fields", className="required-msg"),
+                    html.Label(
+                        Constants.FieldText.REQUIRED_FIELDS, className="required-msg"
+                    ),
                     html.Div(id="rpj--output-message-projects", className="output-msg"),
                     html.Div(
                         className="grid grid-2",
                         children=[
-                            html.Button("Save", id="rpj--save-button", n_clicks=0),
-                            html.Button("Update", id="rpj--update-button", n_clicks=0),
+                            html.Button(
+                                Constants.FieldText.SAVE,
+                                id="rpj--save-button",
+                                n_clicks=0,
+                            ),
+                            html.Button(
+                                Constants.FieldText.UPDATE,
+                                id="rpj--update-button",
+                                n_clicks=0,
+                            ),
                             html.Div(
                                 className="section-group",
                                 children=[
@@ -66,10 +76,12 @@ def render_layout():
                                     dcc.Input(
                                         id="rpj--delete-project-id",
                                         type="text",
-                                        placeholder="Enter a project ID to delete",
+                                        placeholder=Constants.FieldText.ENTER_PROJECT_ID_TO_DELETE,
                                     ),
                                     html.Button(
-                                        "Delete", id="rpj--delete-button", n_clicks=0
+                                        Constants.FieldText.DELETE,
+                                        id="rpj--delete-button",
+                                        n_clicks=0,
                                     ),
                                 ],
                             ),

@@ -54,19 +54,22 @@ def save_update_delete_data(
 ):
     ctx = dash.callback_context
     button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
-    
+
     # Refresh Project ID if not loaded
     if project_id is None:
         project_id = idproj_prefix + DataGenerator.generate_aggregated_uuid()
 
     # Validation Rules as tuples
-    validation_rules = [(not project_name, "Project Name is required.")]
+    validation_rules = [(not project_name, Constants.Messages.PROJECT_NAME_IS_REQUIRED)]
 
     match button_id:
         case "rpj--save-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"Project '{project_id}' is created", validation_rules
+                    Constants.Messages.PROJECT_PROJECT_ID_IS_CREATED.format(
+                        project_id=project_id
+                    ),
+                    validation_rules,
                 )
             )
             if not is_valid:
@@ -94,7 +97,10 @@ def save_update_delete_data(
         case "rpj--update-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"Project '{project_id}' is updated", validation_rules
+                    Constants.Messages.PROJECT_PROJECT_ID_IS_UPDATED.format(
+                        project_id=project_id
+                    ),
+                    validation_rules,
                 )
             )
             if not is_valid:
@@ -105,7 +111,7 @@ def save_update_delete_data(
             except FileNotFoundError:
                 return (
                     dash.no_update,
-                    "No data found. Nothing to update.",
+                    Constants.Messages.NO_DATA_FOUND_NOTHING_TO_UPDATE,
                     dash.no_update,
                 )
 
@@ -118,14 +124,19 @@ def save_update_delete_data(
             else:
                 return (
                     dash.no_update,
-                    f'Data with project ID "{project_id}" not found in JSON. Nothing to update.',
+                    Constants.Messages.DATA_WITH_PROJECT_ID_NOT_FOUND_IN_JSON_NOTHING_TO_UPDATE.format(
+                        project_id=project_id
+                    ),
                     dash.no_update,
                 )
 
         case "rpj--delete-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"Project '{project_id}' is deleted", validation_rules
+                    Constants.Messages.PROJECT_PROJECT_ID_IS_DELETED.format(
+                        project_id=project_id
+                    ),
+                    validation_rules,
                 )
             )
             if not is_valid:
@@ -153,12 +164,16 @@ def save_update_delete_data(
             except FileNotFoundError:
                 return (
                     dash.no_update,
-                    "No data found. Nothing to delete.",
+                    Constants.Messages.NO_DATA_FOUND_NOTHING_TO_DELETE,
                     dash.no_update,
                 )
 
         case _:
-            return "Please, fill the fields before choosing an action", dash.no_update, dash.no_update
+            return (
+                Constants.Messages.PLEASE_FILL_IN_THE_FIELDS_BEFORE_CHOOSING_AN_ACTION,
+                dash.no_update,
+                dash.no_update,
+            )
 
 
 app.layout = html_register_project.render_layout()

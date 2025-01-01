@@ -59,21 +59,24 @@ def save_update_delete_data(
 ):
     ctx = dash.callback_context
     button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
-    
+
     # Refresh Suite ID if not loaded
     if suite_id is None:
         suite_id = idsuite_prefix + DataGenerator.generate_aggregated_uuid()
 
     validation_rules = [
-        (not project_ref, "Project reference is required."),
-        (not suite_name, "Suite Name is required."),
+        (not project_ref, Constants.Messages.PROJECT_REFERENCE_IS_REQUIRED),
+        (not suite_name, Constants.Messages.SUITE_NAME_IS_REQUIRED),
     ]
 
     match button_id:
         case "rsu--save-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"Suite '{suite_id}' is saved", validation_rules
+                    Constants.Messages.SUITE_SUITE_ID_IS_CREATED.format(
+                        suite_id=suite_id
+                    ),
+                    validation_rules,
                 )
             )
             if not is_valid:
@@ -112,7 +115,10 @@ def save_update_delete_data(
         case "rsu--update-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"Suite '{suite_id}' is updated", validation_rules
+                    Constants.Messages.SUITE_SUITE_ID_IS_UPDATED.format(
+                        suite_id=suite_id
+                    ),
+                    validation_rules,
                 )
             )
             if not is_valid:
@@ -123,7 +129,7 @@ def save_update_delete_data(
             except FileNotFoundError:
                 return (
                     dash.no_update,
-                    "No data found. Nothing to update.",
+                    Constants.Messages.NO_DATA_FOUND_NOTHING_TO_UPDATE,
                     dash.no_update,
                 )
 
@@ -140,14 +146,19 @@ def save_update_delete_data(
             else:
                 return (
                     dash.no_update,
-                    f'Data with Suite ID "{suite_id}" not found in JSON. Nothing to update.',
+                    Constants.Messages.DATA_WITH_SUITE_ID_NOT_FOUND_IN_JSON_NOTHING_TO_UPDATE.format(
+                        suite_id=suite_id
+                    ),
                     dash.no_update,
                 )
 
         case "rsu--delete-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"Suite '{suite_id}' is deleted", validation_rules
+                    Constants.Messages.SUITE_SUITE_ID_IS_DELETED.format(
+                        suite_id=suite_id
+                    ),
+                    validation_rules,
                 )
             )
             if not is_valid:
@@ -175,12 +186,16 @@ def save_update_delete_data(
             except FileNotFoundError:
                 return (
                     dash.no_update,
-                    "No data found. Nothing to delete.",
+                    Constants.Messages.NO_DATA_FOUND_NOTHING_TO_DELETE,
                     dash.no_update,
                 )
 
         case _:
-            return "Please, fill the fields before choosing an action", dash.no_update, dash.no_update
+            return (
+                Constants.Messages.PLEASE_FILL_IN_THE_FIELDS_BEFORE_CHOOSING_AN_ACTION,
+                dash.no_update,
+                dash.no_update,
+            )
 
 
 app.layout = html_register_suite.render_layout()

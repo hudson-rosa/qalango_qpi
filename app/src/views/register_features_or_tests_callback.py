@@ -188,25 +188,28 @@ def submit_bdd_data(
 
     # Validation Rules as tuples
     validation_rules = [
-        (not project_ref, "Project reference is required."),
-        (not suite_ref, "Suite reference is required."),
-        (not feature_name, "Feature Name is required."),
-        (not bdd_feature_content, "Gherkin Feature content is required."),
+        (not project_ref, Constants.Messages.PROJECT_REFERENCE_IS_REQUIRED),
+        (not suite_ref, Constants.Messages.SUITE_REFERENCE_IS_REQUIRED),
+        (not feature_name, Constants.Messages.FEATURE_NAME_IS_REQUIRED),
+        (
+            not bdd_feature_content,
+            Constants.Messages.GHERKIN_FEATURE_CONTENT_IS_REQUIRED,
+        ),
         (
             not bdd_scenarios or not all(bdd_scenarios),
-            "All scenarios must have Gherkin content.",
+            Constants.Messages.ALL_SCENARIOS_MUST_HAVE_GHERKIN_CONTENT,
         ),
         (
             not test_levels or len(test_levels) != len(bdd_scenarios),
-            "Each scenario must have a test level.",
+            Constants.Messages.EACH_SCENARIO_MUST_HAVE_A_TEST_LEVEL,
         ),
         (
             not test_approaches or len(test_approaches) != len(bdd_scenarios),
-            "Each scenario must have a test approach.",
+            Constants.Messages.EACH_SCENARIO_MUST_HAVE_A_TEST_APPROACH,
         ),
         (
             not test_durations or len(test_durations) != len(bdd_scenarios),
-            "Each scenario must have a test duration.",
+            Constants.Messages.EACH_SCENARIO_MUST_HAVE_A_TEST_DURATION,
         ),
     ]
 
@@ -217,7 +220,9 @@ def submit_bdd_data(
         case "rsc--submit-bdd-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"BDD Feature file '{feature_file_pathname}' is saved",
+                    Constants.Messages.BDD_FEATURE_FILE_PATHNAME_IS_SAVED.format(
+                        feature_file_pathname=feature_file_pathname
+                    ),
                     validation_rules,
                 )
             )
@@ -345,7 +350,9 @@ def submit_bdd_data(
         case "rsc--delete-bdd-file-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    f"BDD Feature file '{feature_file_pathname}' is deleted",
+                    Constants.Messages.BDD_FEATURE_FILE_PATHNAME_IS_DELETED.format(
+                        feature_file_pathname=feature_file_pathname
+                    ),
                     validation_rules,
                 )
             )
@@ -366,16 +373,19 @@ def submit_bdd_data(
                 else:
                     return (
                         None,
-                        f"Feature file was not found",
+                        Constants.Messages.FEATURE_FILE_WAS_NOT_FOUND,
                     )
             except FileNotFoundError:
                 return (
-                    html.Pre("Feature file not found. Deletion of JSON file failed."),
+                    html.Pre(Constants.Messages.DELETION_FAILED_FEATURE_FILE_NOT_FOUND),
                     None,
                 )
 
         case _:
-            return "Please, fill the fields before choosing an action", None
+            return (
+                Constants.Messages.PLEASE_FILL_IN_THE_FIELDS_BEFORE_CHOOSING_AN_ACTION,
+                None,
+            )
 
 
 @callback(
@@ -383,7 +393,7 @@ def submit_bdd_data(
     Input("rsc--tc-total-time-slider", "value"),
 )
 def update_tc_slider_output(value):
-    return "This test takes " + StringHandler.format_time_to_hh_mm(value)
+    return f"{Constants.Messages.THIS_TEST_TAKES} {StringHandler.format_time_to_hh_mm(value)}"
 
 
 @callback(
@@ -397,7 +407,7 @@ def add_test_precondition(n_clicks, existing_preconditions):
 
         new_precondition = dcc.Textarea(
             id=f"rsc--precondition-{precond_block_number}",
-            placeholder=f"Enter precondition {precond_block_number}",
+            placeholder=f"{Constants.FieldText.ENTER_PRECONDITION} {precond_block_number}",
             required=True,
         )
         return existing_preconditions + [new_precondition]
@@ -416,12 +426,12 @@ def add_test_step(n_clicks, existing_steps):
 
         new_step = dcc.Textarea(
             id=f"rsc--step-{step_block_number}",
-            placeholder=f"Enter step {step_block_number}",
+            placeholder=f"{Constants.FieldText.ENTER_STEP} {step_block_number}",
             required=True,
         )
         new_expected = dcc.Textarea(
             id=f"rsc--expected-{step_block_number}",
-            placeholder=f"Enter expected result {step_block_number}",
+            placeholder=f"{Constants.FieldText.ENTER_EXPECTED_RESULT} {step_block_number}",
             required=False,
         )
         return existing_steps + [new_step, new_expected]
@@ -469,17 +479,17 @@ def submit_scripted_test(
 
     # Validation Rules as tuples
     validation_rules = [
-        (not project_ref, "Project reference is required."),
-        (not suite_ref, "Suite reference is required."),
-        (not test_name, "Test Name is required."),
-        (not test_level, "Test Level is required."),
+        (not project_ref, Constants.Messages.PROJECT_REFERENCE_IS_REQUIRED),
+        (not suite_ref, Constants.Messages.SUITE_REFERENCE_IS_REQUIRED),
+        (not test_name, Constants.Messages.TEST_NAME_IS_REQUIRED),
+        (not test_level, Constants.Messages.TEST_LEVEL_IS_REQUIRED),
     ]
 
     match button_id:
         case "rsc--submit-tc-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    "Test Case scenario", validation_rules
+                    Constants.Messages.TEST_CASE_SCENARIO_IS_SAVED.format(test_id=test_id), validation_rules
                 )
             )
             if not is_valid:
@@ -511,16 +521,16 @@ def submit_scripted_test(
             steps_validation_rules = [
                 (
                     any(not p["precondition"] for p in preconditions_data),
-                    "All the added Preconditions need to be filled in.",
+                    Constants.Messages.ALL_ADDED_PRECONDITIONS_NEED_TO_BE_FILLED_IN,
                 ),
                 (
                     any(not s["step"] for s in steps_and_expected_data),
-                    "All the added Steps need to be filled in.",
+                    Constants.Messages.ALL_ADDED_STEPS_NEED_TO_BE_FILLED_IN,
                 ),
             ]
 
             is_valid, steps_message = ValidationUtils.validate_mandatory_field_rules(
-                "Test Case Steps are saved", steps_validation_rules
+                Constants.Messages.TEST_CASE_STEPS_ARE_SAVED, steps_validation_rules
             )
             if not is_valid:
                 return steps_message, None
@@ -607,7 +617,10 @@ def submit_scripted_test(
 
             return (validation_message, new_id)
         case _:
-            return "Please, fill the fields before choosing an action", None
+            return (
+                Constants.Messages.PLEASE_FILL_IN_THE_FIELDS_BEFORE_CHOOSING_AN_ACTION,
+                None,
+            )
 
 
 app.layout = html_register_feature_or_tests.render_layout()
