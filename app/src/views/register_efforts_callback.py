@@ -64,18 +64,7 @@ def save_update_delete_data(
         button_id = str(ctx.triggered[0]["prop_id"]).split(".")[0]
 
     match button_id:
-        case "rte--save-button":
-            is_valid, message = ValidationUtils.validate_mandatory_fields(
-                test_name=test_name,
-                suite_name=suite_name,
-                project_name=project_name,
-                total_time=total_time,
-                test_level=test_level,
-                test_approach=test_approach,
-            )
-            if not is_valid:
-                return message, None
-            
+        case "rte--save-button":            
             try:
                 data = test_efforts_data_mapper_instance.load_from_json_storage()
 

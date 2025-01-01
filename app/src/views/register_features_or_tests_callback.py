@@ -189,36 +189,41 @@ def submit_bdd_data(
 
     # Validation Rules as tuples
     validation_rules = [
-        (not project_ref, "- Project reference is required."),
-        (not suite_ref, "- Suite reference is required."),
-        (not feature_name, "- Feature Name is required."),
-        (not bdd_feature_content, "- Gherkin Feature content is required."),
+        (not project_ref, "Project reference is required."),
+        (not suite_ref, "Suite reference is required."),
+        (not feature_name, "Feature Name is required."),
+        (not bdd_feature_content, "Gherkin Feature content is required."),
         (
             not bdd_scenarios or not all(bdd_scenarios),
-            "- All scenarios must have Gherkin content.",
+            "All scenarios must have Gherkin content.",
         ),
         (
             not test_levels or len(test_levels) != len(bdd_scenarios),
-            "- Each scenario must have a test level.",
+            "Each scenario must have a test level.",
         ),
         (
             not test_approaches or len(test_approaches) != len(bdd_scenarios),
-            "- Each scenario must have a test approach.",
+            "Each scenario must have a test approach.",
         ),
         (
             not test_durations or len(test_durations) != len(bdd_scenarios),
-            "- Each scenario must have a test duration.",
+            "Each scenario must have a test duration.",
         ),
     ]
-    error_message = ValidationUtils.validate_mandatory_field_rules(validation_rules)
-    if error_message:
-        return error_message, None
 
     feature_name_underlined = str(feature_name).replace(" ", "_").strip()
     feature_file_pathname = f"{Constants.Folders.FEATURES_FOLDER}/{feature_id}--{feature_name_underlined.lower()}.feature"
 
     match button_id:
         case "rsc--submit-bdd-button":
+            is_valid, validation_message = (
+                ValidationUtils.validate_mandatory_field_rules(
+                    f"BDD Feature file '{feature_file_pathname}' is saved",
+                    validation_rules
+                )
+            )
+            if not is_valid:
+                return validation_message, None
 
             project_id = StringHandler.get_id_format(project_ref)
             suite_name = str(suite_ref).split("(")[0].strip()
@@ -337,11 +342,20 @@ def submit_bdd_data(
             new_id = idfeat_prefix + DataGenerator.generate_aggregated_uuid()
 
             return (
-                html.Pre(f"BDD Feature saved successfully:\n\n{feature_file_pathname}"),
-                new_id,
+                validation_message,
+                new_id
             )
 
         case "rsc--delete-bdd-file-button":
+            is_valid, validation_message = (
+                ValidationUtils.validate_mandatory_field_rules(
+                    f"BDD Feature file '{feature_file_pathname}' is deleted",
+                    validation_rules,
+                )
+            )
+            if not is_valid:
+                return validation_message, None
+
             try:
                 data = scenarios_mapper_instance.load_from_json_storage()
                 FileHandler.delete_file(feature_file_pathname)
@@ -350,9 +364,7 @@ def submit_bdd_data(
                     del data[feature_id]
                     scenarios_mapper_instance.save_to_json_storage(data)
                     return (
-                        html.Pre(
-                            f"Feature file deleted successfully:\n\n{feature_file_pathname}"
-                        ),
+                        validation_message,
                         None,
                     )
                 else:
@@ -367,7 +379,7 @@ def submit_bdd_data(
                 )
 
         case _:
-            return "Please fill out the fields before submitting a feature file", None
+            return "Please, fill the fields before choosing an action", None
 
 
 @callback(
@@ -458,25 +470,30 @@ def submit_scripted_test(
 
     # Validation Rules as tuples
     validation_rules = [
-        (not project_ref, "- Project reference is required."),
-        (not suite_ref, "- Suite reference is required."),
-        (not test_name, "- Test Name is required."),
-        (not test_level, "- Test Level is required."),
+        (not project_ref, "Project reference is required."),
+        (not suite_ref, "Suite reference is required."),
+        (not test_name, "Test Name is required."),
+        (not test_level, "Test Level is required."),
         (
             not preconditions_children or len(preconditions_children) == 0,
-            "- All Preconditions must have a content.",
+            "All Preconditions must have a content.",
         ),
         (
             not children_steps or len(children_steps) == 0,
-            "- Each Test Case Step must have a content.",
+            "Each Test Case Step must have a content.",
         ),
     ]
-    error_message = ValidationUtils.validate_mandatory_field_rules(validation_rules)
-    if error_message:
-        return error_message, None
 
     match button_id:
         case "rsc--submit-tc-button":
+            is_valid, validation_message = (
+                ValidationUtils.validate_mandatory_field_rules(
+                    "Test Case scenario", validation_rules
+                )
+            )
+            if not is_valid:
+                return validation_message, None
+
             # prepare test case data
             preconditions_data = []
             for i in range(0, len(preconditions_children), 2):
@@ -587,11 +604,11 @@ def submit_scripted_test(
             new_id = idtest_prefix + DataGenerator.generate_aggregated_uuid()
 
             return (
-                html.Pre(f"Test Case saved successfully"),
-                new_id,
+                validation_message,
+                new_id
             )
         case _:
-            return "Please fill out the fields before submitting a test case", None
+            return "Please, fill the fields before choosing an action", None
 
 
 app.layout = html_register_feature_or_tests.render_layout()

@@ -5,6 +5,7 @@
   --grey: #6a91ad;
   --lightBlue: #82c0ec;
   --lightGreen: #73d5b9;
+  --lightRed: #f56a6f;
   --red: #d9353a;
   --white: #d4edff;
   --borderFormEls: hsl(0, 0%, 10%);
@@ -180,6 +181,26 @@ body {
 .form-content *:disabled {
   cursor: default;
   filter: blur(2px);
+}
+
+.validation-error {
+  color: var(--lightRed);
+  font-style: italic;
+  /* white-space: normal; */
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word; 
+}
+
+.validation-success {
+  color: var(--lightGreen);
+  font-weight: bold;
+  /* white-space: normal; */
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word; 
 }
 
 /* INPUT NUMBER
