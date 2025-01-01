@@ -82,14 +82,14 @@ def define_project_and_suite():
                 options=ProjectMapper.get_project_options(),
                 placeholder="Select project name",
                 searchable=True,
-                className="c_dropdown",
+                className="c_dropdown required",
             ),
             dcc.Dropdown(
                 id="rsc--suite-dropdown",
                 options=SuiteMapper.get_suite_options(),
                 placeholder="Select suite name",
                 searchable=True,
-                className="c_dropdown",
+                className="c_dropdown required",
             ),
         ],
     )
@@ -122,6 +122,7 @@ def register_bdd_feature_scenarios():
                         id="rsc--bdd-feature-editor",
                         style={"height": "200px !important"},
                         placeholder="E.g., Feature: User Login",
+                        required=True
                     ),
                 ],
             ),
@@ -189,7 +190,7 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                                 },
                                 placeholder="Enter scenario level",
                                 searchable=True,
-                                className="c_dropdown",
+                                className=" c_dropdown required",
                                 value="exploratory",
                             ),
                             html.H4(
@@ -260,6 +261,7 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                             "index": scenario_id_suffix,
                         },
                         style={"height": "600px !important"},
+                        required=True,
                         placeholder=f"""Scenario: Successful login (Example #{scenario_id_suffix})
     Given the user is on the login page
     When they enter valid credentials
@@ -317,7 +319,6 @@ def register_scripted_test_cases():
                     dcc.Textarea(
                         id="rsc--expected-1",
                         placeholder="Enter expected result 1",
-                        required=True,
                         style={"height": "500px !important"},
                     ),
                 ],
@@ -364,7 +365,7 @@ def define_test_case_details(scenario_id_suffix=1):
                         id="rsc--tc-test-level-dropdown",
                         placeholder="Enter test level",
                         searchable=True,
-                        className="c_dropdown",
+                        className=" c_dropdown required",
                         value="exploratory",
                     ),
                     html.H4("Enter the average test execution duration (HH:mm)"),

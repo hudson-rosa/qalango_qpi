@@ -44,7 +44,7 @@ def render_layout():
                                         id="rsu--project-dropdown",
                                         placeholder="Select project name",
                                         options=ProjectMapper.get_project_options(),
-                                        className="c_dropdown"
+                                        className=" c_dropdown required"
                                     ),
                                     dcc.Input(
                                         id="rsu--suite-name",

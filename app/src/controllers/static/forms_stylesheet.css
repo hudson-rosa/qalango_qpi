@@ -37,6 +37,11 @@ button {
   font-size: 100%;
 }
 
+input.dash-input:invalid {
+  outline: none !important;
+  /* Removes the red outline */
+}
+
 button,
 label {
   cursor: pointer;
@@ -135,6 +140,23 @@ body {
   margin-bottom: 20px;
 }
 
+.form-content select,
+.form-content input,
+.form-content textarea,
+.form-content input[type="checkbox"],
+.c_dropdown {
+  border-top: 2px solid var(--bgFormElsFocus);
+  border-bottom: none;
+}
+
+.form-content input:read-only,
+.form-content button,
+.c_radio,
+.c_number_spinner {
+  border-top: none;
+  border-bottom: 2px solid var(--bgFormElsFocus);
+}
+
 .form-content textarea {
   min-height: 150px;
 }
@@ -171,11 +193,11 @@ body {
 }
 
 .form-content *:required {
-  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg);
+  background-image: url("svg/asterisk.svg");
 }
 
 .form-content select {
-  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
+  background-image: url("svg/down.svg");
 }
 
 .form-content *:disabled {
@@ -190,7 +212,7 @@ body {
   box-sizing: border-box;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-word; 
+  word-break: break-word;
 }
 
 .validation-success {
@@ -200,7 +222,7 @@ body {
   box-sizing: border-box;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-word; 
+  word-break: break-word;
 }
 
 /* INPUT NUMBER
@@ -253,7 +275,7 @@ body {
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .form-content .required-msg {
   display: none;
-  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg) no-repeat center left / 15px 15px;
+  background: url("svg/asterisk.svg") no-repeat center left / 15px 15px;
   padding-left: 20px;
 }
 
@@ -334,6 +356,22 @@ body {
 
 /* CUSTOM DROPDOWN
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.c_dropdown.required .Select-control:before {
+  content: "";
+  display: inline-block;
+  background-image: url('svg/asterisk.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  margin-right: -10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
 .c_dropdown .Select-control {
   width: 100%;
   line-height: 1.5;
@@ -345,12 +383,17 @@ body {
     transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
 }
 
+
 .c_dropdown .Select-control .Select-arrow {
-  margin-right: -40px !important;
+  position: relative;
+  top: 0%;
+  margin-right: -10px !important;
 }
 
 .c_dropdown .Select-control .Select-clear {
-  margin-right: -30px !important;
+  position: absolute;
+  right: 45px;
+  top: 8px;
 }
 
 .c_dropdown .Select-placeholder {
@@ -360,7 +403,7 @@ body {
 
 .c_dropdown .Select-menu-outer {
   background: var(--bgFormEls);
-  border: 1px solid var(--borderFormEls);
+  border: 1px solid var(--bgFormElsBlueFocus);
   color: var(--lightBlue);
 }
 
@@ -399,7 +442,7 @@ body {
 /* Additional rules to ensure the input text is styled correctly */
 .c_dropdown .Select-input input {
   color: var(--lightBlue) !important;
-  height: 20%;
+  height: 2%;
   padding-left: 2rem;
   background-color: transparent;
   transition: background 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
