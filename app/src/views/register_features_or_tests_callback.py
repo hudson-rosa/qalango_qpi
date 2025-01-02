@@ -541,6 +541,7 @@ def add_test_step(n_clicks, existing_steps):
         State("rsc--tc-test-level-dropdown", "value"),
         State("rsc--tc-test-approach-radio", "value"),
         State("rsc--tc-total-time-slider", "value"),
+        State("rsc--tc-categories-checkbox", "value"),
     ],
     prevent_initial_call="initial_duplicate",
 )
@@ -555,6 +556,7 @@ def submit_scripted_test(
     test_level,
     test_approach,
     test_duration,
+    test_categories,
 ):
     ctx = dash.callback_context
     button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
@@ -634,6 +636,7 @@ def submit_scripted_test(
                     Constants.ScenariosDataJSON.SCENARIO_NAME: test_name,
                     "test_level": test_level,
                     "test_approach": test_approach,
+                    "test_categories": test_categories,
                     "test_duration": test_duration,
                     "preconditions": preconditions_data,
                     "steps": steps_and_expected_data,
@@ -686,6 +689,17 @@ def submit_scripted_test(
                     ),
                     Constants.FeaturesDataJSON.QTY_OF_MANUAL: is_matching_test_level(
                         test_approach, Constants.TestTypesEntity.MANUAL
+                    ),
+                },
+                "test_categories": {
+                    Constants.FeaturesDataJSON.QTY_OF_CRITICAL_TESTS: int(
+                        Constants.TestCategoriesEntity.CRITICAL_TEST in test_categories
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_SMOKE_TESTS: int(
+                        Constants.TestCategoriesEntity.SMOKE_TEST in test_categories
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_EDGE_CASES: int(
+                        Constants.TestCategoriesEntity.EDGE_CASE in test_categories
                     ),
                 },
                 "scenarios": scenario_data,

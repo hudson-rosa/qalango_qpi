@@ -65,12 +65,14 @@
           "qty_of_exploratory": 0
         },
         "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
+        "test_categories": { "qty_of_critical_tests": 1, "qty_of_smoke_tests": 1, "qty_of_edge_cases": 0 },
         "scenarios": {
           "test_content": {
             "scenario_id": "idtest_3882c4caeb",
             "scenario_name": "Extract Data from XML File Based on Provided Configuration",
             "test_level": "e2e",
             "test_approach": "manual",
+            "test_categories": ["critical-test", "edge-case"],
             "test_duration": 30,
             "preconditions": [
               { "precondition": "The XML extractor tool is installed and functional." },
@@ -111,12 +113,14 @@
           "qty_of_exploratory": 0
         },
         "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
+        "test_categories": { "qty_of_critical_tests": 0, "qty_of_smoke_tests": 1, "qty_of_edge_cases": 1 },
         "scenarios": {
           "test_content": {
             "scenario_id": "idtest_f353999e52",
             "scenario_name": "Extract Empty Data from XML File",
             "test_level": "usability",
             "test_approach": "manual",
+            "test_categories": ["smoke-test", "edge-case"],
             "test_duration": 20,
             "preconditions": [{ "precondition": "The XML extractor tool is installed and functional." }],
             "steps": [
