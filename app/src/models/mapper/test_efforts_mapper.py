@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+from src.models.entity.test_categories import TestCategory
 from src.models.entity.test_level import TestLevel
 from src.models.mapper.data_mapper import DataMapper
 from src.utils.constants.constants import Constants
@@ -189,6 +190,35 @@ class TestEffortsMapper(DataMapper):
                 ),
                 "value": TestLevel().get_option(
                     "ref", Constants.TestLevelsEntity.EXPLORATORY
+                ),
+            },
+        ]
+
+    @staticmethod
+    def get_list_of_test_categories():
+        return [
+            {
+                "label": TestCategory().get_option(
+                    "label", Constants.TestCategoriesEntity.CRITICAL_TEST
+                ),
+                "value": TestCategory().get_option(
+                    "ref", Constants.TestCategoriesEntity.CRITICAL_TEST
+                ),
+            },
+            {
+                "label": TestCategory().get_option(
+                    "label", Constants.TestCategoriesEntity.EDGE_CASE
+                ),
+                "value": TestCategory().get_option(
+                    "ref", Constants.TestCategoriesEntity.EDGE_CASE
+                ),
+            },
+            {
+                "label": TestCategory().get_option(
+                    "label", Constants.TestCategoriesEntity.SMOKE_TEST
+                ),
+                "value": TestCategory().get_option(
+                    "ref", Constants.TestCategoriesEntity.SMOKE_TEST
                 ),
             },
         ]

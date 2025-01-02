@@ -1,7 +1,7 @@
 Feature: Extractor XML Processing
 
 
-@idscn_010b8c9622-1 @cov-e2e @cov-automated @time-1m
+@idscn_010b8c9622-1 @cov-e2e @cov-automated @cov-edge-case @cov-smoke-test @time-1m
 Scenario: Extract data from XML file
 	Given I have an XML file containing user data
 	When I use the XML extractor tool to parse the file
@@ -9,7 +9,7 @@ Scenario: Extract data from XML file
 	And the XML extractor should handle missing or malformed tags gracefully
 
 
-@idscn_010b8c9622-2 @cov-usability @cov-manual @time-3m
+@idscn_010b8c9622-2 @cov-usability @cov-manual @cov-smoke-test @time-3m
 @smoke-test
 Scenario: Handle missing XML tags
     Given I have an XML file with missing phone number tags
@@ -19,7 +19,7 @@ Scenario: Handle missing XML tags
     And the missing phone numbers should be marked as "Not Available"
 
 
-@idscn_010b8c9622-3 @cov-e2e @cov-manual @time-75m
+@idscn_010b8c9622-3 @cov-e2e @cov-manual @cov-critical-test @cov-edge-case @cov-smoke-test @time-75m
 Scenario Outline: Extract data from XML file based on provided configuration
 	Given I have an XML file containing "<field1>", "<field2>", and "<field3>"
 	When I use the XML extractor tool to parse the file

@@ -1,3 +1,5 @@
+import re
+
 class StringHandler:
 
     def replace_last_char_occurence(base_string, char_to_replace, new_char):
@@ -17,3 +19,6 @@ class StringHandler:
         if hours > 0:
             show_hours = f"{hours}h "
         return f"{show_hours}{minutes:02d}m"
+
+    def remove_brackets_quotes_and_commas_from_string(base_string):
+        return re.sub(r"[()\[\]{};'\",]", "", base_string)

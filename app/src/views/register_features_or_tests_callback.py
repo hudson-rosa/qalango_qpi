@@ -98,7 +98,9 @@ def toggle_form(bdd_clicks, tc_clicks):
     ),
 )
 def update_bdd_slider_output(value):
-    return "This scenario takes " + StringHandler.format_time_to_hh_mm(value)
+    return Constants.FieldText.THIS_SCENARIO_TAKES_TIME.format(
+        time=StringHandler.format_time_to_hh_mm(value)
+    )
 
 
 @callback(
@@ -113,6 +115,16 @@ def auto_resize_textarea(content, current_style):
         updated_style = {**current_style, "height": f"{new_dynamic_height}px"}
         return updated_style
     return current_style
+
+
+@callback(
+    Output("rsc--bdd-categories-checkbox-output", "children"),
+    Input("rsc--bdd-categories-checkbox", "value"),
+)
+def update_bdd_multi_checkbox_output(selected):
+    if selected:
+        return f"{Constants.FieldText.CATEGORIES_SELECTED}: {', '.join(selected)}"
+    return Constants.FieldText.NO_OPTIONS_SELECTED
 
 
 @callback(
@@ -163,6 +175,7 @@ def add_all_bdd_scenario_fields(n_clicks, current_children):
             },
             "value",
         ),
+        State({"type": "rsc--bdd-categories-checkbox", "index": ALL}, "value"),
     ],
     prevent_initial_call="initial_duplicate",
 )
@@ -178,6 +191,7 @@ def submit_bdd_data(
     test_levels,
     test_approaches,
     test_durations,
+    test_categories,
 ):
     ctx = dash.callback_context
     button_id = ValidationUtils.identify_triggering_action(callback_context=ctx)
@@ -249,22 +263,21 @@ def submit_bdd_data(
                     "test_level": test_levels[index],
                     "test_approach": test_approaches[index],
                     "test_duration": test_durations[index],
+                    "test_categories": test_categories[index],
                 }
                 scenarios_data.append(scenario_data)
 
                 # prepare data for .feature file
-                cov_test_level_tag = (
-                    f"@cov-{test_levels[index]}" if test_levels[index] else ""
+                normalized_tags = prepare_tags_for_feature_file(
+                    test_levels,
+                    test_approaches,
+                    test_durations,
+                    test_categories,
+                    index,
+                    scenario_id_tag,
                 )
-                cov_test_approach_tag = (
-                    f"@cov-{test_approaches[index]}" if test_approaches[index] else ""
-                )
-                time_taken_tag = (
-                    f"@time-{test_durations[index]}m" if test_durations[index] else ""
-                )
-                join_scenario_tags = f"{scenario_id_tag} {cov_test_level_tag} {cov_test_approach_tag} {time_taken_tag}".strip()
                 bdd_content_lines.append(
-                    f"\n\n{join_scenario_tags}\n{scenario_content.strip()}"
+                    f"\n\n{normalized_tags}\n{scenario_content.strip()}"
                 )
 
             aggregated_bdd_feature_content = "\n".join(bdd_content_lines)
@@ -278,6 +291,30 @@ def submit_bdd_data(
             # prepare feature summary data
             test_levels_count = Counter(test_levels)
             test_approaches_count = Counter(test_approaches)
+            test_category_smoke_tes_count = Counter(
+                [
+                    category
+                    for sublist in test_categories
+                    for category in sublist
+                    if category == Constants.TestCategoriesEntity.SMOKE_TEST
+                ]
+            )
+            test_category_edge_case_count = Counter(
+                [
+                    category
+                    for sublist in test_categories
+                    for category in sublist
+                    if category == Constants.TestCategoriesEntity.EDGE_CASE
+                ]
+            )
+            test_category_critical_test_count = Counter(
+                [
+                    category
+                    for sublist in test_categories
+                    for category in sublist
+                    if category == Constants.TestCategoriesEntity.CRITICAL_TEST
+                ]
+            )
             new_data = {
                 Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
@@ -321,6 +358,17 @@ def submit_bdd_data(
                     ),
                     Constants.FeaturesDataJSON.QTY_OF_MANUAL: test_approaches_count.get(
                         Constants.TestTypesEntity.MANUAL, 0
+                    ),
+                },
+                "test_categories": {
+                    Constants.FeaturesDataJSON.QTY_OF_CRITICAL_TESTS: test_category_critical_test_count.get(
+                        Constants.TestCategoriesEntity.CRITICAL_TEST, 0
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_SMOKE_TESTS: test_category_smoke_tes_count.get(
+                        Constants.TestCategoriesEntity.SMOKE_TEST, 0
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_EDGE_CASES: test_category_edge_case_count.get(
+                        Constants.TestCategoriesEntity.EDGE_CASE, 0
                     ),
                 },
                 "scenarios": scenarios_data,
@@ -388,12 +436,50 @@ def submit_bdd_data(
             )
 
 
+def prepare_tags_for_feature_file(
+    test_levels,
+    test_approaches,
+    test_durations,
+    test_categories,
+    index,
+    scenario_id_tag,
+):
+    cov_test_level_tag = f"@cov-{test_levels[index]}" if test_levels[index] else ""
+    cov_test_approach_tag = (
+        f"@cov-{test_approaches[index]}" if test_approaches[index] else ""
+    )
+    cov_test_category_tags = (
+        [f"@cov-{categories_sublist}" for categories_sublist in test_categories[index]]
+        if test_categories is not None
+        else ""
+    )
+    time_taken_tag = (
+        f"@time-{test_durations[index]}m" if test_durations[index] else "@time-0m"
+    )
+    join_scenario_tags = f"{scenario_id_tag}{cov_test_level_tag}{cov_test_approach_tag}{cov_test_category_tags}{time_taken_tag}".replace(
+        " ", ""
+    )
+    normalized_tags = (
+        str(
+            StringHandler.remove_brackets_quotes_and_commas_from_string(
+                join_scenario_tags
+            )
+        )
+        .replace("@", " @")
+        .strip()
+    )
+
+    return normalized_tags
+
+
 @callback(
     Output("rsc--tc-slider-output", "children"),
     Input("rsc--tc-total-time-slider", "value"),
 )
 def update_tc_slider_output(value):
-    return f"{Constants.Messages.THIS_TEST_TAKES} {StringHandler.format_time_to_hh_mm(value)}"
+    return Constants.FieldText.THIS_TEST_TAKES_TIME.format(
+        time=StringHandler.format_time_to_hh_mm(value)
+    )
 
 
 @callback(
@@ -489,7 +575,10 @@ def submit_scripted_test(
         case "rsc--submit-tc-button":
             is_valid, validation_message = (
                 ValidationUtils.validate_mandatory_field_rules(
-                    Constants.Messages.TEST_CASE_SCENARIO_IS_SAVED.format(test_id=test_id), validation_rules
+                    Constants.Messages.TEST_CASE_SCENARIO_IS_SAVED.format(
+                        test_id=test_id
+                    ),
+                    validation_rules,
                 )
             )
             if not is_valid:

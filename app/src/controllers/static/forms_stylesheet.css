@@ -85,9 +85,24 @@ body {
   padding: 0 1.5rem;
 }
 
-
 /* FORM ELEMENTS
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.form-content {
+  color: var(--white);
+  width: 80%;
+  padding: 45px;
+  margin: auto;
+}
+
+.form-content .info-highlight {
+  color: var(--lightGreen);
+  padding-left: 18px;
+}
+
+.form-content label {
+  padding: 15px;
+}
+
 .form-content h1 {
   margin-bottom: 1.5rem;
 }
@@ -115,11 +130,6 @@ body {
   padding-top: 5px;
 }
 
-.form-content .info-highlight {
-  color: var(--lightGreen);
-  padding-left: 45px;
-}
-
 /* .form-content li, */
 /* .form-content .grid>*:not(:last-child) {
   margin-bottom: 1.5rem;
@@ -144,6 +154,7 @@ body {
 .form-content input,
 .form-content textarea,
 .form-content input[type="checkbox"],
+.c_check,
 .c_dropdown {
   border-top: 2px solid var(--bgFormElsFocus);
   border-bottom: none;
@@ -170,7 +181,8 @@ body {
 .form-content select:focus,
 .form-content input:focus,
 .form-content textarea:focus,
-.form-content input[type="checkbox"]:focus+label {
+.form-content input[type="checkbox"]:focus+label,
+.c_check {
   background: var(--bgFormElsFocus);
 }
 
@@ -314,44 +326,61 @@ body {
 
 /* CUSTOM CHECKBOX
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.c_check {
+  display: flex;
+  align-items: center;
+  /* Ensures vertical alignment of checkbox and label */
+  gap: 10px;
+  /* Space between the checkbox and label */
+  background: var(--bgFormEls);
+  color: var(--lightBlue);
+}
+
 .form-content input[type="checkbox"] {
-  position: absolute;
-  left: -9999px;
+  position: relative;
+  display: inline-block;
+  transform: scale(1.5);
+  /* Checkbox size */
 }
 
 .form-content input[type="checkbox"]+label {
   position: relative;
   display: inline-block;
-  padding-left: 2rem;
+  padding-left: 2.5rem;
+  cursor: pointer;
   transition: background 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
 }
 
 .form-content input[type="checkbox"]+label::before,
 .form-content input[type="checkbox"]+label::after {
   content: '';
-  position: absolute;
+  position: relative;
 }
 
 .form-content input[type="checkbox"]+label::before {
+  content: '';
+  position: absolute;
   left: 0;
-  top: 6px;
+  top: 50%;
   width: 18px;
   height: 18px;
   border: 2px solid var(--lightBlue);
-}
-
-.form-content input[type="checkbox"]:checked+label::before {
-  background: var(--red);
+  background: var(--white);
+  transform: translateY(-50%);
 }
 
 .form-content input[type="checkbox"]:checked+label::after {
+  content: '';
+  position: absolute;
   left: 7px;
   top: 7px;
   width: 6px;
   height: 14px;
-  border-bottom: 2px solid var(--lightBlue);
   border-right: 2px solid var(--lightBlue);
+  border-bottom: 2px solid var(--lightBlue);
   transform: rotate(45deg);
+  color: var(--lightGreen);
 }
 
 /* CUSTOM DROPDOWN
@@ -475,12 +504,13 @@ body {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 10px 30px;
+  margin-top: -3px;
+  padding: 2px 30px;
   border: 1px solid var(--borderFormEls);
+  border-radius: 5px;
   background: var(--bgFormEls);
   color: var(--lightBlue);
   transition: background-color 0.3s, transform 0.3s;
-  border-radius: 5px;
 }
 
 .c_radio input[type="radio"] {
@@ -490,10 +520,10 @@ body {
   margin-top: 20px;
   margin-right: 10px;
   border-radius: 50%;
-  background-color: var(--red) !important;
-  color: var(--red) !important;
   border: 2px solid var(--lightBlue);
   transition: background 0.3s;
+  transform: scale(1.2);
+  /* Radio size */
 }
 
 
@@ -590,6 +620,11 @@ footer span {
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
 @media screen and (min-width: 600px) {
 
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
   .form-content .grid,
   .form .section-group {
     display: grid;
@@ -638,7 +673,32 @@ footer span {
   }
 }
 
-@media screen and (min-width: 541px) {
+@media screen and (max-width: 541px) {
+  .form-content {
+    color: var(--white);
+    width: 90%;
+    padding: 10px;
+    margin: auto;
+  }
+
+  .form-content input[type="checkbox"]+label::before {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .form-content input[type="checkbox"]:checked+label::after {
+    top: 3px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .form-content {
+    color: var(--white);
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+  }
+
   .form-content input[type="checkbox"]+label::before {
     top: 50%;
     transform: translateY(-50%);

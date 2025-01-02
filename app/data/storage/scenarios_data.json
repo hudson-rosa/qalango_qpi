@@ -20,15 +20,31 @@
           "qty_of_exploratory": 0
         },
         "test_approaches": { "qty_of_automated": 1, "qty_of_manual": 2 },
+        "test_categories": { "qty_of_critical_tests": 1, "qty_of_smoke_tests": 2, "qty_of_edge_cases": 3 },
         "scenarios": [
-          { "scenario_id": "@idscn_010b8c9622-1", "scenario_name": "Extract data from XML file", "test_level": "e2e", "test_approach": "automated", "test_duration": 1 },
-          { "scenario_id": "@idscn_010b8c9622-2", "scenario_name": "@smoke-test", "test_level": "usability", "test_approach": "manual", "test_duration": 3 },
+          {
+            "scenario_id": "@idscn_010b8c9622-1",
+            "scenario_name": "Extract data from XML file",
+            "test_level": "e2e",
+            "test_approach": "automated",
+            "test_duration": 1,
+            "test_categories": ["edge-case", "smoke-test"]
+          },
+          {
+            "scenario_id": "@idscn_010b8c9622-2",
+            "scenario_name": "@smoke-test",
+            "test_level": "usability",
+            "test_approach": "manual",
+            "test_duration": 3,
+            "test_categories": ["smoke-test"]
+          },
           {
             "scenario_id": "@idscn_010b8c9622-3",
             "scenario_name": "Extract data from XML file based on provided configuration",
             "test_level": "e2e",
             "test_approach": "manual",
-            "test_duration": 75
+            "test_duration": 75,
+            "test_categories": ["critical-test", "edge-case", "smoke-test"]
           }
         ]
       },
@@ -117,25 +133,6 @@
     "suite_ref": "Account Creation (idsuite_a648f)",
     "feature_specs": [
       {
-        "feature_id": null,
-        "feature_name": "Payments",
-        "suite_name": "Account Creation",
-        "qty_of_scenarios": 1,
-        "test_levels": {
-          "qty_of_integration": 0,
-          "qty_of_component": 0,
-          "qty_of_contract": 0,
-          "qty_of_api": 0,
-          "qty_of_e2e": 0,
-          "qty_of_performance": 1,
-          "qty_of_security": 0,
-          "qty_of_usability": 0,
-          "qty_of_exploratory": 0
-        },
-        "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
-        "scenarios": [{ "scenario_id": "@None-1", "scenario_name": "Successful Payment Transaction", "test_level": "performance", "test_approach": "manual", "test_duration": 10 }]
-      },
-      {
         "feature_id": "idbdd_a5346199b8",
         "feature_name": "Account_Registration",
         "suite_name": "Account Creation",
@@ -152,13 +149,15 @@
           "qty_of_exploratory": 0
         },
         "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
+        "test_categories": { "qty_of_critical_tests": 1, "qty_of_smoke_tests": 0, "qty_of_edge_cases": 1 },
         "scenarios": [
           {
             "scenario_id": "@idscn_a5346199b8-1",
             "scenario_name": "Successful account registration with valid inputs",
             "test_level": "usability",
             "test_approach": "manual",
-            "test_duration": 4
+            "test_duration": 4,
+            "test_categories": ["critical-test", "edge-case"]
           }
         ]
       }
@@ -185,14 +184,23 @@
           "qty_of_exploratory": 1
         },
         "test_approaches": { "qty_of_automated": 1, "qty_of_manual": 1 },
+        "test_categories": { "qty_of_critical_tests": 1, "qty_of_smoke_tests": 1, "qty_of_edge_cases": 0 },
         "scenarios": [
-          { "scenario_id": "@idscn_d91cffe7db-1", "scenario_name": "Successful Payment Transaction", "test_level": "e2e", "test_approach": "automated", "test_duration": 5 },
+          {
+            "scenario_id": "@idscn_d91cffe7db-1",
+            "scenario_name": "Successful Payment Transaction",
+            "test_level": "e2e",
+            "test_approach": "automated",
+            "test_duration": 5,
+            "test_categories": []
+          },
           {
             "scenario_id": "@idscn_d91cffe7db-2",
             "scenario_name": "Payment Failure Due to Invalid Details",
             "test_level": "exploratory",
             "test_approach": "manual",
-            "test_duration": 10
+            "test_duration": 10,
+            "test_categories": ["critical-test", "smoke-test"]
           }
         ]
       }

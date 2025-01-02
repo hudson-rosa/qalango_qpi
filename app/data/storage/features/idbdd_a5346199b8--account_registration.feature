@@ -1,7 +1,7 @@
 Feature: Account Registration
 
 
-@idscn_a5346199b8-1 @cov-usability @cov-manual @time-4m
+@idscn_a5346199b8-1 @cov-usability @cov-manual @cov-critical-test @cov-edge-case @time-4m
 Scenario: Successful account registration with valid inputs
 Given The user is on the registration page
 When The user enters all the mandatory fields

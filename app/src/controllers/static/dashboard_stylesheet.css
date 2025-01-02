@@ -48,17 +48,6 @@ a {
     margin: 15px;
 }
 
-.form-content {
-    color: var(--white);
-    width: 80%;
-    padding: 45px;
-    margin: auto;
-}
-
-.form-content label {
-    padding: 15px;
-}
-
 .row {
     display: flex;
     flex-wrap: wrap;

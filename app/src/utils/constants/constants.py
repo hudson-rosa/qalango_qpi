@@ -22,6 +22,9 @@ class Constants:
         QTY_OF_EXPLORATORY = "qty_of_exploratory"
         QTY_OF_AUTOMATED = "qty_of_automated"
         QTY_OF_MANUAL = "qty_of_manual"
+        QTY_OF_SMOKE_TESTS = "qty_of_smoke_tests"
+        QTY_OF_EDGE_CASES = "qty_of_edge_cases"
+        QTY_OF_CRITICAL_TESTS = "qty_of_critical_tests"
 
     class ProjectDataJSON:
         PROJECT_ID = "project_id"
@@ -45,6 +48,11 @@ class Constants:
         SUITE_NAME = "suite_name"
         TOTAL_TIME = "total_time"
 
+    class TestCategoriesEntity:
+        CRITICAL_TEST = "critical-test"
+        SMOKE_TEST = "smoke-test"
+        EDGE_CASE = "edge-case"
+        
     class TestLevelsEntity:
         UNIT = "unit"
         INTEGRATION = "integration"
@@ -137,18 +145,28 @@ class Constants:
         TEST_CASE_STEPS_ARE_SAVED = "Test Case Steps are saved"
         TEST_LEVEL_IS_REQUIRED = "Test Level is required."
         TEST_NAME_IS_REQUIRED = "Test Name is required."
-        THIS_TEST_TAKES = "This test takes"
 
     class FieldText:
         ADD_NEW_SCENARIO = "+ Add New Scenario"
         ADD_PRECONDITION = "+ Add Precondition"
         ADD_STEP = "+ Add Step"
+        API = "API"
         BDD_SCENARIO_FORMAT = "BDD Scenario format"
+        CATEGORIES_SELECTED = "Categories selected"
         CHOOSE_TEST_LEVEL_APPROACH_FOR_COVERAGE = (
             "Choose the test level/approach for coverage purposes."
         )
+        CHOOSE_TEST_CATEGORY_FOR_COVERAGE = (
+            "Choose the test category for coverage purposes."
+        )
+        COMPONENT = "Component"
+        CONTRACT = "Contract"
+        CRITICAL_TEST = "Critical Test"
         DELETE = "Delete"
         DELETE_FILE = "Delete File"
+        E2E = "E2E"
+        EDGE_CASE = "Edge Case"
+        EG_FEATURE_USER_LOGIN = "E.g., Feature: User Login"
         ENTER_AVERAGE_TEST_EXECUTION_DURATION = (
             "Enter the average test execution duration (HH:mm)"
         )
@@ -171,20 +189,29 @@ class Constants:
         ENTER_TEST_CASE_STEPS_AND_EXPECTED_RESULTS = (
             "Enter the Test Case steps and expected results"
         )
-        EG_FEATURE_USER_LOGIN = "E.g., Feature: User Login"
+        EXPLORATORY = "Exploratory"
         FEATURE_ID = "Feature ID"
         GENERATE_NEW_ID = "Generate new ID"
+        INTEGRATION = "Integration"
+        NO_OPTIONS_SELECTED = "No options selected."
+        PERFORMANCE = "Performance"
         PROJECT_ID = "Project ID"
         REQUIRED_FIELDS = "Required fields"
         SAVE = "Save"
         SAVE_FEATURE = "Save Feature"
         SAVE_NEW_TEST_CASE = "Save new Test Case"
         SCRIPTED_TEST_FORMAT = "Scripted Test format"
+        SECURITY = "Security"
         SELECT_PROJECT_NAME = "Select Project name"
         SELECT_SUITE_NAME = "Select Suite name"
         SELECT_TEST_APPROACH = "Selected the test approach"
         SELECT_TEST_APPROACH_FOR_THIS_SCENARIO = (
             "Select the test approach for this scenario"
         )
+        SMOKE_TEST = "Smoke Test"
         SUITE_ID = "Suite ID"
+        THIS_SCENARIO_TAKES_TIME = "This scenario takes {time}"
+        THIS_TEST_TAKES_TIME = "This test takes {time}"
+        UNIT = "Unit"
         UPDATE = "Update"
+        USABILITY = "Usability"

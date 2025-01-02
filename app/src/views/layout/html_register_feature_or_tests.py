@@ -197,6 +197,19 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                                 value="exploratory",
                             ),
                             html.H4(
+                                Constants.FieldText.CHOOSE_TEST_CATEGORY_FOR_COVERAGE
+                            ),
+                            dcc.Checklist(
+                                id={
+                                    "type": "rsc--bdd-categories-checkbox",
+                                    "index": scenario_id_suffix,
+                                },
+                                options=TestEffortsMapper.get_list_of_test_categories(),
+                                value=[],
+                                className="c_check",
+                            ),
+                            html.H5(id="rsc--bdd-categories-checkbox-output"),
+                            html.H4(
                                 Constants.FieldText.ENTER_AVERAGE_TEST_EXECUTION_DURATION
                             ),
                             dcc.Slider(
@@ -376,6 +389,14 @@ def define_test_case_details(scenario_id_suffix=1):
                         className=" c_dropdown required",
                         value="exploratory",
                     ),
+                    html.H4(Constants.FieldText.CHOOSE_TEST_CATEGORY_FOR_COVERAGE),
+                    dcc.Checklist(
+                        id="rsc--tc-categories-checkbox",
+                        options=TestEffortsMapper.get_list_of_test_categories(),
+                        value=[],
+                        className="c_check",
+                    ),
+                    html.H5(id="rsc--tc-categories-checkbox-output"),
                     html.H4(Constants.FieldText.ENTER_AVERAGE_TEST_EXECUTION_DURATION),
                     dcc.Slider(
                         id="rsc--tc-total-time-slider",

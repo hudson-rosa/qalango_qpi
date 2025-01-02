@@ -1,4 +1,3 @@
-import inspect
 from src.utils.constants.constants import Constants
 
 
@@ -6,52 +5,52 @@ class TestLevel:
 
     level = {
         Constants.TestLevelsEntity.UNIT: {
-            "label": "Unit",
+            "label": Constants.FieldText.UNIT,
             "tier": 1,
             "ref": Constants.TestLevelsEntity.UNIT,
         },
         Constants.TestLevelsEntity.INTEGRATION: {
-            "label": "Integration",
+            "label": Constants.FieldText.INTEGRATION,
             "tier": 2,
             "ref": Constants.TestLevelsEntity.INTEGRATION,
         },
         Constants.TestLevelsEntity.COMPONENT: {
-            "label": "Component",
+            "label": Constants.FieldText.COMPONENT,
             "tier": 3,
             "ref": Constants.TestLevelsEntity.COMPONENT,
         },
         Constants.TestLevelsEntity.CONTRACT: {
-            "label": "Contract",
+            "label": Constants.FieldText.CONTRACT,
             "tier": 4,
             "ref": Constants.TestLevelsEntity.CONTRACT,
         },
         Constants.TestLevelsEntity.API: {
-            "label": "API",
+            "label": Constants.FieldText.API,
             "tier": 5,
             "ref": Constants.TestLevelsEntity.API,
         },
         Constants.TestLevelsEntity.E2E: {
-            "label": "End-To-End",
+            "label": Constants.FieldText.E2E,
             "tier": 6,
             "ref": Constants.TestLevelsEntity.E2E,
         },
         Constants.TestLevelsEntity.PERFORMANCE: {
-            "label": "Performance",
+            "label": Constants.FieldText.PERFORMANCE,
             "tier": 7,
             "ref": Constants.TestLevelsEntity.PERFORMANCE,
         },
         Constants.TestLevelsEntity.SECURITY: {
-            "label": "Security",
+            "label": Constants.FieldText.SECURITY,
             "tier": 8,
             "ref": Constants.TestLevelsEntity.SECURITY,
         },
         Constants.TestLevelsEntity.USABILITY: {
-            "label": "Usability",
+            "label": Constants.FieldText.USABILITY,
             "tier": 9,
             "ref": Constants.TestLevelsEntity.USABILITY,
         },
         Constants.TestLevelsEntity.EXPLORATORY: {
-            "label": "Exploratory",
+            "label": Constants.FieldText.EXPLORATORY,
             "tier": 10,
             "ref": Constants.TestLevelsEntity.EXPLORATORY,
         },
