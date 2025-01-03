@@ -118,13 +118,23 @@ def auto_resize_textarea(content, current_style):
 
 
 @callback(
-    Output("rsc--bdd-categories-checkbox-output", "children"),
-    Input("rsc--bdd-categories-checkbox", "value"),
+    [
+        Output(
+            {"type": "rsc--bdd-categories-checkbox-output", "index": MATCH}, "children"
+        ),
+        Output(
+            {"type": "rsc--bdd-categories-checkbox-output", "index": MATCH}, "className"
+        ),
+    ],
+    Input({"type": "rsc--bdd-categories-checkbox", "index": MATCH}, "value"),
 )
 def update_bdd_multi_checkbox_output(selected):
     if selected:
-        return f"{Constants.FieldText.CATEGORIES_SELECTED}: {', '.join(selected)}"
-    return Constants.FieldText.NO_OPTIONS_SELECTED
+        return (
+            f"{Constants.FieldText.CATEGORIES_SELECTED}: {', '.join(selected)}",
+            "text-selected",
+        )
+    return Constants.FieldText.NO_OPTIONS_SELECTED, "no-text-selected"
 
 
 @callback(
@@ -480,6 +490,22 @@ def update_tc_slider_output(value):
     return Constants.FieldText.THIS_TEST_TAKES_TIME.format(
         time=StringHandler.format_time_to_hh_mm(value)
     )
+
+
+@callback(
+    [
+        Output("rsc--tc-categories-checkbox-output", "children"),
+        Output("rsc--tc-categories-checkbox-output", "className"),
+    ],
+    Input("rsc--tc-categories-checkbox", "value"),
+)
+def update_tc_multi_checkbox_output(selected):
+    if selected:
+        return (
+            f"{Constants.FieldText.CATEGORIES_SELECTED}: {', '.join(selected)}",
+            "text-selected",
+        )
+    return Constants.FieldText.NO_OPTIONS_SELECTED, "no-text-selected"
 
 
 @callback(

@@ -99,6 +99,14 @@ body {
   padding-left: 18px;
 }
 
+.form-content .no-text-selected {
+  color: var(--grey);
+}
+
+.form-content .text-selected {
+  color: var(--lightGreen);
+}
+
 .form-content label {
   padding: 15px;
 }

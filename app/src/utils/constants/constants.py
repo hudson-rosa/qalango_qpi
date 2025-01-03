@@ -52,7 +52,7 @@ class Constants:
         CRITICAL_TEST = "critical-test"
         SMOKE_TEST = "smoke-test"
         EDGE_CASE = "edge-case"
-        
+
     class TestLevelsEntity:
         UNIT = "unit"
         INTEGRATION = "integration"
@@ -153,12 +153,8 @@ class Constants:
         API = "API"
         BDD_SCENARIO_FORMAT = "BDD Scenario format"
         CATEGORIES_SELECTED = "Categories selected"
-        CHOOSE_TEST_LEVEL_APPROACH_FOR_COVERAGE = (
-            "Choose the test level/approach for coverage purposes."
-        )
-        CHOOSE_TEST_CATEGORY_FOR_COVERAGE = (
-            "Choose the test category for coverage purposes."
-        )
+        CHOOSE_TEST_LEVEL_APPROACH = "Choose the test level/approach"
+        CHOOSE_TEST_CATEGORY = "Choose the test category"
         COMPONENT = "Component"
         CONTRACT = "Contract"
         CRITICAL_TEST = "Critical Test"

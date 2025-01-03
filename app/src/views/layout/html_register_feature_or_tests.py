@@ -178,91 +178,103 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                 f"{Constants.FieldText.ENTER_YOUR_GHERKIN_SCENARIO} {scenario_id_suffix}"
             ),
             html.Div(
-                className="grid grid-2",
+                className="grid",
                 children=[
                     html.Div(
+                        className="grid grid-2",
                         children=[
-                            html.H4(
-                                Constants.FieldText.CHOOSE_TEST_LEVEL_APPROACH_FOR_COVERAGE
-                            ),
-                            dcc.Dropdown(
-                                options=TestEffortsMapper.get_list_of_test_levels(),
-                                id={
-                                    "type": "rsc--bdd-test-level-dropdown",
-                                    "index": scenario_id_suffix,
-                                },
-                                placeholder=Constants.FieldText.ENTER_SCENARIO_LEVEL,
-                                searchable=True,
-                                className=" c_dropdown required",
-                                value="exploratory",
-                            ),
-                            html.H4(
-                                Constants.FieldText.CHOOSE_TEST_CATEGORY_FOR_COVERAGE
-                            ),
-                            dcc.Checklist(
-                                id={
-                                    "type": "rsc--bdd-categories-checkbox",
-                                    "index": scenario_id_suffix,
-                                },
-                                options=TestEffortsMapper.get_list_of_test_categories(),
-                                value=[],
-                                className="c_check",
-                            ),
-                            html.H5(id="rsc--bdd-categories-checkbox-output"),
-                            html.H4(
-                                Constants.FieldText.ENTER_AVERAGE_TEST_EXECUTION_DURATION
-                            ),
-                            dcc.Slider(
-                                id={
-                                    "name": "rsc--bdd-total-time-scenario-slider",
-                                    "type": "slider",
-                                    "index": scenario_id_suffix,
-                                },
-                                min=0,
-                                max=181,
-                                marks=DataGenerator.generate_slider_marks(),
-                                step=None,
-                                value=0,
-                                included=False,
-                                tooltip={
-                                    "placement": "bottom",
-                                    "always_visible": True,
-                                },
-                                className="c_slider",
-                            ),
-                            html.H5(
-                                id={
-                                    "name": "rsc--bdd-slider-output",
-                                    "type": "slider-output",
-                                    "index": scenario_id_suffix,
-                                },
-                            ),
-                        ]
-                    ),
-                    html.Div(
-                        children=[
-                            html.H4(
-                                Constants.FieldText.SELECT_TEST_APPROACH_FOR_THIS_SCENARIO
-                            ),
-                            dcc.RadioItems(
-                                id={
-                                    "type": "rsc--bdd-test-approach-radio",
-                                    "index": scenario_id_suffix,
-                                },
-                                options=[
-                                    {
-                                        "label": "Manual",
-                                        "value": Constants.TestTypesEntity.MANUAL,
-                                    },
-                                    {
-                                        "label": "Automated",
-                                        "value": Constants.TestTypesEntity.AUTOMATED,
-                                    },
+                            html.Div(
+                                [
+                                    html.H4(
+                                        Constants.FieldText.CHOOSE_TEST_LEVEL_APPROACH
+                                    ),
+                                    dcc.Dropdown(
+                                        options=TestEffortsMapper.get_list_of_test_levels(),
+                                        id={
+                                            "type": "rsc--bdd-test-level-dropdown",
+                                            "index": scenario_id_suffix,
+                                        },
+                                        placeholder=Constants.FieldText.ENTER_SCENARIO_LEVEL,
+                                        searchable=True,
+                                        className=" c_dropdown required",
+                                        value="exploratory",
+                                    ),
+                                    html.Div(
+                                        children=[
+                                            html.H4(
+                                                Constants.FieldText.SELECT_TEST_APPROACH_FOR_THIS_SCENARIO
+                                            ),
+                                            dcc.RadioItems(
+                                                id={
+                                                    "type": "rsc--bdd-test-approach-radio",
+                                                    "index": scenario_id_suffix,
+                                                },
+                                                options=[
+                                                    {
+                                                        "label": "Manual",
+                                                        "value": Constants.TestTypesEntity.MANUAL,
+                                                    },
+                                                    {
+                                                        "label": "Automated",
+                                                        "value": Constants.TestTypesEntity.AUTOMATED,
+                                                    },
+                                                ],
+                                                className="c_radio",
+                                                value=Constants.TestTypesEntity.MANUAL,
+                                            ),
+                                        ]
+                                    ),
                                 ],
-                                className="c_radio",
-                                value=Constants.TestTypesEntity.MANUAL,
                             ),
-                        ]
+                            html.Div(
+                                [
+                                    html.H4(Constants.FieldText.CHOOSE_TEST_CATEGORY),
+                                    dcc.Checklist(
+                                        id={
+                                            "type": "rsc--bdd-categories-checkbox",
+                                            "index": scenario_id_suffix,
+                                        },
+                                        options=TestEffortsMapper.get_list_of_test_categories(),
+                                        value=[],
+                                        className="c_check",
+                                    ),
+                                    html.H5(
+                                        id={
+                                            "type": "rsc--bdd-categories-checkbox-output",
+                                            "index": scenario_id_suffix,
+                                        }
+                                    ),
+                                    html.H4(
+                                        Constants.FieldText.ENTER_AVERAGE_TEST_EXECUTION_DURATION
+                                    ),
+                                    dcc.Slider(
+                                        id={
+                                            "name": "rsc--bdd-total-time-scenario-slider",
+                                            "type": "slider",
+                                            "index": scenario_id_suffix,
+                                        },
+                                        min=0,
+                                        max=181,
+                                        marks=DataGenerator.generate_slider_marks(),
+                                        step=None,
+                                        value=0,
+                                        included=False,
+                                        tooltip={
+                                            "placement": "bottom",
+                                            "always_visible": True,
+                                        },
+                                        className="c_slider",
+                                    ),
+                                    html.H5(
+                                        id={
+                                            "name": "rsc--bdd-slider-output",
+                                            "type": "slider-output",
+                                            "index": scenario_id_suffix,
+                                        },
+                                    ),
+                                ]
+                            ),
+                        ],
                     ),
                 ],
             ),
@@ -374,66 +386,75 @@ def register_scripted_test_cases():
 
 def define_test_case_details(scenario_id_suffix=1):
     return html.Div(
-        className="grid grid-2",
+        className="grid",
         children=[
             html.Div(
-                [
-                    html.H4(
-                        Constants.FieldText.CHOOSE_TEST_LEVEL_APPROACH_FOR_COVERAGE
-                    ),
-                    dcc.Dropdown(
-                        options=TestEffortsMapper.get_list_of_test_levels(),
-                        id="rsc--tc-test-level-dropdown",
-                        placeholder=Constants.FieldText.ENTER_TEST_LEVEL,
-                        searchable=True,
-                        className=" c_dropdown required",
-                        value="exploratory",
-                    ),
-                    html.H4(Constants.FieldText.CHOOSE_TEST_CATEGORY_FOR_COVERAGE),
-                    dcc.Checklist(
-                        id="rsc--tc-categories-checkbox",
-                        options=TestEffortsMapper.get_list_of_test_categories(),
-                        value=[],
-                        className="c_check",
-                    ),
-                    html.H5(id="rsc--tc-categories-checkbox-output"),
-                    html.H4(Constants.FieldText.ENTER_AVERAGE_TEST_EXECUTION_DURATION),
-                    dcc.Slider(
-                        id="rsc--tc-total-time-slider",
-                        min=0,
-                        max=181,
-                        marks=DataGenerator.generate_slider_marks(),
-                        step=None,
-                        value=0,
-                        included=False,
-                        tooltip={
-                            "placement": "bottom",
-                            "always_visible": True,
-                        },
-                        className="c_slider",
-                    ),
-                    html.H5(id="rsc--tc-slider-output"),
-                ]
-            ),
-            html.Div(
-                [
-                    html.H4(Constants.FieldText.SELECT_TEST_APPROACH),
-                    dcc.RadioItems(
-                        id="rsc--tc-test-approach-radio",
-                        options=[
-                            {
-                                "label": "Manual",
-                                "value": Constants.TestTypesEntity.MANUAL,
-                            },
-                            {
-                                "label": "Automated",
-                                "value": Constants.TestTypesEntity.AUTOMATED,
-                            },
+                className="grid grid-2",
+                children=[
+                    html.Div(
+                        [
+                            html.H4(Constants.FieldText.CHOOSE_TEST_LEVEL_APPROACH),
+                            dcc.Dropdown(
+                                options=TestEffortsMapper.get_list_of_test_levels(),
+                                id="rsc--tc-test-level-dropdown",
+                                placeholder=Constants.FieldText.ENTER_TEST_LEVEL,
+                                searchable=True,
+                                className=" c_dropdown required",
+                                value="exploratory",
+                            ),
+                            html.Div(
+                                children=[
+                                    html.H4(Constants.FieldText.SELECT_TEST_APPROACH),
+                                    dcc.RadioItems(
+                                        id="rsc--tc-test-approach-radio",
+                                        options=[
+                                            {
+                                                "label": "Manual",
+                                                "value": Constants.TestTypesEntity.MANUAL,
+                                            },
+                                            {
+                                                "label": "Automated",
+                                                "value": Constants.TestTypesEntity.AUTOMATED,
+                                            },
+                                        ],
+                                        className="c_radio",
+                                        value=Constants.TestTypesEntity.MANUAL,
+                                    ),
+                                ]
+                            ),
                         ],
-                        className="c_radio",
-                        value=Constants.TestTypesEntity.MANUAL,
                     ),
-                ]
-            ),
+                    html.Div(
+                        [
+                            html.H4(Constants.FieldText.CHOOSE_TEST_CATEGORY),
+                            dcc.Checklist(
+                                id="rsc--tc-categories-checkbox",
+                                options=TestEffortsMapper.get_list_of_test_categories(),
+                                value=[],
+                                className="c_check",
+                            ),
+                            html.H5(id="rsc--tc-categories-checkbox-output", className="no-text-selected"),
+                            html.H4(
+                                Constants.FieldText.ENTER_AVERAGE_TEST_EXECUTION_DURATION
+                            ),
+                            dcc.Slider(
+                                id="rsc--tc-total-time-slider",
+                                min=0,
+                                max=181,
+                                marks=DataGenerator.generate_slider_marks(),
+                                step=None,
+                                value=0,
+                                included=False,
+                                tooltip={
+                                    "placement": "bottom",
+                                    "always_visible": True,
+                                },
+                                className="c_slider",
+                            ),
+                            html.H5(id="rsc--tc-slider-output"),
+                        ]
+                    ),
+                ],
+            )
         ],
     )
