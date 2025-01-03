@@ -211,6 +211,7 @@ def submit_bdd_data(
         feature_id = idfeat_prefix + DataGenerator.generate_aggregated_uuid()
 
     # Validation Rules as tuples
+    all_test_levels = [level for level in test_levels if level]
     validation_rules = [
         (not project_ref, Constants.Messages.PROJECT_REFERENCE_IS_REQUIRED),
         (not suite_ref, Constants.Messages.SUITE_REFERENCE_IS_REQUIRED),
@@ -224,17 +225,13 @@ def submit_bdd_data(
             Constants.Messages.ALL_SCENARIOS_MUST_HAVE_GHERKIN_CONTENT,
         ),
         (
-            not test_levels or len(test_levels) != len(bdd_scenarios),
+            not all_test_levels or len(all_test_levels) != len(bdd_scenarios),
             Constants.Messages.EACH_SCENARIO_MUST_HAVE_A_TEST_LEVEL,
         ),
         (
             not test_approaches or len(test_approaches) != len(bdd_scenarios),
             Constants.Messages.EACH_SCENARIO_MUST_HAVE_A_TEST_APPROACH,
-        ),
-        (
-            not test_durations or len(test_durations) != len(bdd_scenarios),
-            Constants.Messages.EACH_SCENARIO_MUST_HAVE_A_TEST_DURATION,
-        ),
+        )
     ]
 
     feature_name_underlined = str(feature_name).replace(" ", "_").strip()

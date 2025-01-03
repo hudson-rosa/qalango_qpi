@@ -197,7 +197,7 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                                         placeholder=Constants.FieldText.ENTER_SCENARIO_LEVEL,
                                         searchable=True,
                                         className=" c_dropdown required",
-                                        value="exploratory",
+                                        value=None,
                                     ),
                                     html.Div(
                                         children=[
@@ -400,7 +400,7 @@ def define_test_case_details(scenario_id_suffix=1):
                                 placeholder=Constants.FieldText.ENTER_TEST_LEVEL,
                                 searchable=True,
                                 className=" c_dropdown required",
-                                value="exploratory",
+                                value="",
                             ),
                             html.Div(
                                 children=[
@@ -433,7 +433,10 @@ def define_test_case_details(scenario_id_suffix=1):
                                 value=[],
                                 className="c_check",
                             ),
-                            html.H5(id="rsc--tc-categories-checkbox-output", className="no-text-selected"),
+                            html.H5(
+                                id="rsc--tc-categories-checkbox-output",
+                                className="no-text-selected",
+                            ),
                             html.H4(
                                 Constants.FieldText.ENTER_AVERAGE_TEST_EXECUTION_DURATION
                             ),
