@@ -16,6 +16,14 @@ class TestCategory:
             "label": Constants.FieldText.SMOKE_TEST,
             "ref": Constants.TestCategoriesEntity.SMOKE_TEST,
         },
+        Constants.TestCategoriesEntity.MOBILE: {
+            "label": Constants.FieldText.MOBILE,
+            "ref": Constants.TestCategoriesEntity.MOBILE,
+        },
+        Constants.TestCategoriesEntity.DESKTOP: {
+            "label": Constants.FieldText.DESKTOP,
+            "ref": Constants.TestCategoriesEntity.DESKTOP,
+        },
     }
 
     @classmethod

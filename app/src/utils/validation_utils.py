@@ -12,6 +12,12 @@ class ValidationUtils:
             else str(callback_context.triggered[0]["prop_id"]).split(".")[0]
         )
 
+    def identify_triggering_action_on_nested_dict(callback_context=dash.callback_context):       
+        if not callback_context.triggered:
+            return None
+        triggered_id = callback_context.triggered[0]["prop_id"].split(".")[0]
+        return eval(triggered_id) if "{" in triggered_id else triggered_id
+
     def validate_mandatory_field_rules(
         feature_action="Form is saved", validation_rules=[]
     ):

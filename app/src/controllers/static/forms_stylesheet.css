@@ -158,10 +158,21 @@ body {
   margin-bottom: 20px;
 }
 
+.c_text_editor {
+  width: 100% !important;
+  min-height: 100px !important;
+  line-height: 1.5;
+  padding: 15px 30px;
+  border: 1px solid var(--borderFormEls);
+  transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+    transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
 .form-content select,
 .form-content input,
 .form-content textarea,
 .form-content input[type="checkbox"],
+.c_text_editor,
 .c_check,
 .c_dropdown {
   border-top: 2px solid var(--bgFormElsFocus);
@@ -176,7 +187,8 @@ body {
   border-bottom: 2px solid var(--bgFormElsFocus);
 }
 
-.form-content textarea {
+.form-content textarea,
+.c_text_editor {
   min-height: 150px;
 }
 
@@ -190,6 +202,7 @@ body {
 .form-content input:focus,
 .form-content textarea:focus,
 .form-content input[type="checkbox"]:focus+label,
+.c_text_editor:focus,
 .c_check {
   background: var(--bgFormElsFocus);
 }
@@ -201,7 +214,8 @@ body {
 
 .form-content select:focus,
 .form-content input:focus,
-.form-content textarea:focus {
+.form-content textarea:focus,
+.c_text_editor:focus {
   transform: scale(1.02);
 }
 
@@ -243,6 +257,55 @@ body {
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+}
+
+/* ACE EDITOR
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.ace_layer.ace_gutter-layer.ace_folding-enabled {
+  background: var(--bgFormElsFocus);
+  padding-top: 10px;
+}
+
+.form-content .ace_content {
+  height: 270px !important;
+  padding: 10px;
+}
+
+.ace_gutter-cell {
+  padding-top: 10px;
+}
+
+.ace_gutter-active-line.ace_gutter-cell {
+  height: 31px !important;
+  top: -10% !important;
+}
+
+.c_text_editor.custom-theme {
+  color: var(--lightBlue);
+  background: var(--bgFormElsFocus);
+}
+
+.change-theme-label,
+.change-theme-button {
+  position: relative;
+  right: 12px;
+  float: right;
+  z-index: 10000;
+}
+
+.change-theme-label {
+  top: -55px;
+  padding: 15px;
+  font-size: 13px;
+  color: var(--lightGreen);
+  background: none;
+}
+
+.change-theme-button {
+  top: -60px;
+  width: 150px !important;
+  height: auto !important;
+  font-size: 12px;
 }
 
 /* INPUT NUMBER
@@ -338,11 +401,18 @@ body {
 .c_check {
   display: flex;
   align-items: center;
-  /* Ensures vertical alignment of checkbox and label */
+  min-height: auto;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
   gap: 10px;
   /* Space between the checkbox and label */
   background: var(--bgFormEls);
   color: var(--lightBlue);
+}
+
+.c_check label {
+  min-width: 120px;
 }
 
 .form-content input[type="checkbox"] {

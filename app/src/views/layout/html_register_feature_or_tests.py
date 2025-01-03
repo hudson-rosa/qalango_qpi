@@ -1,4 +1,5 @@
 from dash import dcc, html
+from dash_ace import DashAceEditor
 
 from src.models.mapper.project_mapper import ProjectMapper
 from src.models.mapper.suite_mapper import SuiteMapper
@@ -285,19 +286,51 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                 },
                 className="section-group",
                 children=[
-                    dcc.Textarea(
+                    DashAceEditor(
                         id={
                             "type": "rsc--bdd-scenario-editor",
                             "index": scenario_id_suffix,
                         },
-                        style={"height": "600px !important"},
-                        required=True,
-                        placeholder=f"""Scenario: Successful login (Example #{scenario_id_suffix})
+                        theme="twilight",  # e.g., monokai, twilight, solarized_dark
+                        mode="gherkin",
+                        className="c_text_editor custom-theme",
+                        style={"min-height": "200px !important"},
+                        enableBasicAutocompletion=True,
+                        enableSnippets=True,
+                        enableLiveAutocompletion=True,
+                        showPrintMargin=True,
+                        # required=True,
+                        value=f"""Scenario: Successful login (Example #{scenario_id_suffix})
     Given the user is on the login page
     When they enter valid credentials
     Then they should be redirected to the dashboard
     """,
                     ),
+                    html.Button(
+                        "GitHub",
+                        id={"type": "rsc--bdd-theme-button-d", "index": scenario_id_suffix},
+                        className="change-theme-button",
+                    ),
+                    html.Button(
+                        "Monokai",
+                        id={"type": "rsc--bdd-theme-button-c", "index": scenario_id_suffix},
+                        className="change-theme-button",
+                    ),
+                    html.Button(
+                        "Twilight",
+                        id={"type": "rsc--bdd-theme-button-b", "index": scenario_id_suffix},
+                        className="change-theme-button",
+                    ),
+                    html.Button(
+                        "Default",
+                        id={"type": "rsc--bdd-theme-button-a", "index": scenario_id_suffix},
+                        className="change-theme-button",
+                    ),
+                    html.H4(
+                        "Change theme:",
+                        id={"type": "rsc--bdd-theme-label", "index": scenario_id_suffix},
+                        className="change-theme-label",
+                        ),
                 ],
             ),
         ],

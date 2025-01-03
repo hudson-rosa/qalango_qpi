@@ -25,6 +25,8 @@ class Constants:
         QTY_OF_SMOKE_TESTS = "qty_of_smoke_tests"
         QTY_OF_EDGE_CASES = "qty_of_edge_cases"
         QTY_OF_CRITICAL_TESTS = "qty_of_critical_tests"
+        QTY_OF_MOBILE = "qty_of_mobile"
+        QTY_OF_DESKTOP = "qty_of_desktop"
 
     class ProjectDataJSON:
         PROJECT_ID = "project_id"
@@ -52,6 +54,8 @@ class Constants:
         CRITICAL_TEST = "critical-test"
         SMOKE_TEST = "smoke-test"
         EDGE_CASE = "edge-case"
+        MOBILE = "mobile"
+        DESKTOP = "desktop"
 
     class TestLevelsEntity:
         UNIT = "unit"
@@ -160,6 +164,7 @@ class Constants:
         CRITICAL_TEST = "Critical Test"
         DELETE = "Delete"
         DELETE_FILE = "Delete File"
+        DESKTOP = "Desktop"
         E2E = "E2E"
         EDGE_CASE = "Edge Case"
         EG_FEATURE_USER_LOGIN = "E.g., Feature: User Login"
@@ -189,6 +194,7 @@ class Constants:
         FEATURE_ID = "Feature ID"
         GENERATE_NEW_ID = "Generate new ID"
         INTEGRATION = "Integration"
+        MOBILE = "Mobile"
         NO_OPTIONS_SELECTED = "No options selected."
         PERFORMANCE = "Performance"
         PROJECT_ID = "Project ID"

@@ -104,6 +104,38 @@ def update_bdd_slider_output(value):
 
 
 @callback(
+    [
+        Output({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "theme"),
+        Output({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "className"),
+    ],
+    [
+        Input({"type": "rsc--bdd-theme-button-a", "index": MATCH}, "n_clicks"),
+        Input({"type": "rsc--bdd-theme-button-b", "index": MATCH}, "n_clicks"),
+        Input({"type": "rsc--bdd-theme-button-c", "index": MATCH}, "n_clicks"),
+        Input({"type": "rsc--bdd-theme-button-d", "index": MATCH}, "n_clicks"),
+    ],
+    prevent_initial_call=True,
+)
+def bdd_editor_toggle_theme(n_clicks_a, n_clicks_b, n_clicks_c, n_clicks_d):
+    ctx = dash.callback_context
+    button_id = ValidationUtils.identify_triggering_action_on_nested_dict(
+        callback_context=ctx
+    )
+    if button_id and "type" in button_id:
+        match button_id["type"]:
+            case "rsc--bdd-theme-button-a":
+                return "twilight", "c_text_editor custom-theme"
+            case "rsc--bdd-theme-button-b":
+                return "twilight", ""
+            case "rsc--bdd-theme-button-c":
+                return "monokai", ""
+            case "rsc--bdd-theme-button-d":
+                return "github", ""
+
+    return dash.no_update, dash.no_update
+
+
+@callback(
     Output({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "style"),
     Input({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "value"),
     State({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "style"),
@@ -231,7 +263,7 @@ def submit_bdd_data(
         (
             not test_approaches or len(test_approaches) != len(bdd_scenarios),
             Constants.Messages.EACH_SCENARIO_MUST_HAVE_A_TEST_APPROACH,
-        )
+        ),
     ]
 
     feature_name_underlined = str(feature_name).replace(" ", "_").strip()
@@ -322,6 +354,22 @@ def submit_bdd_data(
                     if category == Constants.TestCategoriesEntity.CRITICAL_TEST
                 ]
             )
+            test_category_mobile_count = Counter(
+                [
+                    category
+                    for sublist in test_categories
+                    for category in sublist
+                    if category == Constants.TestCategoriesEntity.MOBILE
+                ]
+            )
+            test_category_desktop_count = Counter(
+                [
+                    category
+                    for sublist in test_categories
+                    for category in sublist
+                    if category == Constants.TestCategoriesEntity.DESKTOP
+                ]
+            )
             new_data = {
                 Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
@@ -376,6 +424,12 @@ def submit_bdd_data(
                     ),
                     Constants.FeaturesDataJSON.QTY_OF_EDGE_CASES: test_category_edge_case_count.get(
                         Constants.TestCategoriesEntity.EDGE_CASE, 0
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_MOBILE: test_category_mobile_count.get(
+                        Constants.TestCategoriesEntity.MOBILE, 0
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_DESKTOP: test_category_desktop_count.get(
+                        Constants.TestCategoriesEntity.DESKTOP, 0
                     ),
                 },
                 "scenarios": scenarios_data,
@@ -723,6 +777,12 @@ def submit_scripted_test(
                     ),
                     Constants.FeaturesDataJSON.QTY_OF_EDGE_CASES: int(
                         Constants.TestCategoriesEntity.EDGE_CASE in test_categories
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_MOBILE: int(
+                        Constants.TestCategoriesEntity.MOBILE in test_categories
+                    ),
+                    Constants.FeaturesDataJSON.QTY_OF_DESKTOP: int(
+                        Constants.TestCategoriesEntity.DESKTOP in test_categories
                     ),
                 },
                 "scenarios": scenario_data,

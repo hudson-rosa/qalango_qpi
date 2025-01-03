@@ -221,4 +221,20 @@ class TestEffortsMapper(DataMapper):
                     "ref", Constants.TestCategoriesEntity.SMOKE_TEST
                 ),
             },
+            {
+                "label": TestCategory().get_option(
+                    "label", Constants.TestCategoriesEntity.MOBILE
+                ),
+                "value": TestCategory().get_option(
+                    "ref", Constants.TestCategoriesEntity.MOBILE
+                ),
+            },
+            {
+                "label": TestCategory().get_option(
+                    "label", Constants.TestCategoriesEntity.DESKTOP
+                ),
+                "value": TestCategory().get_option(
+                    "ref", Constants.TestCategoriesEntity.DESKTOP
+                ),
+            },
         ]
