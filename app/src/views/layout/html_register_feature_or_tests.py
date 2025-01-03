@@ -277,6 +277,15 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                             ),
                         ],
                     ),
+                    dcc.Input(
+                        id={
+                            "type": "rsc--bdd-requirements-link",
+                            "index": scenario_id_suffix,
+                        },
+                        type="text",
+                        placeholder=Constants.FieldText.REQUIREMENTS_LINK,
+                        required=False,
+                    ),
                 ],
             ),
             html.Div(
@@ -308,29 +317,44 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                     ),
                     html.Button(
                         "GitHub",
-                        id={"type": "rsc--bdd-theme-button-d", "index": scenario_id_suffix},
+                        id={
+                            "type": "rsc--bdd-theme-button-d",
+                            "index": scenario_id_suffix,
+                        },
                         className="change-theme-button",
                     ),
                     html.Button(
                         "Monokai",
-                        id={"type": "rsc--bdd-theme-button-c", "index": scenario_id_suffix},
+                        id={
+                            "type": "rsc--bdd-theme-button-c",
+                            "index": scenario_id_suffix,
+                        },
                         className="change-theme-button",
                     ),
                     html.Button(
                         "Twilight",
-                        id={"type": "rsc--bdd-theme-button-b", "index": scenario_id_suffix},
+                        id={
+                            "type": "rsc--bdd-theme-button-b",
+                            "index": scenario_id_suffix,
+                        },
                         className="change-theme-button",
                     ),
                     html.Button(
                         "Default",
-                        id={"type": "rsc--bdd-theme-button-a", "index": scenario_id_suffix},
+                        id={
+                            "type": "rsc--bdd-theme-button-a",
+                            "index": scenario_id_suffix,
+                        },
                         className="change-theme-button",
                     ),
                     html.H4(
                         "Change theme:",
-                        id={"type": "rsc--bdd-theme-label", "index": scenario_id_suffix},
+                        id={
+                            "type": "rsc--bdd-theme-label",
+                            "index": scenario_id_suffix,
+                        },
                         className="change-theme-label",
-                        ),
+                    ),
                 ],
             ),
         ],
@@ -347,6 +371,12 @@ def register_scripted_test_cases():
                 type="text",
                 placeholder=Constants.FieldText.ENTER_TEST_CASE_TITLE_OR_OBJECTIVE,
                 required=True,
+            ),
+            dcc.Input(
+                id="rsc--tc-requirements-link",
+                type="text",
+                placeholder=Constants.FieldText.REQUIREMENTS_LINK,
+                required=False,
             ),
             # =========================
             define_test_case_details(),

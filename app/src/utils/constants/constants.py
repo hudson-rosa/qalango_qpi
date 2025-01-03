@@ -10,6 +10,7 @@ class Constants:
     class FeaturesDataJSON:
         FEATURE_ID = "feature_id"
         FEATURE_NAME = "feature_name"
+        REQUIREMENTS_LINK = "requirements_link"
         QTY_OF_SCENARIOS = "qty_of_scenarios"
         QTY_OF_INTEGRATION = "qty_of_integration"
         QTY_OF_COMPONENT = "qty_of_component"
@@ -199,6 +200,7 @@ class Constants:
         PERFORMANCE = "Performance"
         PROJECT_ID = "Project ID"
         REQUIRED_FIELDS = "Required fields"
+        REQUIREMENTS_LINK = "Requirements Link"
         SAVE = "Save"
         SAVE_FEATURE = "Save Feature"
         SAVE_NEW_TEST_CASE = "Save new Test Case"

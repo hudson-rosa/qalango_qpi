@@ -206,6 +206,7 @@ def add_all_bdd_scenario_fields(n_clicks, current_children):
         State("rsc--feature-or-test-id", "value"),
         State("rsc--bdd-feature-name", "value"),
         State("rsc--bdd-feature-editor", "value"),
+        State({"type": "rsc--bdd-requirements-link", "index": ALL}, "value"),
         State({"type": "rsc--bdd-scenario-editor", "index": ALL}, "value"),
         State({"type": "rsc--bdd-test-level-dropdown", "index": ALL}, "value"),
         State({"type": "rsc--bdd-test-approach-radio", "index": ALL}, "value"),
@@ -229,6 +230,7 @@ def submit_bdd_data(
     feature_id,
     feature_name,
     bdd_feature_content,
+    requirements_link,
     bdd_scenarios,
     test_levels,
     test_approaches,
@@ -299,6 +301,7 @@ def submit_bdd_data(
                     .replace("Scenario:", "")
                     .replace("Scenario Outline:", "")
                     .strip(),
+                    "requirements_link": requirements_link[index],
                     "test_level": test_levels[index],
                     "test_approach": test_approaches[index],
                     "test_duration": test_durations[index],
@@ -613,6 +616,7 @@ def add_test_step(n_clicks, existing_steps):
         State("rsc--project-dropdown", "value"),
         State("rsc--feature-or-test-id", "value"),
         State("rsc--tc-test-name", "value"),
+        State("rsc--tc-requirements-link", "value"),
         State("rsc--tc-preconditions-container", "children"),
         State("rsc--tc-steps-container", "children"),
         State("rsc--tc-test-level-dropdown", "value"),
@@ -628,6 +632,7 @@ def submit_scripted_test(
     project_ref,
     test_id,
     test_name,
+    requirements_link,
     preconditions_children,
     children_steps,
     test_level,
@@ -706,6 +711,7 @@ def submit_scripted_test(
             project_id = StringHandler.get_id_format(project_ref)
             project_name = StringHandler.get_name_format(project_ref)
             suite_name = str(suite_ref).split("(")[0].strip()
+            requirements_link = str(requirements_link).strip()
 
             scenario_data = {
                 "test_content": {
@@ -726,10 +732,11 @@ def submit_scripted_test(
                 data = {}
 
             # prepare feature summary data
-            new_data = {
+            new_test_data = {
                 Constants.ScenariosDataJSON.TEST_ID: test_id,
                 Constants.ScenariosDataJSON.TEST_NAME: test_name,
                 Constants.SuiteDataJSON.SUITE_NAME: suite_name,
+                Constants.FeaturesDataJSON.REQUIREMENTS_LINK: requirements_link,
                 Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: 1,
                 "test_levels": {
                     Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: is_matching_test_level(
@@ -795,7 +802,7 @@ def submit_scripted_test(
                     "feature_specs": [],
                 }
 
-            data[project_id]["feature_specs"].append(new_data)
+            data[project_id]["feature_specs"].append(new_test_data)
 
             scenarios_mapper_instance.save_to_json_storage(data)
 
