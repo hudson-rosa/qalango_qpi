@@ -303,7 +303,7 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                         theme="twilight",  # e.g., monokai, twilight, solarized_dark
                         mode="gherkin",
                         className="c_text_editor custom-theme",
-                        style={"min-height": "200px !important"},
+                        style={"min-height": "200px !important", "width": "100%"},
                         enableBasicAutocompletion=True,
                         enableSnippets=True,
                         enableLiveAutocompletion=True,
@@ -315,45 +315,50 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
     Then they should be redirected to the dashboard
     """,
                     ),
-                    html.Button(
-                        "GitHub",
-                        id={
-                            "type": "rsc--bdd-theme-button-d",
-                            "index": scenario_id_suffix,
-                        },
-                        className="change-theme-button",
-                    ),
-                    html.Button(
-                        "Monokai",
-                        id={
-                            "type": "rsc--bdd-theme-button-c",
-                            "index": scenario_id_suffix,
-                        },
-                        className="change-theme-button",
-                    ),
-                    html.Button(
-                        "Twilight",
-                        id={
-                            "type": "rsc--bdd-theme-button-b",
-                            "index": scenario_id_suffix,
-                        },
-                        className="change-theme-button",
-                    ),
-                    html.Button(
-                        "Default",
-                        id={
-                            "type": "rsc--bdd-theme-button-a",
-                            "index": scenario_id_suffix,
-                        },
-                        className="change-theme-button",
-                    ),
-                    html.H4(
-                        "Change theme:",
-                        id={
-                            "type": "rsc--bdd-theme-label",
-                            "index": scenario_id_suffix,
-                        },
-                        className="change-theme-label",
+                    html.Div(
+                        className="editor-buttons",
+                        children=[
+                            html.H4(
+                                "Themes: ",
+                                id={
+                                    "type": "rsc--bdd-theme-label",
+                                    "index": scenario_id_suffix,
+                                },
+                                className="change-theme-label",
+                            ),
+                            html.Button(
+                                "Default",
+                                id={
+                                    "type": "rsc--bdd-theme-button-a",
+                                    "index": scenario_id_suffix,
+                                },
+                                className="change-theme-button",
+                            ),
+                            html.Button(
+                                "Twilight",
+                                id={
+                                    "type": "rsc--bdd-theme-button-b",
+                                    "index": scenario_id_suffix,
+                                },
+                                className="change-theme-button",
+                            ),
+                            html.Button(
+                                "Monokai",
+                                id={
+                                    "type": "rsc--bdd-theme-button-c",
+                                    "index": scenario_id_suffix,
+                                },
+                                className="change-theme-button",
+                            ),
+                            html.Button(
+                                "GitHub",
+                                id={
+                                    "type": "rsc--bdd-theme-button-d",
+                                    "index": scenario_id_suffix,
+                                },
+                                className="change-theme-button",
+                            ),
+                        ],
                     ),
                 ],
             ),

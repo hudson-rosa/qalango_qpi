@@ -138,11 +138,6 @@ body {
   padding-top: 5px;
 }
 
-/* .form-content li, */
-/* .form-content .grid>*:not(:last-child) {
-  margin-bottom: 1.5rem;
-} */
-
 .form-content select,
 .form-content input,
 .form-content textarea,
@@ -285,27 +280,38 @@ body {
   background: var(--bgFormElsFocus);
 }
 
-.change-theme-label,
-.change-theme-button {
+.editor-buttons {
   position: relative;
+  top: -95px;
   right: 12px;
   float: right;
-  z-index: 10000;
+  min-width: 150px;
+  height: 250px !important;
+  display: inline-flexbox;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .change-theme-label {
-  top: -55px;
-  padding: 15px;
+  position: relative;
   font-size: 13px;
+  z-index: 10000;
   color: var(--lightGreen);
+  padding-left: 0px !important;
+  margin-bottom: 5px !important;
+  padding-right: 15px;
   background: none;
 }
 
 .change-theme-button {
-  top: -60px;
-  width: 150px !important;
-  height: auto !important;
+  position: relative;
   font-size: 12px;
+  z-index: 10000;
+  width: 80px !important;
+  padding: 7px !important;
+  margin-top: 2px !important;
+  margin-bottom: 1px !important;
 }
 
 /* INPUT NUMBER
