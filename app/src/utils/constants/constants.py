@@ -11,6 +11,7 @@ class Constants:
         FEATURE_ID = "feature_id"
         FEATURE_NAME = "feature_name"
         REQUIREMENTS_LINK = "requirements_link"
+        SPEC_DOC_ID = "spec_doc_id"
         QTY_OF_SCENARIOS = "qty_of_scenarios"
         QTY_OF_INTEGRATION = "qty_of_integration"
         QTY_OF_COMPONENT = "qty_of_component"
@@ -40,15 +41,13 @@ class Constants:
         SUITE_REF = "suite_ref"
 
     class ScenariosDataJSON:
-        PROJECT_ID = "project_id"
-        PROJECT_NAME = "project_name"
+        COUNT = "count"
         SCENARIO_ID = "scenario_id"
         SCENARIO_NAME = "scenario_name"
         TEST_APPROACH = "test_approach"
         TEST_ID = "test_id"
         TEST_NAME = "test_name"
         TEST_LEVEL = "test_level"
-        SUITE_NAME = "suite_name"
         TOTAL_TIME = "total_time"
 
     class TestCategoriesEntity:
@@ -79,7 +78,6 @@ class Constants:
         FORMS_STYLESHEET_CSS_PATH = "./static/forms_stylesheet.css"
         QALANGO_LOGO_PNG_PATH = "app/assets/images/Qalango_logo_transp.png"
         FEATURES_DATA_JSON_PATH = "app/data/storage/features_data.json"
-        SCRIPTED_TESTS_DATA_JSON_PATH = "app/data/storage/test_cases_data.json"
         SCENARIOS_DATA_JSON_PATH = "app/data/storage/scenarios_data.json"
         PROJECTS_DATA_JSON_PATH = "app/data/storage/projects_data.json"
         SUITES_DATA_JSON_PATH = "app/data/storage/suites_data.json"
@@ -131,6 +129,9 @@ class Constants:
             "Deletion of JSON file failed. Feature file not found."
         )
         GHERKIN_FEATURE_CONTENT_IS_REQUIRED = "Gherkin Feature content is required."
+        NO_DATA_AVAILABLE_FOR_THE_SELECTED_PROJECT = (
+            "No data available for the selected project."
+        )
         NO_DATA_FOUND_NOTHING_TO_DELETE = "No data found. Nothing to delete."
         NO_DATA_FOUND_NOTHING_TO_UPDATE = "No data found. Nothing to update."
         PLEASE_FILL_IN_THE_FIELDS_BEFORE_CHOOSING_AN_ACTION = (
@@ -214,6 +215,7 @@ class Constants:
         )
         SMOKE_TEST = "Smoke Test"
         SUITE_ID = "Suite ID"
+        TEST_COVERAGE_AUTOMATED_VS_MANUAL = "Test Coverage: Automated Vs. Manual"
         THIS_SCENARIO_TAKES_TIME = "This scenario takes {time}"
         THIS_TEST_TAKES_TIME = "This test takes {time}"
         UNIT = "Unit"

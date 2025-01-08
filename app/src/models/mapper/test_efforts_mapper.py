@@ -6,6 +6,8 @@ from src.models.mapper.data_mapper import DataMapper
 from src.utils.constants.constants import Constants
 from collections import defaultdict
 
+from src.utils.string_handler import StringHandler
+
 
 class TestEffortsMapper(DataMapper):
 
@@ -30,29 +32,62 @@ class TestEffortsMapper(DataMapper):
             Constants.ScenariosDataJSON.TOTAL_TIME: total_times,
         }
 
-    def filter_test_level_and_approaches(
-        data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
+    @staticmethod
+    def sum_test_approaches_by_project(
+        project_id, data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
     ):
-        data = []
-        level_approach_counts = defaultdict(int)
+        """
+        Sum the quantities of automated and manual tests for a specific project
+        and prepare data for visualization.
+        """
         data_handler = DataMapper(data_path).get_composed_data_frame()
+        project_data = data_handler.get(
+            StringHandler.get_id_format(project_id), {}
+        ).get("feature_specs", [])
 
-        for key, value in data_handler.items():
-            test_level = value.get(Constants.ScenariosDataJSON.TEST_LEVEL)
-            test_approach = value.get(Constants.ScenariosDataJSON.TEST_APPROACH)
+        # Debugging logs
+        print("DEBUG: project_data =", project_data)
 
-            level_approach_counts[(test_level, test_approach)] += 1
+        if not isinstance(project_data, list):
+            print("Unexpected project_data format:", project_data)
+            return []
 
-        print("Level and Approach Counts:", dict(level_approach_counts))
+        # Initialize counters
+        total_automated = 0
+        total_manual = 0
 
+        for feature in project_data:
+            test_approaches = feature.get("test_approaches", {})
+            if not isinstance(test_approaches, dict):
+                print(f"Invalid 'test_approaches' format: {test_approaches}")
+                continue
+
+            # Validate and sum up the values
+            qty_automated = test_approaches.get(
+                Constants.FeaturesDataJSON.QTY_OF_AUTOMATED, 0
+            )
+            qty_manual = test_approaches.get(
+                Constants.FeaturesDataJSON.QTY_OF_MANUAL, 0
+            )
+
+            total_automated += (
+                qty_automated if isinstance(qty_automated, (int, float)) else 0
+            )
+            total_manual += qty_manual if isinstance(qty_manual, (int, float)) else 0
+
+        # Prepare data for the pie chart
         data = [
             {
-                Constants.ScenariosDataJSON.TEST_LEVEL: level,
-                Constants.ScenariosDataJSON.TEST_APPROACH: approach,
-                "count": count,
-            }
-            for (level, approach), count in level_approach_counts.items()
+                Constants.ScenariosDataJSON.TEST_APPROACH: Constants.TestTypesEntity.AUTOMATED,
+                Constants.ScenariosDataJSON.COUNT: total_automated,
+            },
+            {
+                Constants.ScenariosDataJSON.TEST_APPROACH: Constants.TestTypesEntity.MANUAL,
+                Constants.ScenariosDataJSON.COUNT: total_manual,
+            },
         ]
+
+        print("DEBUG: pie chart data =", data)
 
         return data
 
@@ -97,7 +132,7 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
 
         for key, value in data_handler.items():
-            suite_name = value.get(Constants.ScenariosDataJSON.SUITE_NAME)
+            suite_name = value.get(Constants.SuiteDataJSON.SUITE_NAME)
             total_time = value.get(Constants.ScenariosDataJSON.TOTAL_TIME)
 
             suite_counts[(suite_name)] += 1

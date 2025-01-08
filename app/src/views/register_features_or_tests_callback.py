@@ -306,6 +306,7 @@ def submit_bdd_data(
                     "test_approach": test_approaches[index],
                     "test_duration": test_durations[index],
                     "test_categories": test_categories[index],
+                    "content": feature_file_pathname,
                 }
                 scenarios_data.append(scenario_data)
 
@@ -373,8 +374,10 @@ def submit_bdd_data(
                     if category == Constants.TestCategoriesEntity.DESKTOP
                 ]
             )
-            new_data = {
-                Constants.FeaturesDataJSON.FEATURE_ID: feature_id,
+            
+            # prepare feature summary data
+            new_scn_data = {
+                Constants.FeaturesDataJSON.SPEC_DOC_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
                 Constants.SuiteDataJSON.SUITE_NAME: suite_name,
                 Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: all_scenarios.count(
@@ -446,7 +449,7 @@ def submit_bdd_data(
                     "feature_specs": [],
                 }
 
-            data[project_id]["feature_specs"].append(new_data)
+            data[project_id]["feature_specs"].append(new_scn_data)
 
             # Save to files
             scenarios_mapper_instance.save_to_json_storage(data)
@@ -508,12 +511,12 @@ def prepare_tags_for_feature_file(
     index,
     scenario_id_tag,
 ):
-    cov_test_level_tag = f"@cov-{test_levels[index]}" if test_levels[index] else ""
+    cov_test_level_tag = f"@track-{test_levels[index]}" if test_levels[index] else ""
     cov_test_approach_tag = (
-        f"@cov-{test_approaches[index]}" if test_approaches[index] else ""
+        f"@track-{test_approaches[index]}" if test_approaches[index] else ""
     )
     cov_test_category_tags = (
-        [f"@cov-{categories_sublist}" for categories_sublist in test_categories[index]]
+        [f"@track-{categories_sublist}" for categories_sublist in test_categories[index]]
         if test_categories is not None
         else ""
     )
@@ -714,16 +717,17 @@ def submit_scripted_test(
             requirements_link = str(requirements_link).strip()
 
             scenario_data = {
-                "test_content": {
-                    Constants.ScenariosDataJSON.SCENARIO_ID: test_id,
-                    Constants.ScenariosDataJSON.SCENARIO_NAME: test_name,
-                    "test_level": test_level,
-                    "test_approach": test_approach,
-                    "test_categories": test_categories,
-                    "test_duration": test_duration,
+                Constants.ScenariosDataJSON.SCENARIO_ID: test_id,
+                Constants.ScenariosDataJSON.SCENARIO_NAME: test_name,
+                Constants.FeaturesDataJSON.REQUIREMENTS_LINK: requirements_link,
+                "test_level": test_level,
+                "test_approach": test_approach,
+                "test_categories": test_categories,
+                "test_duration": test_duration,
+                "content": {
                     "preconditions": preconditions_data,
                     "steps": steps_and_expected_data,
-                }
+                },
             }
 
             try:
@@ -731,12 +735,11 @@ def submit_scripted_test(
             except (FileNotFoundError, json.decoder.JSONDecodeError):
                 data = {}
 
-            # prepare feature summary data
+            # prepare summary data
             new_test_data = {
-                Constants.ScenariosDataJSON.TEST_ID: test_id,
+                Constants.FeaturesDataJSON.SPEC_DOC_ID: test_id,
                 Constants.ScenariosDataJSON.TEST_NAME: test_name,
                 Constants.SuiteDataJSON.SUITE_NAME: suite_name,
-                Constants.FeaturesDataJSON.REQUIREMENTS_LINK: requirements_link,
                 Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: 1,
                 "test_levels": {
                     Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: is_matching_test_level(

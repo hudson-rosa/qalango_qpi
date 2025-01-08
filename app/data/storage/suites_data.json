@@ -8,5 +8,5 @@
   },
   "idproj_e3209": { "project_name": "One Ring ", "suites": [{ "suite_id": "idsuite_a648f", "suite_name": "Payments", "project_ref": "One Ring (idproj_e3209)" }] },
   "idproj_226e0": { "project_name": "Marvel ", "suites": [{ "suite_id": "idsuite_a648f", "suite_name": "Ordering", "project_ref": "Marvel (idproj_226e0)" }] },
-  "idproj_f3b25": { "project_name": "Batatinha Frita", "suites": [{ "suite_id": "idsuite_33703", "suite_name": "Extractor", "project_ref": "Batatinha Frita (idproj_f3b25)" }] }
+  "idproj_f3b25": { "project_name": "Xtra", "suites": [{ "suite_id": "idsuite_33703", "suite_name": "Extractor", "project_ref": "Xtra (idproj_f3b25)" }] }
 }
