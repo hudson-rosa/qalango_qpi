@@ -129,6 +129,7 @@ class Constants:
             "Deletion of JSON file failed. Feature file not found."
         )
         GHERKIN_FEATURE_CONTENT_IS_REQUIRED = "Gherkin Feature content is required."
+        MISSING_FIELDS = "⚠️ Missing Fields"
         NO_DATA_AVAILABLE_FOR_THE_SELECTED_PROJECT = (
             "No data available for the selected project."
         )
@@ -137,6 +138,7 @@ class Constants:
         PLEASE_FILL_IN_THE_FIELDS_BEFORE_CHOOSING_AN_ACTION = (
             "Please, fill in the fields before choosing an action"
         )
+        PLEASE_ENTER_GHERKIN_CONTENT_WITH_KEYWORDS = "Please enter Gherkin content with at least the keywords: Feature, Scenario, Given, When, Then."
         PROJECT_NAME_IS_REQUIRED = "Project Name is required."
         PROJECT_PROJECT_ID_IS_CREATED = "Project '{project_id}' is created"
         PROJECT_PROJECT_ID_IS_UPDATED = "Project '{project_id}' is updated"
@@ -147,10 +149,13 @@ class Constants:
         SUITE_SUITE_ID_IS_CREATED = "Suite '{suite_id}' is created"
         SUITE_SUITE_ID_IS_UPDATED = "Suite '{suite_id}' is updated"
         SUITE_SUITE_ID_IS_DELETED = "Suite '{suite_id}' is deleted"
+        SYNTAX_ERROR = "❌ Syntax Error"
+        SYNTAX_IS_VALID = "Syntax is valid! 🎉"
         TEST_CASE_SCENARIO_IS_SAVED = "Test Case scenario '{test_id}' is saved"
         TEST_CASE_STEPS_ARE_SAVED = "Test Case Steps are saved"
         TEST_LEVEL_IS_REQUIRED = "Test Level is required."
         TEST_NAME_IS_REQUIRED = "Test Name is required."
+        UNEXPECTED_ERROR = "❌ Unexpected Error"
 
     class FieldText:
         ADD_NEW_SCENARIO = "+ Add New Scenario"

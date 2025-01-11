@@ -1,4 +1,5 @@
 argparse
+behave
 black
 chart-studio
 configparser~=5.0.0

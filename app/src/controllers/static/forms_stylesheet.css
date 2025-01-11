@@ -234,6 +234,8 @@ body {
   filter: blur(2px);
 }
 
+/* MESSAGE VALIDATION
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .validation-error {
   color: var(--lightRed);
   font-style: italic;
@@ -401,6 +403,16 @@ body {
   transform: translateX(110%);
 }
 
+.form-content .output-msg {
+  display: block;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  color: var(--blue);
+  padding: 20px;
+  font-size: 18px;
+}
+
 /* CUSTOM CHECKBOX
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -495,7 +507,6 @@ body {
   transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
     transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
 }
-
 
 .c_dropdown .Select-control .Select-arrow {
   position: relative;
@@ -748,12 +759,6 @@ footer span {
 
   .required-msg {
     font-size: 14px;
-  }
-
-  .output-msg {
-    color: var(--blue);
-    padding: 20px;
-    font-size: 18px;
   }
 }
 

@@ -2,6 +2,7 @@ import dash
 import json
 
 from collections import Counter
+from behave.parser import ParserError, parse_feature
 from dash import dcc, callback, html, Input, Output, State, MATCH, ALL
 from src.models.mapper.data_mapper import DataMapper
 from src.models.mapper.suite_mapper import SuiteMapper
@@ -124,7 +125,7 @@ def bdd_editor_toggle_theme(n_clicks_a, n_clicks_b, n_clicks_c, n_clicks_d):
     if button_id and "type" in button_id:
         match button_id["type"]:
             case "rsc--bdd-theme-button-a":
-                return "twilight", "c_text_editor custom-theme"
+                return "dracula", "c_text_editor custom-theme"
             case "rsc--bdd-theme-button-b":
                 return "twilight", ""
             case "rsc--bdd-theme-button-c":
@@ -167,6 +168,27 @@ def update_bdd_multi_checkbox_output(selected):
             "text-selected",
         )
     return Constants.FieldText.NO_OPTIONS_SELECTED, "no-text-selected"
+
+
+@callback(
+    Output({"type": "rsc--bdd-validation-output", "index": MATCH}, "children"),
+    Output({"type": "rsc--bdd-validation-output", "index": MATCH}, "className"),
+    [
+        Input("rsc--bdd-feature-editor", "value"),
+        Input({"type": "rsc--bdd-scenario-editor", "index": MATCH}, "value"),
+    ],
+)
+def validate_gherkin(bdd_feature_content, gherkin_text):
+    if not str(bdd_feature_content).strip() or not str(gherkin_text).strip():
+        return (
+            Constants.Messages.MISSING_FIELDS
+            + Constants.Messages.PLEASE_ENTER_GHERKIN_CONTENT_WITH_KEYWORDS,
+            "validation-error",
+        )
+
+    return ValidationUtils.validate_gherkin_syntax(
+        f"{bdd_feature_content}\n{gherkin_text}"
+    )
 
 
 @callback(
@@ -374,7 +396,7 @@ def submit_bdd_data(
                     if category == Constants.TestCategoriesEntity.DESKTOP
                 ]
             )
-            
+
             # prepare feature summary data
             new_scn_data = {
                 Constants.FeaturesDataJSON.SPEC_DOC_ID: feature_id,
@@ -516,7 +538,10 @@ def prepare_tags_for_feature_file(
         f"@track-{test_approaches[index]}" if test_approaches[index] else ""
     )
     cov_test_category_tags = (
-        [f"@track-{categories_sublist}" for categories_sublist in test_categories[index]]
+        [
+            f"@track-{categories_sublist}"
+            for categories_sublist in test_categories[index]
+        ]
         if test_categories is not None
         else ""
     )
@@ -708,8 +733,9 @@ def submit_scripted_test(
             is_valid, steps_message = ValidationUtils.validate_mandatory_field_rules(
                 Constants.Messages.TEST_CASE_STEPS_ARE_SAVED, steps_validation_rules
             )
-            if not is_valid:
-                return steps_message, None
+            ## Steps field validation is disabled
+            # if not is_valid:
+            #     return steps_message, None
 
             project_id = StringHandler.get_id_format(project_ref)
             project_name = StringHandler.get_name_format(project_ref)

@@ -8,7 +8,6 @@ from src.views.layout import html_component_header_tabs
 from src.utils.constants.constants import Constants
 from src.utils.data_generator import DataGenerator
 
-
 def render_layout():
     return html.Div(
         [
@@ -308,7 +307,6 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                         enableSnippets=True,
                         enableLiveAutocompletion=True,
                         showPrintMargin=True,
-                        # required=True,
                         value=f"""Scenario: Successful login (Example #{scenario_id_suffix})
     Given the user is on the login page
     When they enter valid credentials
@@ -359,6 +357,13 @@ def define_bdd_scenario_details(scenario_id_suffix=1):
                                 className="change-theme-button",
                             ),
                         ],
+                    ),
+                    html.Div(
+                        id={
+                            "type": "rsc--bdd-validation-output",
+                            "index": scenario_id_suffix,
+                        },
+                        className="output-msg",
                     ),
                 ],
             ),
