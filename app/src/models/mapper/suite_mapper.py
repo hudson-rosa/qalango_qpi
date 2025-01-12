@@ -33,7 +33,8 @@ class SuiteMapper(DataMapper):
                 "label": data_ref,
                 "value": data_ref,
             }
-            return list_of_suites.append(suite_option)
+            list_of_suites.append(suite_option)
+        return list_of_suites
 
     @staticmethod
     def get_all_suites_when_no_projects_is_provided(data, list_of_suites):
