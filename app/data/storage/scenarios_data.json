@@ -1,192 +1,115 @@
 {
-  "idproj_f3b25": {
-    "project_name": "Xtra (idproj_f3b25)",
-    "suite_ref": "Extractor (idsuite_33703)",
-    "feature_specs": [
-      {
-        "spec_doc_id": "idbdd_2354d7e676",
-        "feature_name": "Extractor_XML_Processing",
-        "suite_name": "Extractor",
-        "qty_of_scenarios": 3,
-        "test_levels": {
-          "qty_of_integration": 0,
-          "qty_of_component": 0,
-          "qty_of_contract": 1,
-          "qty_of_api": 0,
-          "qty_of_e2e": 2,
-          "qty_of_performance": 0,
-          "qty_of_security": 0,
-          "qty_of_usability": 0,
-          "qty_of_exploratory": 0
-        },
-        "test_approaches": { "qty_of_automated": 1, "qty_of_manual": 2 },
-        "test_categories": { "qty_of_critical_tests": 1, "qty_of_smoke_tests": 2, "qty_of_edge_cases": 1, "qty_of_mobile": 2, "qty_of_desktop": 2 },
-        "scenarios": [
-          {
-            "scenario_id": "@idscn_2354d7e676-1",
-            "scenario_name": "Extract data from XML file",
-            "requirements_link": null,
-            "test_level": "e2e",
-            "test_approach": "manual",
-            "test_duration": 15,
-            "test_categories": ["critical-test", "smoke-test", "desktop"],
-            "content": "app/data/storage/features/idbdd_2354d7e676--extractor_xml_processing.feature"
+  "idproj_aaffe": {
+    "project_name": "NarniaFE (idproj_aaffe)",
+    "idsuite_0fc7d": {
+      "suite_name": "Authentication",
+      "feature_specs": [
+        {
+          "spec_doc_id": "idbdd_3f9ec62533",
+          "feature_name": "Login",
+          "qty_of_scenarios": 2,
+          "test_levels": {
+            "qty_of_integration": 0,
+            "qty_of_component": 0,
+            "qty_of_contract": 0,
+            "qty_of_api": 2,
+            "qty_of_e2e": 0,
+            "qty_of_performance": 0,
+            "qty_of_security": 0,
+            "qty_of_usability": 0,
+            "qty_of_exploratory": 0
           },
-          {
-            "scenario_id": "@idscn_2354d7e676-2",
-            "scenario_name": "Handle missing XML tags",
-            "requirements_link": "https://www.linkedin.com/in/hudsonssrosa/",
-            "test_level": "contract",
-            "test_approach": "automated",
-            "test_duration": 2,
-            "test_categories": ["mobile", "edge-case"],
-            "content": "app/data/storage/features/idbdd_2354d7e676--extractor_xml_processing.feature"
-          },
-          {
-            "scenario_id": "@idscn_2354d7e676-3",
-            "scenario_name": "Extract data from XML file based on provided configuration",
-            "requirements_link": null,
-            "test_level": "e2e",
-            "test_approach": "manual",
-            "test_duration": 15,
-            "test_categories": ["desktop", "mobile", "smoke-test"],
-            "content": "app/data/storage/features/idbdd_2354d7e676--extractor_xml_processing.feature"
-          }
-        ]
-      },
-      {
-        "spec_doc_id": "idtest_ac7d0c64f0",
-        "test_name": "Extract Data from XML File Based on Provided Configuration",
-        "suite_name": "Extractor",
-        "qty_of_scenarios": 1,
-        "test_levels": {
-          "qty_of_integration": 0,
-          "qty_of_component": 0,
-          "qty_of_contract": 0,
-          "qty_of_api": 0,
-          "qty_of_e2e": 1,
-          "qty_of_performance": 0,
-          "qty_of_security": 0,
-          "qty_of_usability": 0,
-          "qty_of_exploratory": 0
-        },
-        "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
-        "test_categories": { "qty_of_critical_tests": 0, "qty_of_smoke_tests": 0, "qty_of_edge_cases": 0, "qty_of_mobile": 0, "qty_of_desktop": 0 },
-        "scenarios": {
-          "scenario_id": "idtest_ac7d0c64f0",
-          "scenario_name": "Extract Data from XML File Based on Provided Configuration",
-          "requirements_link": "https://jsonplaceholder.typicode.com/todos/1",
-          "test_level": "e2e",
-          "test_approach": "manual",
-          "test_categories": [],
-          "test_duration": 0,
-          "content": {
-            "preconditions": [
-              { "precondition": "The XML extractor tool is installed and functional." },
-              { "precondition": "Test Data:\nfield1 [NAME, ADDRESS, ORDER_ID]\t\nfield2 [EMAIL, CITY, PRODUCT_ID]" }
-            ],
-            "steps": [
-              {
-                "step": "Ensure that an XML file containing the following fields is available for extraction:\nField 1: <field1>\nField 2: <field2>\nField 3: <field3>",
-                "expected": ""
-              },
-              { "step": "Use the XML extractor tool to parse the XML file.", "expected": "" },
-              {
-                "step": "Verify that the extracted data contains the following fields:\nField 1: <field1>\nField 2: <field2>\nField 3: <field3>",
-                "expected": "The XML extractor should successfully parse the file.\nThe extraction process should be completed without errors."
-              },
-              {
-                "step": "Ensure that the XML extractor processes the data without errors.",
-                "expected": "The extracted data should contain the fields specified in the table (<field1>, <field2>, <field3>)."
-              }
-            ]
-          }
+          "test_approaches": { "qty_of_automated": 2, "qty_of_manual": 0 },
+          "test_categories": { "qty_of_critical_tests": 2, "qty_of_smoke_tests": 2, "qty_of_edge_cases": 0, "qty_of_mobile": 2, "qty_of_desktop": 0 },
+          "scenarios": [
+            {
+              "scenario_id": "@idscn_3f9ec62533-1",
+              "scenario_name": "User logs in with valid credentials",
+              "requirements_link": null,
+              "test_level": "api",
+              "test_approach": "automated",
+              "test_duration": 1,
+              "test_categories": ["critical-test", "smoke-test", "mobile"],
+              "content": "app/data/storage/features/idbdd_3f9ec62533--login.feature"
+            },
+            {
+              "scenario_id": "@idscn_3f9ec62533-2",
+              "scenario_name": "User logs in with invalid credentials",
+              "requirements_link": null,
+              "test_level": "api",
+              "test_approach": "automated",
+              "test_duration": 2,
+              "test_categories": ["critical-test", "smoke-test", "mobile"],
+              "content": "app/data/storage/features/idbdd_3f9ec62533--login.feature"
+            }
+          ]
         }
-      }
-    ]
-  },
-  "idproj_25c54": {
-    "project_name": "Project46 (idproj_25c54)",
-    "suite_ref": "Account Creation (idsuite_a648f)",
-    "feature_specs": [
-      {
-        "spec_doc_id": "idbdd_085859aaa9",
-        "feature_name": "Account_Registering",
-        "suite_name": "Account Creation",
-        "qty_of_scenarios": 1,
-        "test_levels": {
-          "qty_of_integration": 0,
-          "qty_of_component": 0,
-          "qty_of_contract": 0,
-          "qty_of_api": 1,
-          "qty_of_e2e": 0,
-          "qty_of_performance": 0,
-          "qty_of_security": 0,
-          "qty_of_usability": 0,
-          "qty_of_exploratory": 0
-        },
-        "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
-        "test_categories": { "qty_of_critical_tests": 1, "qty_of_smoke_tests": 1, "qty_of_edge_cases": 0, "qty_of_mobile": 0, "qty_of_desktop": 0 },
-        "scenarios": [
-          {
-            "scenario_id": "@idscn_085859aaa9-1",
-            "scenario_name": "Successful account registration with valid inputs",
-            "requirements_link": "https://jsonplaceholder.typicode.com/",
-            "test_level": "api",
-            "test_approach": "manual",
-            "test_duration": 3,
-            "test_categories": ["critical-test", "smoke-test"],
-            "content": "app/data/storage/features/idbdd_085859aaa9--account_registering.feature"
-          }
-        ]
-      }
-    ]
-  },
-  "idproj_e3209": {
-    "project_name": "One Ring (idproj_e3209)",
-    "suite_ref": "Payments (idsuite_a648f)",
-    "feature_specs": [
-      {
-        "spec_doc_id": "idbdd_9c18881db0",
-        "feature_name": "Payments",
-        "suite_name": "Payments",
-        "qty_of_scenarios": 2,
-        "test_levels": {
-          "qty_of_integration": 0,
-          "qty_of_component": 0,
-          "qty_of_contract": 0,
-          "qty_of_api": 0,
-          "qty_of_e2e": 2,
-          "qty_of_performance": 0,
-          "qty_of_security": 0,
-          "qty_of_usability": 0,
-          "qty_of_exploratory": 0
-        },
-        "test_approaches": { "qty_of_automated": 2, "qty_of_manual": 0 },
-        "test_categories": { "qty_of_critical_tests": 2, "qty_of_smoke_tests": 2, "qty_of_edge_cases": 1, "qty_of_mobile": 0, "qty_of_desktop": 1 },
-        "scenarios": [
-          {
-            "scenario_id": "@idscn_9c18881db0-1",
-            "scenario_name": "Successful Payment Transaction",
-            "requirements_link": null,
-            "test_level": "e2e",
-            "test_approach": "automated",
-            "test_duration": 5,
-            "test_categories": ["critical-test", "desktop", "smoke-test"],
-            "content": "app/data/storage/features/idbdd_9c18881db0--payments.feature"
+      ]
+    },
+    "idsuite_d1579": {
+      "suite_name": "User Account",
+      "feature_specs": [
+        {
+          "spec_doc_id": "idbdd_9534833561",
+          "feature_name": "Authentication",
+          "qty_of_scenarios": 4,
+          "test_levels": {
+            "qty_of_integration": 2,
+            "qty_of_component": 0,
+            "qty_of_contract": 0,
+            "qty_of_api": 0,
+            "qty_of_e2e": 2,
+            "qty_of_performance": 0,
+            "qty_of_security": 0,
+            "qty_of_usability": 0,
+            "qty_of_exploratory": 0
           },
-          {
-            "scenario_id": "@idscn_9c18881db0-2",
-            "scenario_name": "Payment Failure Due to Invalid Details",
-            "requirements_link": null,
-            "test_level": "e2e",
-            "test_approach": "automated",
-            "test_duration": 10,
-            "test_categories": ["edge-case", "critical-test", "smoke-test"],
-            "content": "app/data/storage/features/idbdd_9c18881db0--payments.feature"
-          }
-        ]
-      }
-    ]
+          "test_approaches": { "qty_of_automated": 3, "qty_of_manual": 1 },
+          "test_categories": { "qty_of_critical_tests": 4, "qty_of_smoke_tests": 3, "qty_of_edge_cases": 2, "qty_of_mobile": 4, "qty_of_desktop": 3 },
+          "scenarios": [
+            {
+              "scenario_id": "@idscn_9534833561-1",
+              "scenario_name": "User logs in and accesses the dashboard",
+              "requirements_link": null,
+              "test_level": "e2e",
+              "test_approach": "manual",
+              "test_duration": 3,
+              "test_categories": ["critical-test", "desktop", "mobile", "smoke-test"],
+              "content": "app/data/storage/features/idbdd_9534833561--authentication.feature"
+            },
+            {
+              "scenario_id": "@idscn_9534833561-2",
+              "scenario_name": "User tries to log in without providing credentials",
+              "requirements_link": null,
+              "test_level": "e2e",
+              "test_approach": "automated",
+              "test_duration": 1,
+              "test_categories": ["critical-test", "edge-case", "smoke-test", "mobile", "desktop"],
+              "content": "app/data/storage/features/idbdd_9534833561--authentication.feature"
+            },
+            {
+              "scenario_id": "@idscn_9534833561-3",
+              "scenario_name": "Valid user login and token verification",
+              "requirements_link": null,
+              "test_level": "integration",
+              "test_approach": "automated",
+              "test_duration": 1,
+              "test_categories": ["critical-test", "smoke-test", "desktop", "mobile"],
+              "content": "app/data/storage/features/idbdd_9534833561--authentication.feature"
+            },
+            {
+              "scenario_id": "@idscn_9534833561-4",
+              "scenario_name": "Login fails due to authentication service unavailability",
+              "requirements_link": null,
+              "test_level": "integration",
+              "test_approach": "automated",
+              "test_duration": 1,
+              "test_categories": ["critical-test", "edge-case", "mobile"],
+              "content": "app/data/storage/features/idbdd_9534833561--authentication.feature"
+            }
+          ]
+        }
+      ]
+    }
   }
 }

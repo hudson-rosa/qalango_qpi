@@ -1,12 +1,31 @@
 {
-  "idproj_25c54": {
-    "project_name": "Project46 ",
+  "idproj_aaffe": {
+    "project_name": "NarniaFE",
     "suites": [
-      { "suite_id": "idsuite_a648f", "suite_name": "Account Creation", "project_ref": "Project46 (idproj_25c54)" },
-      { "suite_id": "idsuite_a648f", "suite_name": "Login", "project_ref": "Project46 (idproj_25c54)" }
+      { "suite_id": "idsuite_0fc7d", "suite_name": "Authentication", "project_ref": "NarniaFE (idproj_aaffe)" },
+      { "suite_id": "idsuite_d1579", "suite_name": "User Account", "project_ref": "NarniaFE (idproj_aaffe)" },
+      { "suite_id": "idsuite_18645", "suite_name": "Administration", "project_ref": "NarniaFE (idproj_aaffe)" }
     ]
   },
-  "idproj_e3209": { "project_name": "One Ring ", "suites": [{ "suite_id": "idsuite_a648f", "suite_name": "Payments", "project_ref": "One Ring (idproj_e3209)" }] },
-  "idproj_226e0": { "project_name": "Marvel ", "suites": [{ "suite_id": "idsuite_a648f", "suite_name": "Ordering", "project_ref": "Marvel (idproj_226e0)" }] },
-  "idproj_f3b25": { "project_name": "Xtra", "suites": [{ "suite_id": "idsuite_33703", "suite_name": "Extractor", "project_ref": "Xtra (idproj_f3b25)" }] }
+  "idproj_02511": {
+    "project_name": "Middle-Earth",
+    "suites": [
+      { "suite_id": "idsuite_7d643", "suite_name": "Transactions", "project_ref": "Middle-Earth (idproj_02511)" },
+      { "suite_id": "idsuite_499f0", "suite_name": "Approval History", "project_ref": "Middle-Earth (idproj_02511)" }
+    ]
+  },
+  "idproj_218dc": {
+    "project_name": "Naboo",
+    "suites": [
+      { "suite_id": "idsuite_fb81a", "suite_name": "Payments", "project_ref": "Naboo (idproj_218dc)" },
+      { "suite_id": "idsuite_11975", "suite_name": "Notifications", "project_ref": "Naboo (idproj_218dc)" }
+    ]
+  },
+  "idproj_7d6dc": {
+    "project_name": "Counter-Earth",
+    "suites": [
+      { "suite_id": "idsuite_952ef", "suite_name": "Plan Subscription", "project_ref": "Counter-Earth (idproj_7d6dc)" },
+      { "suite_id": "idsuite_14436", "suite_name": "Plan Validation", "project_ref": "Counter-Earth (idproj_7d6dc)" }
+    ]
+  }
 }

@@ -28,17 +28,17 @@ def refresh_charts():
         pie_fig.create(
             slice_values=Constants.ScenariosDataJSON.TOTAL_TIME,
             names=Constants.ScenariosDataJSON.TEST_NAME,
-            title="Test Effort Distribution",
+            title=Constants.FieldText.CHART_TEST_EFFORT_DISTRIBUTION,
         ),
         bar_fig.create(
             x_axis=Constants.ScenariosDataJSON.TEST_LEVEL,
             y_axis=Constants.ScenariosDataJSON.TEST_APPROACH,
-            title="Test Pyramid",
+            title=Constants.FieldText.CHART_TEST_PYRAMID,
         ),
         line_fig.create(
             x_axis=Constants.ScenariosDataJSON.TEST_NAME,
             y_axis=Constants.ScenariosDataJSON.TOTAL_TIME,
-            title="Total Time of Manual testing",
+            title=Constants.FieldText.CHART_TOTAL_TIME_OF_MANUAL_TESTING,
         ),
     )
 
@@ -49,10 +49,7 @@ def refresh_charts():
 )
 def update_test_approaches_pie_chart(selected_project_id):
     if not selected_project_id:
-        return html.Div(
-            "Please select a project to view the chart.",
-            style={"textAlign": "center", "color": "red"},
-        )
+        return render_message_for_unselected_project()
 
     summed_data = TestEffortsMapper.sum_test_approaches_by_project(selected_project_id)
     there_is_no_data_selected = not summed_data or all(
@@ -64,8 +61,10 @@ def update_test_approaches_pie_chart(selected_project_id):
             Constants.Messages.NO_DATA_AVAILABLE_FOR_THE_SELECTED_PROJECT,
             style={"textAlign": "center", "color": "grey"},
         )
-
+        
     pie_fig = PieChart(data_frame=summed_data, template="plotly_dark")
+    automated_result_as_green = "seagreen"
+    manual_result_as_orange = "orange"
 
     return dcc.Graph(
         id="pie-chart",
@@ -73,9 +72,56 @@ def update_test_approaches_pie_chart(selected_project_id):
             slice_values=Constants.ScenariosDataJSON.COUNT,
             names=Constants.ScenariosDataJSON.TEST_APPROACH,
             title=Constants.FieldText.TEST_COVERAGE_AUTOMATED_VS_MANUAL,
+            slice_colors=[manual_result_as_orange, automated_result_as_green],
+        ),
+    )
+
+
+@callback(
+    Output("dash--pie-chart-suite-test-balance", "children"),
+    Input("dash--project-dropdown", "value"),
+)
+def update_tests_per_suite_pie_chart(selected_project_id):
+    if not selected_project_id:
+        return render_message_for_unselected_project()
+
+    summed_data = TestEffortsMapper.filter_tests_per_suite(selected_project_id)
+    there_is_no_data_selected = not summed_data or all(
+        entry[Constants.FeaturesDataJSON.QTY_OF_SCENARIOS] == 0 for entry in summed_data
+    )
+    
+    if there_is_no_data_selected:
+        return html.Div(
+            Constants.Messages.NO_DATA_AVAILABLE_FOR_THE_SELECTED_PROJECT,
+            style={"textAlign": "center", "color": "grey"},
+        )
+
+    pie_fig = PieChart(data_frame=summed_data, template="plotly_dark")
+
+    return dcc.Graph(
+        id="pie-chart",
+        figure=pie_fig.create(
+            slice_values=Constants.FeaturesDataJSON.QTY_OF_SCENARIOS,
+            names=Constants.SuiteDataJSON.SUITE_NAME,
+            title=Constants.FieldText.BALANCE_OF_TESTS_PER_SUITE,
             slice_colors=["seagreen", "orange"],
         ),
     )
+
+
+def render_message_for_unselected_project():
+    return html.Div(
+        Constants.FieldText.PLEASE_SELECT_A_PROJECT_TO_VIEW_CHART,
+        style={"textAlign": "center", "color": "red"},
+    )
+
+
+def is_the_project_selected(project_id):
+    if not project_id:
+        return html.Div(
+            Constants.FieldText.PLEASE_SELECT_A_PROJECT_TO_VIEW_CHART,
+            style={"textAlign": "center", "color": "red"},
+        )
 
 
 app.layout = html_dashboard.render_layout()

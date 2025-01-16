@@ -38,7 +38,7 @@ class ValidationUtils:
             return False, html.Pre(error_message, className=validation_error_classname)
 
         return True, html.Pre(
-            "✅ " + str(feature_action) + " successfully",
+            "✅ " + str(feature_action),
             className=validation_success_classname,
         )
 

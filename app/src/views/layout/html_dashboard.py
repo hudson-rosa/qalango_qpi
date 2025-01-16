@@ -25,11 +25,6 @@ def update_figures():
         ("template", "plotly_dark"),
     ]
 
-    chart_args_test_suites = [
-        ("data_frame", TestEffortsMapper.filter_test_suites()),
-        ("template", "plotly_dark"),
-    ]
-
     chart_args_test_segregated_levels_and_approaches = [
         (
             "data_frame_group_a",
@@ -48,27 +43,14 @@ def update_figures():
         ("template", "plotly_dark"),
     ]
 
-    pie_fig = PieChart(**dict(chart_args_test_suites))
     line_fig = LineChart(**dict(chart_args_test_names_and_times))
     pyramid_fig = PyramidChart(**dict(chart_args_test_segregated_levels_and_approaches))
-    bar_fig = BarChart(**dict(chart_args_test_suites))
 
-    print("\n------->>> RAW DATA: \n", data_mapper_instance.get_composed_data_frame())
-
-    return pie_fig, bar_fig, line_fig, pyramid_fig
+    return line_fig, pyramid_fig
 
 
 def render_layout():
-    pie_fig, bar_fig, line_fig, pyramid_fig = update_figures()
-
-    plot_pie_chart_suite_cov = dcc.Graph(
-        id="pie-chart",
-        figure=pie_fig.create(
-            slice_values="count",
-            names="number_of_test_suites",
-            title="Test Coverage per Suite",
-        ),
-    )
+    line_fig, pyramid_fig = update_figures()
 
     plot_pyramid_chart = dcc.Graph(
         id="pyramid-chart",
@@ -91,15 +73,6 @@ def render_layout():
             x_axis=Constants.ScenariosDataJSON.TEST_NAME,
             y_axis=Constants.ScenariosDataJSON.TOTAL_TIME,
             title="Test Effort Distribution (in seconds)",
-        ),
-    )
-
-    plot_bar_chart_total_tests = dcc.Graph(
-        id="bar-chart",
-        figure=bar_fig.create(
-            x_axis="number_of_test_suites",
-            y_axis="count",
-            title="Total Tests per Suite",
         ),
     )
 
@@ -132,8 +105,8 @@ def render_layout():
                                 className="chart-card-flex",
                             ),
                             html.Div(
+                                id="dash--pie-chart-suite-test-balance",
                                 className="chart-card-flex",
-                                children=plot_pie_chart_suite_cov,
                             ),
                         ],
                     ),
@@ -145,11 +118,6 @@ def render_layout():
                     html.Div(
                         children=plot_line_chart_effort,
                         id="line-chart-container",
-                        className="chart-card",
-                    ),
-                    html.Div(
-                        children=plot_bar_chart_total_tests,
-                        id="bar-chart-container",
                         className="chart-card",
                     ),
                 ],

@@ -307,8 +307,9 @@ def submit_bdd_data(
                 return validation_message, None
 
             project_id = StringHandler.get_id_format(project_ref)
-            suite_name = str(suite_ref).split("(")[0].strip()
-
+            suite_id = StringHandler.get_id_format(suite_ref)
+            suite_name = StringHandler.get_name_format(suite_ref)
+            
             scenarios_data = []
             bdd_content_lines = [bdd_feature_content]
 
@@ -401,7 +402,6 @@ def submit_bdd_data(
             new_scn_data = {
                 Constants.FeaturesDataJSON.SPEC_DOC_ID: feature_id,
                 Constants.FeaturesDataJSON.FEATURE_NAME: feature_name_underlined,
-                Constants.SuiteDataJSON.SUITE_NAME: suite_name,
                 Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: all_scenarios.count(
                     "scenario:"
                 )
@@ -467,11 +467,15 @@ def submit_bdd_data(
             if project_id not in data:
                 data[project_id] = {
                     Constants.ProjectDataJSON.PROJECT_NAME: project_ref,
-                    Constants.SuiteDataJSON.SUITE_REF: suite_ref,
+                }
+                                
+            if suite_id not in data[project_id]:
+                data[project_id][suite_id] = {
+                    Constants.SuiteDataJSON.SUITE_NAME: suite_name,
                     "feature_specs": [],
                 }
 
-            data[project_id]["feature_specs"].append(new_scn_data)
+            data[project_id][suite_id]["feature_specs"].append(new_scn_data)
 
             # Save to files
             scenarios_mapper_instance.save_to_json_storage(data)
@@ -739,7 +743,8 @@ def submit_scripted_test(
 
             project_id = StringHandler.get_id_format(project_ref)
             project_name = StringHandler.get_name_format(project_ref)
-            suite_name = str(suite_ref).split("(")[0].strip()
+            suite_id = StringHandler.get_id_format(suite_ref)
+            suite_name = StringHandler.get_name_format(suite_ref)
             requirements_link = str(requirements_link).strip()
 
             scenario_data = {
@@ -765,7 +770,6 @@ def submit_scripted_test(
             new_test_data = {
                 Constants.FeaturesDataJSON.SPEC_DOC_ID: test_id,
                 Constants.ScenariosDataJSON.TEST_NAME: test_name,
-                Constants.SuiteDataJSON.SUITE_NAME: suite_name,
                 Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: 1,
                 "test_levels": {
                     Constants.FeaturesDataJSON.QTY_OF_INTEGRATION: is_matching_test_level(
@@ -823,16 +827,21 @@ def submit_scripted_test(
                 },
                 "scenarios": scenario_data,
             }
-
+            
+            # Update the project_data
             if project_id not in data:
                 data[project_id] = {
-                    Constants.ProjectDataJSON.PROJECT_NAME: project_name,
-                    Constants.SuiteDataJSON.SUITE_REF: suite_ref,
+                    Constants.ProjectDataJSON.PROJECT_NAME: project_ref,
+                }
+                                
+            if suite_id not in data[project_id]:
+                data[project_id][suite_id] = {
+                    Constants.SuiteDataJSON.SUITE_NAME: suite_name,
                     "feature_specs": [],
                 }
 
-            data[project_id]["feature_specs"].append(new_test_data)
-
+            data[project_id][suite_id]["feature_specs"].append(new_test_data)            
+            
             scenarios_mapper_instance.save_to_json_storage(data)
 
             new_id = idtest_prefix + DataGenerator.generate_aggregated_uuid()

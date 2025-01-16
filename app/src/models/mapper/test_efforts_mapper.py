@@ -12,6 +12,36 @@ from src.utils.string_handler import StringHandler
 class TestEffortsMapper(DataMapper):
 
     @staticmethod
+    def get_project_data(project_id, data_handler):
+        """
+        Retrieves all feature specifications for a given project ID.
+        """
+        project_data = data_handler.get(StringHandler.get_id_format(project_id))
+
+        # Handle the case where project_data is a Pandas Series
+        if isinstance(project_data, pd.Series):
+            project_data = project_data.dropna().to_dict()
+
+        # Check if project_data is None, empty, or invalid
+        if not project_data or not isinstance(project_data, dict):
+            return []
+
+        # Extract `feature_specs` from all suites
+        feature_specs = []
+        for suite_id, suite_data in project_data.items():
+            if suite_id == "project_name":
+                continue  # Skip the project_name field
+
+            suite_feature_specs = suite_data.get("feature_specs", [])
+            if isinstance(suite_feature_specs, list):
+                feature_specs.extend(suite_feature_specs)
+            elif isinstance(suite_feature_specs, dict):
+                # Handle edge cases where feature_specs might be a dict
+                feature_specs.append(suite_feature_specs)
+
+        return feature_specs
+
+    @staticmethod
     def filter_test_names_and_times_dictionary(
         data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
     ):
@@ -37,32 +67,28 @@ class TestEffortsMapper(DataMapper):
         project_id, data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
     ):
         """
-        Sum the quantities of automated and manual tests for a specific project
-        and prepare data for visualization.
+        Sum the quantities of automated and manual tests for a specific project.
         """
+        # Load JSON data
         data_handler = DataMapper(data_path).get_composed_data_frame()
-        project_data = data_handler.get(
-            StringHandler.get_id_format(project_id), {}
-        ).get("feature_specs", [])
+        feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)
 
-        # Debugging logs
-        print("DEBUG: project_data =", project_data)
-
-        if not isinstance(project_data, list):
-            print("Unexpected project_data format:", project_data)
+        if not feature_specs:
+            print(f"No feature specifications found for project ID {project_id}")
             return []
 
         # Initialize counters
         total_automated = 0
         total_manual = 0
 
-        for feature in project_data:
+        # Iterate through feature_specs to sum test approaches
+        for feature in feature_specs:
             test_approaches = feature.get("test_approaches", {})
             if not isinstance(test_approaches, dict):
                 print(f"Invalid 'test_approaches' format: {test_approaches}")
                 continue
 
-            # Validate and sum up the values
+            # Dynamically extract and sum automated and manual tests
             qty_automated = test_approaches.get(
                 Constants.FeaturesDataJSON.QTY_OF_AUTOMATED, 0
             )
@@ -70,10 +96,13 @@ class TestEffortsMapper(DataMapper):
                 Constants.FeaturesDataJSON.QTY_OF_MANUAL, 0
             )
 
+            # Ensure proper data type
             total_automated += (
-                qty_automated if isinstance(qty_automated, (int, float)) else 0
+                int(qty_automated) if isinstance(qty_automated, (int, float)) else 0
             )
-            total_manual += qty_manual if isinstance(qty_manual, (int, float)) else 0
+            total_manual += (
+                int(qty_manual) if isinstance(qty_manual, (int, float)) else 0
+            )
 
         # Prepare data for the pie chart
         data = [
@@ -87,10 +116,55 @@ class TestEffortsMapper(DataMapper):
             },
         ]
 
-        print("DEBUG: pie chart data =", data)
-
         return data
 
+    @staticmethod
+    def filter_tests_per_suite(
+        project_id, data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
+    ):
+        """
+        Count the quantity of scenarios per suite for a specific project.
+        """
+        # Load JSON data
+        data_handler = DataMapper(data_path).get_composed_data_frame()
+        project_data = TestEffortsMapper.get_project_data(project_id, data_handler)
+
+        if not project_data:
+            return []
+
+        # Prepare the result list
+        suite_scenario_counts = []
+
+        # Iterate over each suite in the project
+        for suite_id, suite_data in data_handler.get(
+            StringHandler.get_id_format(project_id)
+        ).items():
+            if suite_id == "project_name":
+                continue
+
+            suite_name = suite_data.get("suite_name", "Unknown Suite")
+            feature_specs = suite_data.get("feature_specs", [])
+
+            # Sum qty_of_scenarios for all features in this suite
+            total_scenarios = 0
+            if isinstance(feature_specs, list):
+                total_scenarios = sum(
+                    spec.get("qty_of_scenarios", 0) for spec in feature_specs
+                )
+            elif isinstance(feature_specs, dict):
+                total_scenarios = feature_specs.get("qty_of_scenarios", 0)
+
+            # Add the suite data to the result list
+            suite_scenario_counts.append(
+                {
+                    Constants.SuiteDataJSON.SUITE_NAME: suite_name,
+                    Constants.FeaturesDataJSON.QTY_OF_SCENARIOS: total_scenarios,
+                }
+            )
+
+        return suite_scenario_counts
+
+    @staticmethod
     def filter_test_level_and_approaches_by(
         data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
         filter_by_key="",
@@ -122,32 +196,6 @@ class TestEffortsMapper(DataMapper):
         ]
 
         data.sort(key=lambda prop: prop["level"])
-        return data
-
-    def filter_test_suites(
-        data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
-    ):
-        data = []
-        suite_counts = defaultdict(int)
-        data_handler = DataMapper(data_path).get_composed_data_frame()
-
-        for key, value in data_handler.items():
-            suite_name = value.get(Constants.SuiteDataJSON.SUITE_NAME)
-            total_time = value.get(Constants.ScenariosDataJSON.TOTAL_TIME)
-
-            suite_counts[(suite_name)] += 1
-
-        print("Test Counts per Suite:", dict(suite_counts))
-
-        data = [
-            {
-                Constants.ScenariosDataJSON.TOTAL_TIME: total_time,
-                "number_of_test_suites": suite,
-                "count": count,
-            }
-            for (suite), count in suite_counts.items()
-        ]
-
         return data
 
     @staticmethod
