@@ -25,47 +25,13 @@ def update_figures():
         ("template", "plotly_dark"),
     ]
 
-    chart_args_test_segregated_levels_and_approaches = [
-        (
-            "data_frame_group_a",
-            TestEffortsMapper.filter_test_level_and_approaches_by(
-                filter_by_key=Constants.ScenariosDataJSON.TEST_APPROACH,
-                filter_by_value=Constants.TestTypesEntity.AUTOMATED,
-            ),
-        ),
-        (
-            "data_frame_group_b",
-            TestEffortsMapper.filter_test_level_and_approaches_by(
-                filter_by_key=Constants.ScenariosDataJSON.TEST_APPROACH,
-                filter_by_value=Constants.TestTypesEntity.MANUAL,
-            ),
-        ),
-        ("template", "plotly_dark"),
-    ]
-
     line_fig = LineChart(**dict(chart_args_test_names_and_times))
-    pyramid_fig = PyramidChart(**dict(chart_args_test_segregated_levels_and_approaches))
 
-    return line_fig, pyramid_fig
+    return line_fig
 
 
 def render_layout():
-    line_fig, pyramid_fig = update_figures()
-
-    plot_pyramid_chart = dcc.Graph(
-        id="pyramid-chart",
-        figure=pyramid_fig.create(
-            x_group_a_axis="count",
-            y_group_a_axis=Constants.ScenariosDataJSON.TEST_LEVEL,
-            x_group_b_axis="count",
-            y_group_b_axis=Constants.ScenariosDataJSON.TEST_LEVEL,
-            title_x="Total tests",
-            title_y="Test level",
-            legend_group_a_axis="Automated",
-            legend_group_b_axis="Manual",
-            title="Test Pyramid Coverage (per level)",
-        ),
-    )
+    line_fig = update_figures()
 
     plot_line_chart_effort = dcc.Graph(
         id="line-chart",
@@ -111,8 +77,7 @@ def render_layout():
                         ],
                     ),
                     html.Div(
-                        children=plot_pyramid_chart,
-                        id="pyramid-chart-container",
+                        id="dash--test-pyramid-chart",
                         className="chart-card",
                     ),
                     html.Div(

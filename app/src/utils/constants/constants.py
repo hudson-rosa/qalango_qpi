@@ -29,6 +29,8 @@ class Constants:
         QTY_OF_CRITICAL_TESTS = "qty_of_critical_tests"
         QTY_OF_MOBILE = "qty_of_mobile"
         QTY_OF_DESKTOP = "qty_of_desktop"
+        TEST_APPROACHES = "test_approaches"
+        TEST_LEVELS = "test_levels"
 
     class ProjectDataJSON:
         PROJECT_ID = "project_id"

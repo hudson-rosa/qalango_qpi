@@ -24,10 +24,12 @@ class TestEffortsMapper(DataMapper):
 
         # Check if project_data is None, empty, or invalid
         if not project_data or not isinstance(project_data, dict):
-            return []
+            print(f"No data found for project ID {project_id}")
+            return [], []
 
         # Extract `feature_specs` from all suites
         feature_specs = []
+        scenario = []
         for suite_id, suite_data in project_data.items():
             if suite_id == "project_name":
                 continue  # Skip the project_name field
@@ -39,7 +41,11 @@ class TestEffortsMapper(DataMapper):
                 # Handle edge cases where feature_specs might be a dict
                 feature_specs.append(suite_feature_specs)
 
-        return feature_specs
+            for scenario_data in suite_feature_specs:
+                scenarios_specs = scenario_data.get("scenarios", [])
+                scenario.append(scenarios_specs)
+
+        return feature_specs or [], scenario or []
 
     @staticmethod
     def filter_test_names_and_times_dictionary(
@@ -71,7 +77,7 @@ class TestEffortsMapper(DataMapper):
         """
         # Load JSON data
         data_handler = DataMapper(data_path).get_composed_data_frame()
-        feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)
+        feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)[0]
 
         if not feature_specs:
             print(f"No feature specifications found for project ID {project_id}")
@@ -83,7 +89,9 @@ class TestEffortsMapper(DataMapper):
 
         # Iterate through feature_specs to sum test approaches
         for feature in feature_specs:
-            test_approaches = feature.get("test_approaches", {})
+            test_approaches = feature.get(
+                Constants.FeaturesDataJSON.TEST_APPROACHES, {}
+            )
             if not isinstance(test_approaches, dict):
                 print(f"Invalid 'test_approaches' format: {test_approaches}")
                 continue
@@ -119,15 +127,14 @@ class TestEffortsMapper(DataMapper):
         return data
 
     @staticmethod
-    def filter_tests_per_suite(
+    def filter_test_suites_by_project(
         project_id, data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
     ):
         """
         Count the quantity of scenarios per suite for a specific project.
         """
-        # Load JSON data
         data_handler = DataMapper(data_path).get_composed_data_frame()
-        project_data = TestEffortsMapper.get_project_data(project_id, data_handler)
+        project_data = TestEffortsMapper.get_project_data(project_id, data_handler)[0]
 
         if not project_data:
             return []
@@ -165,21 +172,42 @@ class TestEffortsMapper(DataMapper):
         return suite_scenario_counts
 
     @staticmethod
-    def filter_test_level_and_approaches_by(
-        data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
+    def filter_test_level_and_approaches_by_project(
+        project_id,
+        data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH,
         filter_by_key="",
         filter_by_value="",
     ):
         data = []
         level_approach_counts = defaultdict(int)
         data_handler = DataMapper(data_path).get_composed_data_frame()
+        feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)[1]
 
-        for key, value in data_handler.items():
-            test_level = value.get(Constants.ScenariosDataJSON.TEST_LEVEL)
-            test_approach = value.get(Constants.ScenariosDataJSON.TEST_APPROACH)
+        if not feature_specs or not feature_specs[1]:
+            print(f"No feature specifications found for project ID {project_id}")
+            return []
 
-            if value.get(filter_by_key) == filter_by_value:
-                level_approach_counts[(test_level, test_approach)] += 1
+        for item in feature_specs:
+            # Handle nested lists
+            if isinstance(item, list):
+                for feature in item:
+                    test_level = feature.get(Constants.ScenariosDataJSON.TEST_LEVEL)
+                    test_approach = feature.get(
+                        Constants.ScenariosDataJSON.TEST_APPROACH
+                    )
+
+                    # Filter and count
+                    if feature.get(filter_by_key) == filter_by_value:
+                        level_approach_counts[(test_level, test_approach)] += 1
+
+            # Handle dictionaries directly
+            elif isinstance(item, dict):
+                test_level = item.get(Constants.ScenariosDataJSON.TEST_LEVEL)
+                test_approach = item.get(Constants.ScenariosDataJSON.TEST_APPROACH)
+
+                # Filter and count
+                if item.get(filter_by_key) == filter_by_value:
+                    level_approach_counts[(test_level, test_approach)] += 1
 
         print("Level and Approach Counts:", dict(level_approach_counts))
 
@@ -193,6 +221,101 @@ class TestEffortsMapper(DataMapper):
                 ),
             }
             for (level, approach), count in level_approach_counts.items()
+        ]
+
+        data.sort(key=lambda prop: prop["level"])
+        return data
+
+    @staticmethod
+    def filter_counted_test_level_and_approaches_by_project(
+        project_id, data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
+    ):
+        data_handler = DataMapper(data_path).get_composed_data_frame()
+        feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)[0]
+
+        if not feature_specs or not feature_specs[0]:
+            print(f"No feature specifications found for project ID {project_id}")
+            return []
+
+        # Initialize counters for test levels and approaches
+        totals = defaultdict(int)
+        test_approach_keys = [
+            Constants.FeaturesDataJSON.QTY_OF_AUTOMATED,
+            Constants.FeaturesDataJSON.QTY_OF_MANUAL,
+        ]
+        test_level_keys = [
+            Constants.FeaturesDataJSON.QTY_OF_INTEGRATION,
+            Constants.FeaturesDataJSON.QTY_OF_COMPONENT,
+            Constants.FeaturesDataJSON.QTY_OF_CONTRACT,
+            Constants.FeaturesDataJSON.QTY_OF_API,
+            Constants.FeaturesDataJSON.QTY_OF_E2E,
+            Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE,
+            Constants.FeaturesDataJSON.QTY_OF_SECURITY,
+            Constants.FeaturesDataJSON.QTY_OF_USABILITY,
+            Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY,
+        ]
+
+        # Iterate through feature_specs to sum test approaches and levels
+        for feature in feature_specs:
+            test_approaches = feature.get(
+                Constants.FeaturesDataJSON.TEST_APPROACHES, {}
+            )
+            test_levels = feature.get(Constants.FeaturesDataJSON.TEST_LEVELS, {})
+
+            if not isinstance(test_levels, dict) or not isinstance(
+                test_approaches, dict
+            ):
+                print(f"Invalid data format in feature: {feature}")
+                continue
+
+            # Sum quantities dynamically
+            for key in test_approach_keys + test_level_keys:
+                totals[key] += int(
+                    test_approaches.get(key, 0)
+                    if key in test_approaches
+                    else test_levels.get(key, 0)
+                )
+
+        # Prepare data for the pie chart
+        counted_levels = {
+            Constants.TestLevelsEntity.INTEGRATION: totals[
+                Constants.FeaturesDataJSON.QTY_OF_INTEGRATION
+            ],
+            Constants.TestLevelsEntity.COMPONENT: totals[
+                Constants.FeaturesDataJSON.QTY_OF_COMPONENT
+            ],
+            Constants.TestLevelsEntity.CONTRACT: totals[
+                Constants.FeaturesDataJSON.QTY_OF_CONTRACT
+            ],
+            Constants.TestLevelsEntity.API: totals[
+                Constants.FeaturesDataJSON.QTY_OF_API
+            ],
+            Constants.TestLevelsEntity.E2E: totals[
+                Constants.FeaturesDataJSON.QTY_OF_E2E
+            ],
+            Constants.TestLevelsEntity.PERFORMANCE: totals[
+                Constants.FeaturesDataJSON.QTY_OF_PERFORMANCE
+            ],
+            Constants.TestLevelsEntity.SECURITY: totals[
+                Constants.FeaturesDataJSON.QTY_OF_SECURITY
+            ],
+            Constants.TestLevelsEntity.USABILITY: totals[
+                Constants.FeaturesDataJSON.QTY_OF_USABILITY
+            ],
+            Constants.TestLevelsEntity.EXPLORATORY: totals[
+                Constants.FeaturesDataJSON.QTY_OF_EXPLORATORY
+            ],
+        }
+
+        data = [
+            {
+                Constants.ScenariosDataJSON.TEST_LEVEL: level,
+                "count": count,
+                "level": TestLevel().get_option(
+                    property_to_pick="tier", from_level=level
+                ),
+            }
+            for level, count in counted_levels.items()
         ]
 
         data.sort(key=lambda prop: prop["level"])

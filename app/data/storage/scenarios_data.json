@@ -110,6 +110,63 @@
           ]
         }
       ]
+    },
+    "idsuite_18645": {
+      "suite_name": "Administration",
+      "feature_specs": [
+        {
+          "spec_doc_id": "idtest_15b074c536",
+          "test_name": "Setting Up a New Administration Role Profile",
+          "qty_of_scenarios": 1,
+          "test_levels": {
+            "qty_of_integration": 0,
+            "qty_of_component": 0,
+            "qty_of_contract": 0,
+            "qty_of_api": 0,
+            "qty_of_e2e": 1,
+            "qty_of_performance": 0,
+            "qty_of_security": 0,
+            "qty_of_usability": 0,
+            "qty_of_exploratory": 0
+          },
+          "test_approaches": { "qty_of_automated": 0, "qty_of_manual": 1 },
+          "test_categories": { "qty_of_critical_tests": 1, "qty_of_smoke_tests": 1, "qty_of_edge_cases": 0, "qty_of_mobile": 0, "qty_of_desktop": 1 },
+          "scenarios": {
+            "scenario_id": "idtest_15b074c536",
+            "scenario_name": "Setting Up a New Administration Role Profile",
+            "requirements_link": "https://jsonplaceholder.typicode.com/todos/1",
+            "test_level": "e2e",
+            "test_approach": "manual",
+            "test_categories": ["critical-test", "smoke-test", "desktop"],
+            "test_duration": 15,
+            "content": {
+              "preconditions": [{ "precondition": "The user must have access to an existing Administrator or Super Administrator account." }],
+              "steps": [
+                { "step": "Log in to the application using valid Administrator credentials.", "expected": "" },
+                { "step": "Navigate to the Role Management or Administration Settings section.", "expected": "" },
+                { "step": "Click on the Create New Role or Add New Profile button.", "expected": "" },
+                {
+                  "step": "Enter the following details for the new role:\n- Role Name: Enter \"Administrator\".\n- Description: Provide a description (e.g., \"This role manages system-wide settings and user accounts\").\n- Permissions: Select the following permissions:\n-- User Management\n-- System Configuration\n-- View and Modify Reports\n-- Access Audit Logs\n- Scope: Set to \"Global\" or define specific areas the role can access.",
+                  "expected": ""
+                },
+                { "step": "Save the role profile by clicking the Save or Confirm button.", "expected": "" },
+                { "step": "Verify that a success message (e.g., \"Role created successfully\") is displayed.", "expected": "" },
+                { "step": "Check that the new role profile appears in the list of available roles.", "expected": "" },
+                {
+                  "step": "Assign the new role to a test user by:\n- Navigating to the User Management section.\n- Selecting a user account.\n- Assigning the newly created \"Administrator\" role.\n- Saving the changes.",
+                  "expected": ""
+                },
+                { "step": "Log out of the application.", "expected": "" },
+                { "step": "Log in using the test user credentials assigned in the previous step.", "expected": "" },
+                {
+                  "step": "Verify the following:\n- The user can access areas and functionalities based on the permissions defined in the new role.\n- The user cannot access functionalities outside the defined permissions.",
+                  "expected": "- The new \"Administrator\" role profile is created successfully and appears in the list of roles.\n- A test user assigned to the new role can only access features allowed by the role\u2019s permissions.\n- Unauthorized access attempts by the test user are restricted."
+                }
+              ]
+            }
+          }
+        }
+      ]
     }
   }
 }
