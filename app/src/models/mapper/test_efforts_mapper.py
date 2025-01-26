@@ -146,6 +146,9 @@ class TestEffortsMapper(DataMapper):
         for suite_id, suite_data in data_handler.get(
             StringHandler.get_id_format(project_id)
         ).items():
+            if not isinstance(suite_data, dict):
+                continue
+
             if suite_id == "project_name":
                 continue
 
@@ -156,7 +159,9 @@ class TestEffortsMapper(DataMapper):
             total_scenarios = 0
             if isinstance(feature_specs, list):
                 total_scenarios = sum(
-                    spec.get("qty_of_scenarios", 0) for spec in feature_specs
+                    spec.get("qty_of_scenarios", 0)
+                    for spec in feature_specs
+                    if isinstance(spec, dict)
                 )
             elif isinstance(feature_specs, dict):
                 total_scenarios = feature_specs.get("qty_of_scenarios", 0)
@@ -183,7 +188,7 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
         feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)[1]
 
-        if not feature_specs or not feature_specs[1]:
+        if not feature_specs:
             print(f"No feature specifications found for project ID {project_id}")
             return []
 
@@ -233,7 +238,7 @@ class TestEffortsMapper(DataMapper):
         data_handler = DataMapper(data_path).get_composed_data_frame()
         feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)[0]
 
-        if not feature_specs or not feature_specs[0]:
+        if not feature_specs:
             print(f"No feature specifications found for project ID {project_id}")
             return []
 
