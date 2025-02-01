@@ -15,7 +15,7 @@ def display_page_callback(pathname):
         case Constants.Routes.REGISTER_SUITES:
             return register_suites.html_register_suite.render_layout()
         case Constants.Routes.REGISTER_SCENARIOS:
-            return register_features.html_register_feature_or_tests.render_layout()
+            return register_features.html_register_feature_scenarios.render_layout()
         case Constants.Routes.REGISTER_TESTS_EFFORTS:
             return register_tests.html_register_efforts.render_layout()
         case Constants.Routes.KPIS:

@@ -48,27 +48,6 @@ class TestEffortsMapper(DataMapper):
         return feature_specs or [], scenario or []
 
     @staticmethod
-    def filter_test_names_and_times_dictionary(
-        data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
-    ):
-        test_names = []
-        total_times = []
-        data_handler = DataMapper(data_path).get_composed_data_frame()
-
-        for key, value in data_handler.items():
-            test_name = value.get(Constants.ScenariosDataJSON.TEST_NAME)
-            total_time = value.get(Constants.ScenariosDataJSON.TOTAL_TIME)
-
-            if test_name is not None and total_time is not None:
-                test_names.append(test_name)
-                total_times.append(total_time)
-
-        return {
-            Constants.ScenariosDataJSON.TEST_NAME: test_names,
-            Constants.ScenariosDataJSON.TOTAL_TIME: total_times,
-        }
-
-    @staticmethod
     def sum_test_approaches_by_project(
         project_id, data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
     ):
@@ -325,6 +304,29 @@ class TestEffortsMapper(DataMapper):
 
         data.sort(key=lambda prop: prop["level"])
         return data
+
+
+    @staticmethod
+    def filter_test_names_and_times_dictionary(
+        data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
+    ):
+        test_names = []
+        total_times = []
+        data_handler = DataMapper(data_path).get_composed_data_frame()
+
+        for key, value in data_handler.items():
+            test_name = value.get(Constants.ScenariosDataJSON.TEST_NAME)
+            total_time = value.get(Constants.ScenariosDataJSON.TOTAL_TIME)
+
+            if test_name is not None and total_time is not None:
+                test_names.append(test_name)
+                total_times.append(total_time)
+
+        return {
+            Constants.ScenariosDataJSON.TEST_NAME: test_names,
+            Constants.ScenariosDataJSON.TOTAL_TIME: total_times,
+        }
+
 
     @staticmethod
     def get_list_of_test_levels():

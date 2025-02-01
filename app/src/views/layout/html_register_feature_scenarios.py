@@ -11,6 +11,7 @@ from src.utils.data_generator import DataGenerator
 def render_layout():
     return html.Div(
         [
+            html.Title("Test"),
             html_component_header_tabs.render_header(
                 current_page_identifier=Constants.PageIdentifiers.FEATURES
             ),

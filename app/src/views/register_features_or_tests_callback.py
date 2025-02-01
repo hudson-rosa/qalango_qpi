@@ -7,7 +7,7 @@ from dash import dcc, callback, html, Input, Output, State, MATCH, ALL
 from src.models.mapper.data_mapper import DataMapper
 from src.models.mapper.suite_mapper import SuiteMapper
 
-import src.views.layout.html_register_feature_or_tests as html_register_feature_or_tests
+import src.views.layout.html_register_feature_scenarios as html_register_feature_scenarios
 from src.utils.data_generator import DataGenerator
 from src.utils.file_handler import FileHandler
 from src.utils.constants.constants import Constants
@@ -16,6 +16,7 @@ from src.utils.string_handler import StringHandler
 
 
 app = dash.Dash(__name__)
+
 ctx = dash.callback_context
 slider_marks = DataGenerator.generate_slider_marks()
 
@@ -206,7 +207,7 @@ def add_all_bdd_scenario_fields(n_clicks, current_children):
 
     scenario_id_suffix = n_clicks + 1
 
-    new_scenario_block = html_register_feature_or_tests.define_bdd_scenario_details(
+    new_scenario_block = html_register_feature_scenarios.define_bdd_scenario_details(
         scenario_id_suffix=scenario_id_suffix
     )
 
@@ -854,4 +855,4 @@ def submit_scripted_test(
             )
 
 
-app.layout = html_register_feature_or_tests.render_layout()
+app.layout = html_register_feature_scenarios.render_layout()

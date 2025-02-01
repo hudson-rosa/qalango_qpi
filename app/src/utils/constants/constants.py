@@ -77,11 +77,11 @@ class Constants:
 
     class FilePaths:
         DASHBOARD_STYLESHEET_CSS_PATH = "./static/dashboard_stylesheet.css"
-        FORMS_STYLESHEET_CSS_PATH = "./static/forms_stylesheet.css"
-        QALANGO_LOGO_PNG_PATH = "app/assets/images/Qalango_logo_transp.png"
         FEATURES_DATA_JSON_PATH = "app/data/storage/features_data.json"
-        SCENARIOS_DATA_JSON_PATH = "app/data/storage/scenarios_data.json"
+        FORMS_STYLESHEET_CSS_PATH = "./static/forms_stylesheet.css"
         PROJECTS_DATA_JSON_PATH = "app/data/storage/projects_data.json"
+        QALANGO_LOGO_PNG_PATH = "app/assets/images/Qalango_logo_transp.png"
+        SCENARIOS_DATA_JSON_PATH = "app/data/storage/scenarios_data.json"
         SUITES_DATA_JSON_PATH = "app/data/storage/suites_data.json"
         TEST_EFFORTS_DATA_JSON_PATH = "app/data/storage/test_efforts_data.json"
 
