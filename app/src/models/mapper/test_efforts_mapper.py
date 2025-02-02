@@ -305,28 +305,48 @@ class TestEffortsMapper(DataMapper):
         data.sort(key=lambda prop: prop["level"])
         return data
 
-
     @staticmethod
-    def filter_test_names_and_times_dictionary(
-        data_path=Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH,
+    def filter_test_names_and_duration_dictionary(
+        project_id, data_path=Constants.FilePaths.SCENARIOS_DATA_JSON_PATH
     ):
-        test_names = []
-        total_times = []
         data_handler = DataMapper(data_path).get_composed_data_frame()
+        feature_specs = TestEffortsMapper.get_project_data(project_id, data_handler)[1]
 
-        for key, value in data_handler.items():
-            test_name = value.get(Constants.ScenariosDataJSON.TEST_NAME)
-            total_time = value.get(Constants.ScenariosDataJSON.TOTAL_TIME)
+        if not feature_specs:
+            print(f"No feature specifications found for project ID {project_id}")
+            return []
 
-            if test_name is not None and total_time is not None:
-                test_names.append(test_name)
-                total_times.append(total_time)
+        all_scenarios = defaultdict(int)
+        scenario_name_key = Constants.ScenariosDataJSON.SCENARIO_NAME
+        test_duration_key = Constants.ScenariosDataJSON.TEST_DURATION
 
-        return {
-            Constants.ScenariosDataJSON.TEST_NAME: test_names,
-            Constants.ScenariosDataJSON.TOTAL_TIME: total_times,
-        }
+        for item in feature_specs:
+            # Handle nested lists
+            if isinstance(item, list):
+                for feature in item:
+                    scenario_name = feature.get(scenario_name_key)
+                    test_duration = feature.get(test_duration_key)
 
+                    # Filter and count
+                    all_scenarios[(scenario_name, test_duration)] += 1
+
+            # Handle dictionaries directly
+            elif isinstance(item, dict):
+                scenario_name = item.get(scenario_name_key)
+                test_duration = item.get(test_duration_key)
+
+                # Filter and count
+                all_scenarios[(scenario_name, test_duration)] += 1
+
+        return [
+            {
+                scenario_name_key: name,
+                test_duration_key: duration,
+                "count": count,
+            }
+            for (name, duration), count in all_scenarios.items()
+        ]
+    
 
     @staticmethod
     def get_list_of_test_levels():

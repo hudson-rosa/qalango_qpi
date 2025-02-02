@@ -47,6 +47,7 @@ class Constants:
         SCENARIO_ID = "scenario_id"
         SCENARIO_NAME = "scenario_name"
         TEST_APPROACH = "test_approach"
+        TEST_DURATION = "test_duration"
         TEST_ID = "test_id"
         TEST_NAME = "test_name"
         TEST_LEVEL = "test_level"

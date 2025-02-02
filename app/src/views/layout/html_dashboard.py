@@ -1,16 +1,7 @@
-import base64
-import dash
-from dash import dcc, callback, html
-from dash.dependencies import Input, Output
-
-from src.models.entity.chart.pie_chart import PieChart
-from src.models.entity.chart.bar_chart import BarChart
-from src.models.entity.chart.line_chart import LineChart
-from src.models.entity.chart.pyramid_chart import PyramidChart
+from dash import dcc, html
 
 from src.models.mapper.data_mapper import DataMapper
 from src.models.mapper.project_mapper import ProjectMapper
-from src.models.mapper.test_efforts_mapper import TestEffortsMapper
 from src.views.layout import html_component_header_tabs
 from src.utils.constants.constants import Constants
 
@@ -19,28 +10,7 @@ data_path = Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH
 data_mapper_instance = DataMapper(filename=data_path)
 
 
-def update_figures():
-    chart_args_test_names_and_times = [
-        ("data_frame", TestEffortsMapper.filter_test_names_and_times_dictionary()),
-        ("template", "plotly_dark"),
-    ]
-
-    line_fig = LineChart(**dict(chart_args_test_names_and_times))
-
-    return line_fig
-
-
 def render_layout():
-    line_fig = update_figures()
-
-    plot_line_chart_effort = dcc.Graph(
-        id="line-chart",
-        figure=line_fig.create(
-            x_axis=Constants.ScenariosDataJSON.TEST_NAME,
-            y_axis=Constants.ScenariosDataJSON.TOTAL_TIME,
-            title="Test Effort Distribution (in seconds)",
-        ),
-    )
 
     dashboard_layout = html.Div(
         [
@@ -81,8 +51,7 @@ def render_layout():
                         className="chart-card",
                     ),
                     html.Div(
-                        children=plot_line_chart_effort,
-                        id="line-chart-container",
+                        id="dash--tine-chart-tests-duration",
                         className="chart-card",
                     ),
                 ],
