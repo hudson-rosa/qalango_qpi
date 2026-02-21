@@ -13,7 +13,6 @@ from src.utils.constants.constants import Constants
 data_path = Constants.FilePaths.TEST_EFFORTS_DATA_JSON_PATH
 app = dash.Dash(__name__)
 
-
 @callback(
     Output("dash--pie-chart-test-approaches", "children"),
     Input("dash--project-dropdown", "value"),

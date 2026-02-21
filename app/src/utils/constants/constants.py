@@ -6,6 +6,7 @@ class Constants:
         REGISTER_SCENARIOS = "/register-scenarios"
         REGISTER_SUITES = "/register-suites"
         REGISTER_TESTS_EFFORTS = "/register-test-efforts"
+        DASHBOARD = "/dashboard"
         EDIT_SCENARIOS = "/edit-scenarios"
 
     class FeaturesDataJSON:

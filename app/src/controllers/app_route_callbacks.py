@@ -23,5 +23,7 @@ def display_page_callback(pathname):
             return dashboard.html_dashboard.render_layout()
         case Constants.Routes.EDIT_SCENARIOS:
             return edit_scenarios.html_edit_scenarios.render_layout()
+        case Constants.Routes.DASHBOARD:
+            return dashboard.html_dashboard.render_layout()
         case default:
             return html.Div("404 - Page not found")

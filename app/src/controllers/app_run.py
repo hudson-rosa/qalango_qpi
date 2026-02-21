@@ -16,7 +16,7 @@ header_stylesheets = [
 app = dash.Dash(
     __name__,
     external_stylesheets=header_stylesheets,
-    title="Qalango QPI",
+    title="Qalango QPI"
 )
 
 app.layout = html.Div(
