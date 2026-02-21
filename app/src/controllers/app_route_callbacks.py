@@ -1,6 +1,7 @@
 import dash
 from dash import dcc, html
 import src.views.dashboard_callback as dashboard
+import src.views.edit_scenarios_callback as edit_scenarios
 import src.views.register_efforts_callback as register_tests
 import src.views.register_projects_callback as register_projects
 import src.views.register_suites_callback as register_suites
@@ -20,5 +21,7 @@ def display_page_callback(pathname):
             return register_tests.html_register_efforts.render_layout()
         case Constants.Routes.KPIS:
             return dashboard.html_dashboard.render_layout()
+        case Constants.Routes.EDIT_SCENARIOS:
+            return edit_scenarios.html_edit_scenarios.render_layout()
         case default:
             return html.Div("404 - Page not found")

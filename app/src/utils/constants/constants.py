@@ -6,6 +6,7 @@ class Constants:
         REGISTER_SCENARIOS = "/register-scenarios"
         REGISTER_SUITES = "/register-suites"
         REGISTER_TESTS_EFFORTS = "/register-test-efforts"
+        EDIT_SCENARIOS = "/edit-scenarios"
 
     class FeaturesDataJSON:
         FEATURE_ID = "feature_id"
@@ -92,6 +93,7 @@ class Constants:
 
     class PageIdentifiers:
         DASHBOARD = "dashboard"
+        EDIT_SCENARIOS = "edit_scenarios"
         FEATURES = "features"
         PROJECTS = "projects"
         SUITES = "suites"

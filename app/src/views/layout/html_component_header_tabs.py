@@ -38,6 +38,12 @@ def get_page_tabs_info():
             "tab_title": "Register test efforts",
             "page_title": "Testing Efforts",
         },
+        {
+            "identifier": Constants.PageIdentifiers.EDIT_SCENARIOS,
+            "route": Constants.Routes.EDIT_SCENARIOS,
+            "tab_title": "Edit Scenarios",
+            "page_title": "Scenario Editor",
+        },
     ]
 
 
